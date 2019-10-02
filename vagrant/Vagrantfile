@@ -20,7 +20,7 @@ Vagrant.configure(2) do |config|
   config.vm.network "private_network", ip: "192.168.33.10"
 
   # Share an additional folder to the guest VM (data folder).
-  config.vm.synced_folder "../database", "/payments_database", type: "virtualbox"
+  config.vm.synced_folder "../app", "/payments_app", type: "virtualbox"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
