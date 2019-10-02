@@ -53,28 +53,26 @@ Vagrant.configure(2) do |config|
   if File.exists?(File.expand_path("~/.vimrc"))
     config.vm.provision "file", source: "~/.vimrc", destination: "~/.vimrc"
   end
+  
+  # Set up Docker.
+  config.vm.provision "docker" do |d|
+    d.pull_images "mysql"
+  end
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
+    # Update apt.
     apt-get update
-    apt-get install -y git python3 python3-pip python3-venv mysql-server
+    # Install Python 3.
+    apt-get install -y git python3 python3-pip python3-venv
+    # Clear apt.
     apt-get -y autoremove
-    # Install app dependencies
+    # Install Python dependencies.
     cd /vagrant
     pip3 install -r requirements.txt
     pip3 install yapf
   SHELL
-
-  ######################################################################
-  # Add PostgreSQL docker container
-  ######################################################################
-  # docker run -d --name postgres -p 5432:5432 -v psql_data:/var/lib/postgresql/data postgres
-  config.vm.provision :docker do |d|
-    d.pull_images "postgres:alpine"
-    d.run "postgres:alpine",
-       args: "-d --name postgres -p 5432:5432 -v psql_data:/var/lib/postgresql/data"
-  end
 
 end
