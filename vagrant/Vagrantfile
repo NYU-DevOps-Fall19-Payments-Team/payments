@@ -59,7 +59,7 @@ Vagrant.configure(2) do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
-    apt-get install -y git python3 python3-pip python3-venv python-pip python-mysqldb
+    apt-get install -y git python3 python3-pip python3-venv python-pip python-mysqldb python3-pymysql
     apt-get -y autoremove
     # Install app dependencies
     cd /vagrant
@@ -75,5 +75,4 @@ Vagrant.configure(2) do |config|
     d.run "mysql",
       args: "--restart=always -d --name mysql -p 3306:3306 -v mysql_data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456"
   end
-
 end
