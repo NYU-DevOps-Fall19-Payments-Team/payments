@@ -70,11 +70,12 @@ Vagrant.configure(2) do |config|
   SHELL
 
   ######################################################################
-  # Add mysql docker container
+  # Add PostgreSQL docker container
   ######################################################################
-  config.vm.provision "docker" do |d|
-    d.pull_images "mysql"
-    d.run "mysql",
-      args: "--restart=always -d --name mysql -p 3306:3306 -v mysql_data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456"
+  # docker run -d --name postgres -p 5432:5432 -v psql_data:/var/lib/postgresql/data postgres
+  config.vm.provision :docker do |d|
+    d.pull_images "postgres:alpine"
+    d.run "postgres:alpine",
+       args: "-d --name postgres -p 5432:5432 -v psql_data:/var/lib/postgresql/data"
   end
 end
