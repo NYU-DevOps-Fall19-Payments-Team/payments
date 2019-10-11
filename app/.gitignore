@@ -1,0 +1,7 @@
+*
+!/.git*
+!/requirements.txt
+!/setup.cfg
+!/service
+!/tests
+!/database

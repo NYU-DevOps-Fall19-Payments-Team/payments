@@ -20,7 +20,7 @@ Vagrant.configure(2) do |config|
   config.vm.network "private_network", ip: "192.168.33.10"
 
   # Share an additional folder to the guest VM (data folder).
-  config.vm.synced_folder "../app", "/payments_app", type: "virtualbox"
+  # config.vm.synced_folder "../app", "/payments_app", type: "virtualbox"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -61,11 +61,11 @@ Vagrant.configure(2) do |config|
     # Update apt.
     apt-get update
     # Install Python 3.
-    apt-get install -y git python3 python3-pip python3-venv python-pip mysql-client-core-5.7
+    apt-get install -y git python3 python3-pip python3-venv python-pip 
     # Clear apt.
     apt-get -y autoremove
     # Install Python dependencies.
-    pip3 install -r /payments_app/requirements.txt
+    pip3 install -r /vagrant/app/requirements.txt
     pip3 install yapf
   SHELL
 
