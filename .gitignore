@@ -2,9 +2,8 @@
 !.git*
 !Vagrantfile
 !README.md
-!/app
 !/requirements.txt
 !/setup.cfg
 !/service
 !/tests
-!/database
+!/databasee
