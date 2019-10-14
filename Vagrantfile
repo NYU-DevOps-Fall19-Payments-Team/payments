@@ -65,7 +65,7 @@ Vagrant.configure(2) do |config|
     # Clear apt.
     apt-get -y autoremove
     # Install Python dependencies.
-    pip3 install -r /vagrant/app/requirements.txt
+    pip3 install -r /vagrant/requirements.txt
     pip3 install yapf
   SHELL
 
