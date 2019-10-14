@@ -67,6 +67,9 @@ Vagrant.configure(2) do |config|
     # Install Python dependencies.
     pip3 install -r /vagrant/app/requirements.txt
     pip3 install yapf
+    # Add a script for initializing the flask service.
+    echo 'cd /vagrant && sudo FLASK_APP=service:app flask run --host=0.0.0.0     --port=5000' > init_service.sh
+    chmod a+x init_service.sh
   SHELL
 
   ######################################################################
