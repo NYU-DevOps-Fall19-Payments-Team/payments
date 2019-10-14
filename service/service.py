@@ -101,14 +101,14 @@ def index():
     """ Root URL response """
     return jsonify(name='Payments REST API Service',
                    version='1.0',
-                   paths=url_for('list_pets', _external=True)
+                   paths=url_for('list_payments', _external=True)
                   ), status.HTTP_200_OK
 
 ######################################################################
-# LIST ALL PETS
+# LIST ALL PAYMENT
 ######################################################################
 @app.route('/payments', methods=['GET'])
-def list_pets():
+def list_payments():
     """ Returns all of the Payments """
     app.logger.info('Request for payments list')
     payments = []

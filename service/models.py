@@ -13,19 +13,20 @@
 # limitations under the License.
 
 """
-Models for Pet Demo Service
+Models for Payments Demo Service
 
 All of the models are stored in this module
 
 Models
 ------
-Pet - A Pet used in the Pet Store
+Payment  - A Payment used By customer
 
 Attributes:
 -----------
-name (string) - the name of the pet
-category (string) - the category the pet belongs to (i.e., dog, cat)
-available (boolean) - True for pets that are available for adoption
+order_id (Integer) - the order that the payment was been used for.
+customer_id (Integer) - the customer that owns the payments.
+available (boolean) - True for payments that are available to pay.
+payments_type - The type of the payments, so far we only support credit card.
 
 """
 import logging
@@ -40,7 +41,7 @@ class DataValidationError(Exception):
 
 class Payments(db.Model):
     """
-    Class that represents a Pet
+    Class that represents a Payments
 
     This version uses a relational database for persistence which is hidden
     from us by SQLAlchemy's object relational mappings (ORM)
