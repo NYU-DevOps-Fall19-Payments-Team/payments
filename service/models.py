@@ -13,19 +13,20 @@
 # limitations under the License.
 
 """
-Models for Pet Demo Service
+Models for Payments Demo Service
 
 All of the models are stored in this module
 
 Models
 ------
-Pet - A Pet used in the Pet Store
+Payment  - A Payment used By customer
 
 Attributes:
 -----------
-name (string) - the name of the pet
-category (string) - the category the pet belongs to (i.e., dog, cat)
-available (boolean) - True for pets that are available for adoption
+order_id (Integer) - the order that the payment was been used for.
+customer_id (Integer) - the customer that owns the payments.
+available (boolean) - True for payments that are available to pay.
+payments_type - The type of the payments, so far we only support credit card.
 
 """
 import logging
@@ -38,9 +39,9 @@ class DataValidationError(Exception):
     """ Used for an data validation errors when deserializing """
     pass
 
-class Pet(db.Model):
+class Payments(db.Model):
     """
-    Class that represents a Pet
+    Class that represents a Payments
 
     This version uses a relational database for persistence which is hidden
     from us by SQLAlchemy's object relational mappings (ORM)
@@ -50,50 +51,54 @@ class Pet(db.Model):
 
     # Table Schema
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(63))
-    category = db.Column(db.String(63))
+    order_id = db.Column(db.Integer)
+    customer_id = db.Column(db.Integer)
+    payments_type = db.Column(db.String(50))
     available = db.Column(db.Boolean())
 
     def __repr__(self):
-        return '<Pet %r>' % (self.name)
+        return '<Payments %r>' % (self.name)
 
     def save(self):
         """
-        Saves a Pet to the data store
+        Saves a Payments to the data store
         """
-        Pet.logger.info('Saving %s', self.name)
+        Payments.logger.info('Saving %s', self.id)
         if not self.id:
             db.session.add(self)
         db.session.commit()
 
     def delete(self):
-        """ Removes a Pet from the data store """
-        Pet.logger.info('Deleting %s', self.name)
+        """ Removes a Payments from the data store """
+        Payments.logger.info('Deleting %s', self.id)
         db.session.delete(self)
         db.session.commit()
 
     def serialize(self):
-        """ Serializes a Pet into a dictionary """
+        """ Serializes a Payments into a dictionary """
         return {"id": self.id,
-                "name": self.name,
-                "category": self.category,
-                "available": self.available}
+                "order_id": self.order_id,
+                "customer_id": self.customer_id,
+                "available": self.available,
+                "payments_type" : self.payments_type
+                }
 
     def deserialize(self, data):
         """
-        Deserializes a Pet from a dictionary
+        Deserializes a Payments from a dictionary
 
         Args:
-            data (dict): A dictionary containing the Pet data
+            data (dict): A dictionary containing the Payments data
         """
         try:
-            self.name = data['name']
-            self.category = data['category']
+            self.order_id = data['order_id']
+            self.customer_id = data['customer_id']
             self.available = data['available']
+            self.payments_type = data['payments_type']
         except KeyError as error:
-            raise DataValidationError('Invalid pet: missing ' + error.args[0])
+            raise DataValidationError('Invalid payments: missing ' + error.args[0])
         except TypeError as error:
-            raise DataValidationError('Invalid pet: body of request contained' \
+            raise DataValidationError('Invalid payments: body of request contained' \
                                       'bad or no data')
         return self
 
@@ -109,41 +114,41 @@ class Pet(db.Model):
 
     @classmethod
     def all(cls):
-        """ Returns all of the Pets in the database """
-        cls.logger.info('Processing all Pets')
+        """ Returns all of the Payments in the database """
+        cls.logger.info('Processing all Payments')
         return cls.query.all()
 
     @classmethod
-    def find(cls, pet_id):
-        """ Finds a Pet by it's ID """
-        cls.logger.info('Processing lookup for id %s ...', pet_id)
-        return cls.query.get(pet_id)
+    def find(cls, payments_id):
+        """ Finds a Payments by it's ID """
+        cls.logger.info('Processing lookup for id %s ...', payments_id)
+        return cls.query.get(payments_id)
 
     @classmethod
-    def find_or_404(cls, pet_id):
-        """ Find a Pet by it's id """
-        cls.logger.info('Processing lookup or 404 for id %s ...', pet_id)
-        return cls.query.get_or_404(pet_id)
+    def find_or_404(cls, payments_id):
+        """ Find a payments by it's id """
+        cls.logger.info('Processing lookup or 404 for id %s ...', payments_id)
+        return cls.query.get_or_404(payments_id)
 
     @classmethod
-    def find_by_name(cls, name):
-        """ Returns all Pets with the given name
+    def find_by_customer(cls, customer_id):
+        """ Returns all the customer's payments with the given customer_id
 
         Args:
             name (string): the name of the Pets you want to match
         """
-        cls.logger.info('Processing name query for %s ...', name)
-        return cls.query.filter(cls.name == name)
+        cls.logger.info('Processing customer query for %s ...', customer_id)
+        return cls.query.filter(cls.customer_id == customer_id)
 
     @classmethod
-    def find_by_category(cls, category):
+    def find_by_order(cls, order_id):
         """ Returns all of the Pets in a category
 
         Args:
             category (string): the category of the Pets you want to match
         """
-        cls.logger.info('Processing category query for %s ...', category)
-        return cls.query.filter(cls.category == category)
+        cls.logger.info('Processing category query for %s ...', order_id)
+        return cls.query.filter(cls.order_id == order_id)
 
     @classmethod
     def find_by_availability(cls, available=True):

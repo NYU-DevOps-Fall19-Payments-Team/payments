@@ -34,7 +34,7 @@ from werkzeug.exceptions import NotFound
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
 # variety of backends including SQLite, MySQL, and PostgreSQL
 from flask_sqlalchemy import SQLAlchemy
-from service.models import Pet, DataValidationError
+from service.models import Payments, DataValidationError
 
 # Import Flask application
 from . import app
@@ -99,106 +99,105 @@ def internal_server_error(error):
 @app.route('/')
 def index():
     """ Root URL response """
-    return jsonify(name='Pet Demo REST API Service',
+    return jsonify(name='Payments REST API Service',
                    version='1.0',
-                   paths=url_for('list_pets', _external=True)
+                   paths=url_for('list_payments', _external=True)
                   ), status.HTTP_200_OK
 
 ######################################################################
-# LIST ALL PETS
+# LIST ALL PAYMENT
 ######################################################################
-@app.route('/pets', methods=['GET'])
-def list_pets():
-    """ Returns all of the Pets """
-    app.logger.info('Request for pet list')
-    pets = []
-    category = request.args.get('category')
-    name = request.args.get('name')
-    if category:
-        pets = Pet.find_by_category(category)
-    elif name:
-        pets = Pet.find_by_name(name)
+@app.route('/payments', methods=['GET'])
+def list_payments():
+    """ Returns all of the Payments """
+    app.logger.info('Request for payments list')
+    payments = []
+    customer_id = request.args.get('customer_id')
+    order_id = request.args.get('order_id ')
+    if customer_id:
+        payments = Payments.find_by_category(customer_id)
+    elif order_id:
+        payments = Payments.find_by_name(order_id)
     else:
-        pets = Pet.all()
+        payments = Payments.all()
 
-    results = [pet.serialize() for pet in pets]
+    results = [payment.serialize() for payment in payments]
     return make_response(jsonify(results), status.HTTP_200_OK)
 
 
 ######################################################################
-# RETRIEVE A PET
+# RETRIEVE A PAYMENTS
 ######################################################################
-@app.route('/pets/<int:pet_id>', methods=['GET'])
-def get_pets(pet_id):
+@app.route('/payments/<int:payments_id>', methods=['GET'])
+def get_pets(payments_id):
     """
-    Retrieve a single Pet
+    Retrieve a single Payments
 
-    This endpoint will return a Pet based on it's id
+    This endpoint will return a payment based on it's id
     """
-    app.logger.info('Request for pet with id: %s', pet_id)
-    pet = Pet.find(pet_id)
-    if not pet:
-        raise NotFound("Pet with id '{}' was not found.".format(pet_id))
-    return make_response(jsonify(pet.serialize()), status.HTTP_200_OK)
+    app.logger.info('Request for pet with id: %s', payments_id)
+    payment = Payments.find(payments_id)
+    if not payment:
+        raise NotFound("Payment with id '{}' was not found.".format(payment_id))
+    return make_response(jsonify(payment.serialize()), status.HTTP_200_OK)
 
 
 ######################################################################
-# ADD A NEW PET
+# ADD A NEW PAYMENTS
 ######################################################################
-@app.route('/pets', methods=['POST'])
-def create_pets():
+@app.route('/payments', methods=['POST'])
+def create_payments():
     """
-    Creates a Pet
-    This endpoint will create a Pet based the data in the body that is posted
+    Creates a Payments
+    This endpoint will create a Payments based the data in the body that is posted
     """
-    app.logger.info('Request to create a pet')
+    app.logger.info('Request to create a payments')
     check_content_type('application/json')
-    pet = Pet()
-    pet.deserialize(request.get_json())
-    pet.save()
-    message = pet.serialize()
-    location_url = url_for('get_pets', pet_id=pet.id, _external=True)
+    payment = Payments()
+    payment.deserialize(request.get_json())
+    payment.save()
+    message = payment.serialize()
+    location_url = url_for('create_payments', payment_id=payment.id, _external=True)
     return make_response(jsonify(message), status.HTTP_201_CREATED,
                          {
                              'Location': location_url
                          })
 
 
-######################################################################
-# UPDATE AN EXISTING PET
-######################################################################
-@app.route('/pets/<int:pet_id>', methods=['PUT'])
-def update_pets(pet_id):
+# ######################################################################
+# # UPDATE AN EXISTING PAYMENT
+# ######################################################################
+@app.route('/payments/<int:payments_id>', methods=['PUT'])
+def update_pets(payments_id):
     """
-    Update a Pet
+    Update a Paymetns
 
-    This endpoint will update a Pet based the body that is posted
+    This endpoint will update a Payments based the body that is posted
     """
-    app.logger.info('Request to update pet with id: %s', pet_id)
+    app.logger.info('Request to update pet with id: %s', payments_id)
     check_content_type('application/json')
-    pet = Pet.find(pet_id)
-    if not pet:
-        raise NotFound("Pet with id '{}' was not found.".format(pet_id))
-    pet.deserialize(request.get_json())
-    pet.id = pet_id
-    pet.save()
-    return make_response(jsonify(pet.serialize()), status.HTTP_200_OK)
+    payment = Payments.find(payments_id)
+    if not payment:
+        raise NotFound("Payment with id '{}' was not found.".format(payments_id))
+    payment.deserialize(request.get_json())
+    payment.id = payments_id
+    payment.save()
+    return make_response(jsonify(payment.serialize()), status.HTTP_200_OK)
 
 
 ######################################################################
-# DELETE A PET
+# DELETE A PAYMENT
 ######################################################################
-@app.route('/pets/<int:pet_id>', methods=['DELETE'])
-def delete_pets(pet_id):
+@app.route('/payments/<int:payments_id>', methods=['DELETE'])
+def delete_payment(payments_id):
     """
-    Delete a Pet
-
+    Delete a payment
     This endpoint will delete a Pet based the id specified in the path
     """
-    app.logger.info('Request to delete pet with id: %s', pet_id)
-    pet = Pet.find(pet_id)
-    if pet:
-        pet.delete()
+    app.logger.info('Request to delete pet with id: %s', payments_id)
+    payment = Payments.find(payments_id)
+    if payment:
+        payment.delete()
     return make_response('', status.HTTP_204_NO_CONTENT)
 
 ######################################################################
@@ -208,7 +207,7 @@ def delete_pets(pet_id):
 def init_db():
     """ Initialies the SQLAlchemy app """
     global app
-    Pet.init_db(app)
+    Payments.init_db(app)
 
 def check_content_type(content_type):
     """ Checks that the media type is correct """
