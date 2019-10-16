@@ -123,7 +123,7 @@ def get_payments(payments_id):
 
     This endpoint will return a payment based on it's id
     """
-    app.logger.info('Request for pet with id: %s', payments_id)
+    app.logger.info('Request for payment with id: %s', payments_id)
     payment = Payment.find(payments_id)
     if not payment:
         raise NotFound("Payment with id '{}' was not found.".format(payment_id))
@@ -156,13 +156,13 @@ def create_payments():
 # # UPDATE AN EXISTING PAYMENT
 # ######################################################################
 @app.route('/payments/<int:payments_id>', methods=['PUT'])
-def update_pets(payments_id):
+def update_payments(payments_id):
     """
-    Update a Paymetns
+    Update a Payment
 
     This endpoint will update a Payment based the body that is posted
     """
-    app.logger.info('Request to update pet with id: %s', payments_id)
+    app.logger.info('Request to update payment with id: %s', payments_id)
     check_content_type('application/json')
     payment = Payment.find(payments_id)
     if not payment:
@@ -180,9 +180,9 @@ def update_pets(payments_id):
 def delete_payment(payments_id):
     """
     Delete a payment
-    This endpoint will delete a Pet based the id specified in the path
+    This endpoint will delete a Payment based the id specified in the path
     """
-    app.logger.info('Request to delete pet with id: %s', payments_id)
+    app.logger.info('Request to delete payment with id: %s', payments_id)
     payment = Payment.find(payments_id)
     if payment:
         payment.delete()

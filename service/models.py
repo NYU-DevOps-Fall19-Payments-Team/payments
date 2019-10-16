@@ -142,21 +142,21 @@ class Payment(db.Model):
 
     @classmethod
     def find_by_order(cls, order_id):
-        """ Returns all of the Pets in a category
+        """ Returns all of the Payments in a category
 
         Args:
-            category (string): the category of the Pets you want to match
+            category (string): the category of the Payments you want to match
         """
         cls.logger.info('Processing category query for %s ...', order_id)
         return cls.query.filter(cls.order_id == order_id)
 
     @classmethod
     def find_by_availability(cls, available=True):
-        """ Query that finds Pets by their availability """
-        """ Returns all Pets by their availability
+        """ Query that finds Payments by their availability """
+        """ Returns all Payments by their availability
 
         Args:
-            available (boolean): True for pets that are available
+            available (boolean): True for payments that are available
         """
         cls.logger.info('Processing available query for %s ...', available)
         return cls.query.filter(cls.available == available)
