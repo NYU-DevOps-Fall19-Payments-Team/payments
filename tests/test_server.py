@@ -11,7 +11,7 @@ import os
 import logging
 from flask_api import status    # HTTP Status Codes
 #from mock import MagicMock, patch
-from service.models import DataValidationError, db
+from service.models import Payments, DataValidationError, db
 from tests.payments_factory import PaymentsFactory
 import service.service as service
 
@@ -51,7 +51,6 @@ class TestPaymentsServer(unittest.TestCase):
         payments = []
         for _ in range(count):
             test_payment = PaymentsFactory()
-            
             resp = self.app.post('/payments',
                                  json=test_payment.serialize(),
                                  content_type='application/json')
@@ -119,6 +118,28 @@ class TestPaymentsServer(unittest.TestCase):
         self.assertEqual(new_payment['customer_id'], test_payment.customer_id, "customer_id do not match")
         self.assertEqual(new_payment['available'], test_payment.available, "available do not match")
         self.assertEqual(new_payment['payments_type'], test_payment.payments_type, "payments_type do not match")
+
+    def test_query_by_order_id(self):
+        """ Get the payments with given order_id"""
+        test_order_id = 1
+        payments = []
+        for _ in range(1):
+            payment = PaymentsFactory()
+            payment.order_id = test_order_id
+            payments.append(payment)
+            self.app.post('/payments',
+                             json=payment.serialize(),
+                             content_type='application/json')
+        resp = self.app.get('/payments',
+                            query_string='order_id={}'.format(test_order_id))
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), len(payments))
+        # check the data just to be sure
+        for payment in data:
+            self.assertEqual(payment['order_id'], test_order_id)
+
+
 
     
     # @patch('app.service.Pet.find_by_name')

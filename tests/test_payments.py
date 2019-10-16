@@ -8,6 +8,7 @@ Test cases can be run with:
 import unittest
 import os
 from service.models import Payments, DataValidationError, db
+from tests.payments_factory import PaymentsFactory
 from service import app
 
 DATABASE_URI = os.getenv('DATABASE_URI', 'postgres://postgres:postgres@localhost:5432/postgres')
@@ -61,7 +62,22 @@ class TestPayments(unittest.TestCase):
         payments = Payments.all()
         self.assertEqual(len(payments), 1)
 
-
+    def test_query_payment_by_order_id(self):
+        """ Create a payment with order_id = 1 and add it to the database, then try to retrieve it"""
+        Payments(order_id="1", customer_id="1", available=True, payments_type = "credit card").save()
+        Payments(order_id="2", customer_id="2", available=False, payments_type = "paypal").save()
+        payment_in_db = Payments.find_by_order(1)
+        self.assertIsNot(payment_in_db, None)
+        self.assertEqual(payment_in_db[0].order_id, 1)
+        self.assertEqual(payment_in_db[0].customer_id, 1)
+        self.assertEqual(payment_in_db[0].available, True)
+        self.assertEqual(payment_in_db[0].payments_type, "credit card")
+        payment_in_db = Payments.find_by_order(2)
+        self.assertIsNot(payment_in_db, None)
+        self.assertEqual(payment_in_db[0].order_id, 2)
+        self.assertEqual(payment_in_db[0].customer_id, 2)
+        self.assertEqual(payment_in_db[0].available, False)
+        self.assertEqual(payment_in_db[0].payments_type, "paypal")
 
 ######################################################################
 #   M A I N

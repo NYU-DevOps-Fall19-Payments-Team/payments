@@ -135,7 +135,7 @@ class Payments(db.Model):
         """ Returns all the customer's payments with the given customer_id
 
         Args:
-            name (string): the name of the Pets you want to match
+            id (integer): the id of customer you want to match
         """
         cls.logger.info('Processing customer query for %s ...', customer_id)
         return cls.query.filter(cls.customer_id == customer_id)
