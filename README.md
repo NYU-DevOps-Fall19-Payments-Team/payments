@@ -25,7 +25,18 @@ Run `nosetests` within the `/vagrant` directory of the Vagrant environment.
 
 ## API
 
-* Create a new payment method: [POST] `/payments`
+* List payment methods: [GET] `payments`
 * Read a payment method: [GET] `/payments/<id>`
+* Create a new payment method: [POST] `/payments`
+    * Needs JSON body of the form:
+``{
+"order_id": <int>
+"customer_id": <int>
+"available": <bool>
+"payments_type": <str>
+}
+``
 * Update a payment method: [PUT] `/payments/<id>`
-* Delete a payment method: [
+    * Needs a JSON body of the same form as above.
+* Delete a payment method: [DELETE] `/payments/<id>`
+* Toggle a payment method's availability: [PUT] `payments/<id>/toggle`
