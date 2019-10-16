@@ -49,6 +49,18 @@ class TestPayments(unittest.TestCase):
         self.assertEqual(payment.available, True)
         self.assertEqual(payment.payments_type, "credit card")
 
+    def test_find_a_payment(self):
+        """ Find a payment by its id"""
+        payment = Payments(order_id="1", customer_id="1", available=True, payments_type = "credit card")
+        payment.save()
+        #adding extra row in case the find method return something randomly 
+        Payments(order_id="1", customer_id="1", available=True, payments_type = "credit card").save()
+        self.assertTrue(payment != None)
+        self.assertIsNot(payment.id, None)
+        new_payment = Payments.find(payment.id)
+        self.assertEqual(new_payment.id, payment.id)
+
+
     def test_add_a_payment(self):
         """ Create a payment and add it to the database """
         payments = Payments.all()
