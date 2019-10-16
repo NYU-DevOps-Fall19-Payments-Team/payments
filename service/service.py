@@ -1,27 +1,13 @@
-# Copyright 2016, 2019 John J. Rofrano. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """
-Pet Store Service
+Payments Store Service
 
 Paths:
 ------
-GET /pets - Returns a list all of the Pets
-GET /pets/{id} - Returns the Pet with a given id number
-POST /pets - creates a new Pet record in the database
-PUT /pets/{id} - updates a Pet record in the database
-DELETE /pets/{id} - deletes a Pet record in the database
+GET /payments - Returns a list all of the Payments
+GET /payments/{id} - Returns the Payment with a given id number
+POST /payments - creates a new Payment record in the database
+PUT /payments/{id} - updates a Payment record in the database
+DELETE /payments/{id} - deletes a Payment record in the database
 """
 
 import os
@@ -113,7 +99,7 @@ def list_payments():
     app.logger.info('Request for payments list')
     payments = []
     customer_id = request.args.get('customer_id')
-    order_id = request.args.get('order_id ')
+    order_id = request.args.get('order_id')
     if customer_id:
         payments = Payment.find_by_category(customer_id)
     elif order_id:
@@ -129,7 +115,7 @@ def list_payments():
 # RETRIEVE A PAYMENTS
 ######################################################################
 @app.route('/payments/<int:payments_id>', methods=['GET'])
-def get_pets(payments_id):
+def get_payments(payments_id):
     """
     Retrieve a single Payment
 
@@ -157,7 +143,7 @@ def create_payments():
     payment.deserialize(request.get_json())
     payment.save()
     message = payment.serialize()
-    location_url = url_for('create_payments', payment_id=payment.id, _external=True)
+    location_url = url_for('get_payments', payments_id=payment.id, _external=True)
     return make_response(jsonify(message), status.HTTP_201_CREATED,
                          {
                              'Location': location_url
