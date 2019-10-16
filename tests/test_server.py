@@ -176,7 +176,7 @@ class TestPaymentsServer(unittest.TestCase):
                             content_type='application/json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         updated_payment = resp.get_json()
-        self.assertEqual(new_payment['available'] , not old_available)
+        self.assertEqual(updated_payment['available'] , not old_available)
 
     def test_toggle_payments_availability(self):
         """ toggle payments availability"""
@@ -194,7 +194,7 @@ class TestPaymentsServer(unittest.TestCase):
                             content_type='application/json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         updated_payment = resp.get_json()
-        self.assertEqual(new_payment['available'] , not old_available)
+        self.assertEqual(updated_payment['available'] , not old_available)
 
     def test_delete_payment(self):
         """ Delete a Payment """
