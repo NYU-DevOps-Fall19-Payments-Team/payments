@@ -158,7 +158,17 @@ class TestPaymentsServer(unittest.TestCase):
         updated_payment = resp.get_json()
         self.assertEqual(new_payment['available'] , not old_available)
 
-
+    def test_delete_payment(self):
+        """ Delete a Payment """
+        test_payment = self._create_payments(1)[0]
+        resp = self.app.delete('/payments/{}'.format(test_payment.id),
+                               content_type='application/json')
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(len(resp.data), 0)
+        # make sure they are deleted
+        resp = self.app.get('/payments/{}'.format(test_payment.id),
+                            content_type='application/json')
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     
     # @patch('app.service.Pet.find_by_name')

@@ -49,6 +49,15 @@ class TestPayments(unittest.TestCase):
         self.assertEqual(payment.available, True)
         self.assertEqual(payment.payments_type, "credit card")
 
+    def test_delete_a_payment(self):
+        """ Delete a Payment """
+        payment = Payment(order_id="1", customer_id="1", available=True, payments_type = "credit card")
+        payment.save()
+        self.assertEqual(len(Payment.all()), 1)
+        # delete the pet and make sure it isn't in the database
+        payment.delete()
+        self.assertEqual(len(Payment.all()), 0)
+
     def test_find_a_payment(self):
         """ Find a payment by ID"""
         payment = Payment(order_id="1", customer_id="1", available=True, payments_type = "credit card")
