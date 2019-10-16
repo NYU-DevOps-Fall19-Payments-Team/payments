@@ -49,6 +49,36 @@ class TestPayments(unittest.TestCase):
         self.assertEqual(payment.available, True)
         self.assertEqual(payment.payments_type, "credit card")
 
+    def test_serial(self):
+        """ Convert a payment to JSON"""
+        payment = Payment(order_id="1", customer_id="1", available=True, payments_type = "credit card")
+        payment_JSON = payment.serialize()
+        self.assertEqual(payment_JSON['order_id'], "1")
+        self.assertEqual(payment_JSON['customer_id'], "1")
+        self.assertEqual(payment_JSON['available'], True)
+        self.assertEqual(payment_JSON['payments_type'], "credit card")
+
+    def test_deserial(self):
+        """ Convert a JSON to payment object"""
+        data = {
+            "order_id" : "1",
+            "customer_id" : "1",
+            "available" : True,
+            "payments_type" : "credit card"
+        }
+        payment = Payment()
+        payment.deserialize(data)
+        self.assertEqual(data['order_id'], payment.order_id)
+        self.assertEqual(data['customer_id'], payment.customer_id)
+        self.assertEqual(data['available'], payment.available)
+        self.assertEqual(data['payments_type'], payment.payments_type)
+
+    def test_bad_data_deserialize(self):
+        """ Test bad data """
+        data = "this is not a dictionary"
+        payment = Payment()
+        self.assertRaises(DataValidationError, payment.deserialize, data)
+
     def test_delete_a_payment(self):
         """ Delete a Payment """
         payment = Payment(order_id="1", customer_id="1", available=True, payments_type = "credit card")
@@ -97,6 +127,23 @@ class TestPayments(unittest.TestCase):
         self.assertIsNot(payment_in_db, None)
         self.assertEqual(payment_in_db[0].order_id, 2)
         self.assertEqual(payment_in_db[0].customer_id, 2)
+        self.assertEqual(payment_in_db[0].available, False)
+        self.assertEqual(payment_in_db[0].payments_type, "paypal")
+
+    def test_find_by_customer(self):
+        """ Find Payments by customer id"""
+        Payment(order_id="1", customer_id="2", available=True, payments_type = "credit card").save()
+        Payment(order_id="3", customer_id="4", available=False, payments_type = "paypal").save()
+        payment_in_db = Payment.find_by_customer(2)
+        self.assertIsNot(payment_in_db, None)
+        self.assertEqual(payment_in_db[0].order_id, 1)
+        self.assertEqual(payment_in_db[0].customer_id, 2)
+        self.assertEqual(payment_in_db[0].available, True)
+        self.assertEqual(payment_in_db[0].payments_type, "credit card")
+        payment_in_db = Payment.find_by_customer(4)
+        self.assertIsNot(payment_in_db, None)
+        self.assertEqual(payment_in_db[0].order_id, 3)
+        self.assertEqual(payment_in_db[0].customer_id, 4)
         self.assertEqual(payment_in_db[0].available, False)
         self.assertEqual(payment_in_db[0].payments_type, "paypal")
 
