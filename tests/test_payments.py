@@ -130,6 +130,7 @@ class TestPayments(unittest.TestCase):
         self.assertEqual(payment_in_db[0].available, False)
         self.assertEqual(payment_in_db[0].payments_type, "paypal")
 
+
 ######################################################################
 #   M A I N
 ######################################################################

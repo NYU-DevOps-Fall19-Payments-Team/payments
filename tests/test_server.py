@@ -10,9 +10,10 @@ import unittest
 import os
 import logging
 from flask_api import status    # HTTP Status Codes
-#from mock import MagicMock, patch
+from mock import MagicMock, patch
 from service.models import Payment, DataValidationError, db
 from tests.payments_factory import PaymentsFactory
+from service.service import internal_server_error
 import service.service as service
 
 DATABASE_URI = os.getenv('DATABASE_URI', 'postgres://postgres:postgres@localhost:5432/postgres')
@@ -88,10 +89,10 @@ class TestPaymentsServer(unittest.TestCase):
         self.assertEqual(data['available'], test_payment.available)
         self.assertEqual(data['payments_type'], test_payment.payments_type)
 
-    # def test_get_payment_not_found(self):
-    #     """ Get a Payment thats not found """
-    #     resp = self.app.get('/payments/0')
-    #     self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+    def test_get_payment_not_found(self):
+        """ Get a Payment thats not found """
+        resp = self.app.get('/payments/0')
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_create_payments(self):
         """ Create a new Payment """
@@ -139,6 +140,13 @@ class TestPaymentsServer(unittest.TestCase):
         for payment in data:
             self.assertEqual(payment['order_id'], test_order_id)
 
+    def test_bad_query_by_order_id(self):
+        test_payment = PaymentsFactory()
+        test_payment.id = 1
+        resp = self.app.put('/payments/1', json=test_payment.serialize(),
+                             content_type='application/json')
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
     def test_update_payments(self):
         """ update a payment"""
         test_payment = PaymentsFactory()
@@ -171,19 +179,26 @@ class TestPaymentsServer(unittest.TestCase):
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     
-    # @patch('app.service.Pet.find_by_name')
-    # def test_bad_request(self, bad_request_mock):
-    #     """ Test a Bad Request error from Find By Name """
-    #     bad_request_mock.side_effect = DataValidationError()
-    #     resp = self.app.get('/pets', query_string='name=fido')
-    #     self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
-    #
-    # @patch('app.service.Pet.find_by_name')
-    # def test_mock_search_data(self, pet_find_mock):
-    #     """ Test showing how to mock data """
-    #     pet_find_mock.return_value = [MagicMock(serialize=lambda: {'name': 'fido'})]
-    #     resp = self.app.get('/pets', query_string='name=fido')
-    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
+    @patch('service.models.Payment.find_by_customer')
+    def test_bad_request_customer(self, bad_request_mock):
+        """ Test a Bad Request error from Find By customer """
+        bad_request_mock.side_effect = DataValidationError()
+        resp = self.app.get('/payments', query_string='customer_id=1')
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+
+    @patch('service.models.Payment.find_by_order')
+    def test_bad_request_order(self, bad_request_mock):
+        """ Test a Bad Request error from Find By order """
+        bad_request_mock.side_effect = DataValidationError()
+        resp = self.app.get('/payments', query_string='order_id=1')
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+
+    @patch('service.models.Payment.find_by_customer')
+    def test_internal_server_error(self, bad_request_mock):
+        """ Test a request with internal_server_error """
+        bad_request_mock.side_effect = internal_server_error("")
+        resp = self.app.get('/payments', query_string='customer_id=1')
+        self.assertEqual(resp.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 ######################################################################
