@@ -199,9 +199,14 @@ class TestPaymentsServer(unittest.TestCase):
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
     
     def test_wrong_type(self):
-        """ Test post reqest with content_type not equat to application/json """
+        """ Test post request with content_type not equat to application/json """
         resp = self.app.post('/payments', content_type = 'Text')
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+
+    def test_wrong_method(self):
+        """ Test sending a put request to '/' """
+        resp = self.app.post('/', content_type = 'Text')
+        self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     @patch('service.models.Payment.find_by_customer')
     def test_bad_request_customer(self, bad_request_mock):
