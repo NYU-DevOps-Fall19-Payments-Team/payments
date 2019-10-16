@@ -160,3 +160,14 @@ class Payment(db.Model):
         """
         cls.logger.info('Processing available query for %s ...', available)
         return cls.query.filter(cls.available == available)
+
+    @classmethod
+    def find_by_type(cls, payments_type):
+        """ Query that finds Payments by their availability """
+        """ Returns all Payments by their availability
+
+        Args:
+            available (boolean): True for payments that are available
+        """
+        cls.logger.info('Processing type query for %s ...', payments_type)
+        return cls.query.filter(cls.payments_type == payments_type)

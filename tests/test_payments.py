@@ -147,6 +147,33 @@ class TestPayments(unittest.TestCase):
         self.assertEqual(payment_in_db[0].available, False)
         self.assertEqual(payment_in_db[0].payments_type, "paypal")
 
+    def test_find_by_type(self):
+        """ Find Payments by type"""
+        Payment(order_id="1", customer_id="1", available=True, payments_type = "credit card").save()
+        Payment(order_id="2", customer_id="1", available=False, payments_type = "paypal").save()
+        Payment(order_id="3", customer_id="2", available=False, payments_type = "credit card").save()
+        Payment(order_id="4", customer_id="2", available=True, payments_type = "paypal").save()
+        payment_in_db = Payment.find_by_type("credit card")
+        self.assertIsNot(payment_in_db, None)
+        self.assertEqual(payment_in_db[0].order_id, 1)
+        self.assertEqual(payment_in_db[0].customer_id, 1)
+        self.assertEqual(payment_in_db[0].available, True)
+        self.assertEqual(payment_in_db[0].payments_type, "credit card")
+        self.assertEqual(payment_in_db[1].order_id, 3)
+        self.assertEqual(payment_in_db[1].customer_id, 2)
+        self.assertEqual(payment_in_db[1].available, False)
+        self.assertEqual(payment_in_db[1].payments_type, "credit card")
+        payment_in_db = Payment.find_by_type("paypal")
+        self.assertIsNot(payment_in_db, None)
+        self.assertEqual(payment_in_db[0].order_id, 2)
+        self.assertEqual(payment_in_db[0].customer_id, 1)
+        self.assertEqual(payment_in_db[0].available, False)
+        self.assertEqual(payment_in_db[0].payments_type, "paypal")
+        self.assertEqual(payment_in_db[1].order_id, 4)
+        self.assertEqual(payment_in_db[1].customer_id, 2)
+        self.assertEqual(payment_in_db[1].available, True)
+        self.assertEqual(payment_in_db[1].payments_type, "paypal")
+
 ######################################################################
 #   M A I N
 ######################################################################
