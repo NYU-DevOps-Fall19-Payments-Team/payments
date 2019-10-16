@@ -49,6 +49,37 @@ class TestPayments(unittest.TestCase):
         self.assertEqual(payment.available, True)
         self.assertEqual(payment.payments_type, "credit card")
 
+    def test_serial(self):
+        """ Convert a payment to JSON"""
+        payment = Payment(order_id="1", customer_id="1", available=True, payments_type = "credit card")
+        payment_JSON = payment.serialize()
+        self.assertEqual(payment_JSON['order_id'], "1")
+        self.assertEqual(payment_JSON['customer_id'], "1")
+        self.assertEqual(payment_JSON['available'], True)
+        self.assertEqual(payment_JSON['payments_type'], "credit card")
+
+    def test_deserial(self):
+        """ Convert a JSON to payment object"""
+        data = {
+            "order_id" : "1",
+            "customer_id" : "1",
+            "available" : True,
+            "payments_type" : "credit card"
+        }
+        payment = Payment()
+        payment.deserialize(data)
+        self.assertEqual(data['order_id'], payment.order_id)
+        self.assertEqual(data['customer_id'], payment.customer_id)
+        self.assertEqual(data['available'], payment.available)
+        self.assertEqual(data['payments_type'], payment.payments_type)
+
+    def test_bad_data_deserialize(self):
+        """ Test bad data """
+        data = "this is not a dictionary"
+        payment = Payment()
+        self.assertRaises(DataValidationError, payment.deserialize, data)
+
+
     def test_find_a_payment(self):
         """ Find a payment by ID"""
         payment = Payment(order_id="1", customer_id="1", available=True, payments_type = "credit card")
