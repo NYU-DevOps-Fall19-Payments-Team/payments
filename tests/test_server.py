@@ -139,6 +139,20 @@ class TestPaymentsServer(unittest.TestCase):
         for payment in data:
             self.assertEqual(payment['order_id'], test_order_id)
 
+    def test_query_by_customer_id(self):
+        """ Get the payments with given customer_id"""
+        payments = self._create_payments(10)
+        test_customer = payments[0].category
+        category_pets = [pet for pet in pets if pet.category == test_category]
+        resp = self.app.get('/pets',
+                            query_string='category={}'.format(test_category))
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), len(category_pets))
+        # check the data just to be sure
+        for pet in data:
+            self.assertEqual(pet['category'], test_category)
+
     def test_update_payments(self):
         """ update a payment"""
         test_payment = PaymentsFactory()
