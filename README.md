@@ -25,10 +25,10 @@ Run `nosetests` within the `/vagrant` directory of the Vagrant environment.
 
 ## API
 
-* List payment methods: [GET] `payments`
+* List payment methods: [GET] `/payments`
 * Read a payment method: [GET] `/payments/<id>`
 * Create a new payment method: [POST] `/payments`
-    * Needs JSON body of the form:
+    * Needs a JSON body of the form:
 ``{
 "order_id": <int>
 "customer_id": <int>
@@ -37,6 +37,6 @@ Run `nosetests` within the `/vagrant` directory of the Vagrant environment.
 }
 ``
 * Update a payment method: [PUT] `/payments/<id>`
-    * Needs a JSON body of the same form as above.
+    * Needs a JSON body with the same fields as above.
 * Delete a payment method: [DELETE] `/payments/<id>`
 * Toggle a payment method's availability: [PUT] `payments/<id>/toggle`
