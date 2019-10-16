@@ -130,8 +130,6 @@ class TestPayments(unittest.TestCase):
         self.assertEqual(payment_in_db[0].available, False)
         self.assertEqual(payment_in_db[0].payments_type, "paypal")
 
-<<<<<<< HEAD
-=======
     def test_find_by_customer(self):
         """ Find Payments by customer id"""
         Payment(order_id="1", customer_id="2", available=True, payments_type = "credit card").save()
@@ -148,7 +146,6 @@ class TestPayments(unittest.TestCase):
         self.assertEqual(payment_in_db[0].customer_id, 4)
         self.assertEqual(payment_in_db[0].available, False)
         self.assertEqual(payment_in_db[0].payments_type, "paypal")
->>>>>>> master
 
 ######################################################################
 #   M A I N

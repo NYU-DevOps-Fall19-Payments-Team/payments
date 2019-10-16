@@ -140,14 +140,13 @@ class TestPaymentsServer(unittest.TestCase):
         for payment in data:
             self.assertEqual(payment['order_id'], test_order_id)
 
-<<<<<<< HEAD
     def test_bad_query_by_order_id(self):
         test_payment = PaymentsFactory()
         test_payment.id = 1
         resp = self.app.put('/payments/1', json=test_payment.serialize(),
                              content_type='application/json')
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
-=======
+    
     def test_query_by_customer_id(self):
         """ Get the payments with given customer_id"""
         test_customer_id = 1
@@ -167,7 +166,6 @@ class TestPaymentsServer(unittest.TestCase):
         # check the data just to be sure
         for payment in data:
             self.assertEqual(payment['customer_id'], test_customer_id)
->>>>>>> master
 
     def test_update_payments(self):
         """ update a payment"""
