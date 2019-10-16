@@ -126,7 +126,7 @@ def get_payments(payments_id):
     app.logger.info('Request for payment with id: %s', payments_id)
     payment = Payment.find(payments_id)
     if not payment:
-        raise NotFound("Payment with id '{}' was not found.".format(payment_id))
+        raise NotFound("Payment with id '{}' was not found.".format(payments_id))
     return make_response(jsonify(payment.serialize()), status.HTTP_200_OK)
 
 
