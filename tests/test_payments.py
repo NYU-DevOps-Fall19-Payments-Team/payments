@@ -62,8 +62,8 @@ class TestPayments(unittest.TestCase):
         payments = Payments.all()
         self.assertEqual(len(payments), 1)
 
-    def test_query_payment_by_order_id(self):
-        """ Create a payment with order_id = 1 and add it to the database, then try to retrieve it"""
+    def test_find_by_order(self):
+        """ Find Payments by order id"""
         Payments(order_id="1", customer_id="1", available=True, payments_type = "credit card").save()
         Payments(order_id="2", customer_id="2", available=False, payments_type = "paypal").save()
         payment_in_db = Payments.find_by_order(1)
