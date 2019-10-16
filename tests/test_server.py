@@ -11,7 +11,7 @@ import os
 import logging
 from flask_api import status    # HTTP Status Codes
 #from mock import MagicMock, patch
-from service.models import Payments, DataValidationError, db
+from service.models import Payment, DataValidationError, db
 from tests.payments_factory import PaymentsFactory
 import service.service as service
 
@@ -65,7 +65,7 @@ class TestPaymentsServer(unittest.TestCase):
         resp = self.app.get('/')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
-        self.assertEqual(data['name'], 'Payments REST API Service')
+        self.assertEqual(data['name'], 'Payment REST API Service')
 
     def test_get_payments_list(self):
         """ Get a list of Payments """

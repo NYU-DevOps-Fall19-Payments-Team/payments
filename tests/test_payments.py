@@ -7,7 +7,7 @@ Test cases can be run with:
 
 import unittest
 import os
-from service.models import Payments, DataValidationError, db
+from service.models import Payment, DataValidationError, db
 from tests.payments_factory import PaymentsFactory
 from service import app
 
@@ -31,7 +31,7 @@ class TestPayments(unittest.TestCase):
         pass
 
     def setUp(self):
-        Payments.init_db(app)
+        Payment.init_db(app)
         db.drop_all()    # clean up the last tests
         db.create_all()  # make our sqlalchemy tables
 
@@ -41,7 +41,7 @@ class TestPayments(unittest.TestCase):
 
     def test_create_a_payment(self):
         """ Create a payment and assert that it exists """
-        payment = Payments(order_id="1", customer_id="1", available=True, payments_type = "credit card")
+        payment = Payment(order_id="1", customer_id="1", available=True, payments_type = "credit card")
         self.assertTrue(payment != None)
         self.assertEqual(payment.id, None)
         self.assertEqual(payment.order_id, "1")
@@ -51,28 +51,28 @@ class TestPayments(unittest.TestCase):
 
     def test_add_a_payment(self):
         """ Create a payment and add it to the database """
-        payments = Payments.all()
+        payments = Payment.all()
         self.assertEqual(payments, [])
-        payment = Payments(order_id="1", customer_id="1", available=True, payments_type = "credit card")
+        payment = Payment(order_id="1", customer_id="1", available=True, payments_type = "credit card")
         self.assertTrue(payment != None)
         self.assertEqual(payment.id, None)
         payment.save()
         # Asert that it was assigned an id and shows up in the database
         self.assertEqual(payment.id, 1)
-        payments = Payments.all()
+        payments = Payment.all()
         self.assertEqual(len(payments), 1)
 
     def test_find_by_order(self):
         """ Find Payments by order id"""
-        Payments(order_id="1", customer_id="1", available=True, payments_type = "credit card").save()
-        Payments(order_id="2", customer_id="2", available=False, payments_type = "paypal").save()
-        payment_in_db = Payments.find_by_order(1)
+        Payment(order_id="1", customer_id="1", available=True, payments_type = "credit card").save()
+        Payment(order_id="2", customer_id="2", available=False, payments_type = "paypal").save()
+        payment_in_db = Payment.find_by_order(1)
         self.assertIsNot(payment_in_db, None)
         self.assertEqual(payment_in_db[0].order_id, 1)
         self.assertEqual(payment_in_db[0].customer_id, 1)
         self.assertEqual(payment_in_db[0].available, True)
         self.assertEqual(payment_in_db[0].payments_type, "credit card")
-        payment_in_db = Payments.find_by_order(2)
+        payment_in_db = Payment.find_by_order(2)
         self.assertIsNot(payment_in_db, None)
         self.assertEqual(payment_in_db[0].order_id, 2)
         self.assertEqual(payment_in_db[0].customer_id, 2)
