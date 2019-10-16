@@ -101,10 +101,8 @@ def list_payments():
     customer_id = request.args.get('customer_id')
     order_id = request.args.get('order_id')
     if customer_id:
-        app.logger.info('Request for payments list with customer_id : %s', customer_id)
         payments = Payments.find_by_customer(customer_id)
     elif order_id:
-        app.logger.info('Request for payments list with order_id : %s', order_id)
         payments = Payments.find_by_order(order_id)
     else:
         payments = Payments.all()
