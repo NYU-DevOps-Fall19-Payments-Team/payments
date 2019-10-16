@@ -197,8 +197,12 @@ class TestPaymentsServer(unittest.TestCase):
         resp = self.app.get('/payments/{}'.format(test_payment.id),
                             content_type='application/json')
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
-
     
+    def test_wrong_type(self):
+        """ Test post reqest with content_type not equat to application/json """
+        resp = self.app.post('/payments', content_type = 'Text')
+        self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+
     @patch('service.models.Payment.find_by_customer')
     def test_bad_request_customer(self, bad_request_mock):
         """ Test a Bad Request error from Find By customer """
@@ -219,6 +223,8 @@ class TestPaymentsServer(unittest.TestCase):
         bad_request_mock.side_effect = internal_server_error("")
         resp = self.app.get('/payments', query_string='customer_id=1')
         self.assertEqual(resp.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    
 
 
 ######################################################################
