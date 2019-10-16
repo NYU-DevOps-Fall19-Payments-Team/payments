@@ -41,7 +41,7 @@ from service import service, models
 service.initialize_logging()
 
 app.logger.info(70 * '*')
-app.logger.info('  P E T   S E R V I C E   R U N N I N G  '.center(70, '*'))
+app.logger.info('  P A Y M E N T S   S E R V I C E   R U N N I N G  '.center(70, '*'))
 app.logger.info(70 * '*')
 
 try:
