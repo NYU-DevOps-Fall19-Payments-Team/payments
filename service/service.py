@@ -188,6 +188,25 @@ def delete_payment(payments_id):
         payment.delete()
     return make_response('', status.HTTP_204_NO_CONTENT)
 
+
+######################################################################
+# PERFORM A STATEFUL ACTION
+######################################################################
+@app.route('/payments/<int:payments_id>/toggle', methods=['PUT'])
+def toggle_payments_availability(payments_id):
+    """
+    Toggle payment availability
+    This toggles whether or not a payment is currently available
+    """
+    app.logger.info('Request to toggle payment availability with id: %s', payments_id)
+    payment = Payment.find(payments_id)
+    if not payment:
+        raise NotFound("Payment with id '{}' was not found.".format(payments_id))
+    payment.available = not payment.available
+    payment.save()
+    return make_response(jsonify(payment.serialize()), status.HTTP_200_OK)
+
+
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################

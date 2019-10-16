@@ -184,7 +184,25 @@ class TestPaymentsServer(unittest.TestCase):
                             content_type='application/json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         updated_payment = resp.get_json()
-        self.assertEqual(new_payment['available'] , not old_available)
+        self.assertEqual(updated_payment['available'] , not old_available)
+
+    def test_toggle_payments_availability(self):
+        """ toggle payments availability"""
+        test_payment = PaymentsFactory()
+        resp = self.app.post('/payments',
+                             json=test_payment.serialize(),
+                             content_type='application/json')
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        new_payment = resp.get_json()
+        old_available = new_payment['available']
+        new_payment['available'] = not old_available
+        resp = self.app.put('/payments/{}/toggle'.format(new_payment['id']),
+                            json=new_payment,
+                            content_type='application/json')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        updated_payment = resp.get_json()
+        self.assertEqual(updated_payment['available'] , not old_available)
 
     def test_delete_payment(self):
         """ Delete a Payment """
@@ -229,7 +247,19 @@ class TestPaymentsServer(unittest.TestCase):
         resp = self.app.get('/payments', query_string='customer_id=1')
         self.assertEqual(resp.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    
+    # @patch('app.service.Pet.find_by_name')
+    # def test_bad_request(self, bad_request_mock):
+    #     """ Test a Bad Request error from Find By Name """
+    #     bad_request_mock.side_effect = DataValidationError()
+    #     resp = self.app.get('/pets', query_string='name=fido')
+    #     self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+    #
+    # @patch('app.service.Pet.find_by_name')
+    # def test_mock_search_data(self, pet_find_mock):
+    #     """ Test showing how to mock data """
+    #     pet_find_mock.return_value = [MagicMock(serialize=lambda: {'name': 'fido'})]
+    #     resp = self.app.get('/pets', query_string='name=fido')
+    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
 
 ######################################################################
