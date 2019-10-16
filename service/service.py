@@ -34,7 +34,7 @@ from werkzeug.exceptions import NotFound
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
 # variety of backends including SQLite, MySQL, and PostgreSQL
 from flask_sqlalchemy import SQLAlchemy
-from service.models import Payments, DataValidationError
+from service.models import Payment, DataValidationError
 
 # Import Flask application
 from . import app
@@ -99,7 +99,7 @@ def internal_server_error(error):
 @app.route('/')
 def index():
     """ Root URL response """
-    return jsonify(name='Payments REST API Service',
+    return jsonify(name='Payment REST API Service',
                    version='1.0',
                    paths=url_for('list_payments', _external=True)
                   ), status.HTTP_200_OK
@@ -115,11 +115,11 @@ def list_payments():
     customer_id = request.args.get('customer_id')
     order_id = request.args.get('order_id ')
     if customer_id:
-        payments = Payments.find_by_category(customer_id)
+        payments = Payment.find_by_category(customer_id)
     elif order_id:
-        payments = Payments.find_by_name(order_id)
+        payments = Payment.find_by_name(order_id)
     else:
-        payments = Payments.all()
+        payments = Payment.all()
 
     results = [payment.serialize() for payment in payments]
     return make_response(jsonify(results), status.HTTP_200_OK)
@@ -131,12 +131,12 @@ def list_payments():
 @app.route('/payments/<int:payments_id>', methods=['GET'])
 def get_pets(payments_id):
     """
-    Retrieve a single Payments
+    Retrieve a single Payment
 
     This endpoint will return a payment based on it's id
     """
     app.logger.info('Request for pet with id: %s', payments_id)
-    payment = Payments.find(payments_id)
+    payment = Payment.find(payments_id)
     if not payment:
         raise NotFound("Payment with id '{}' was not found.".format(payment_id))
     return make_response(jsonify(payment.serialize()), status.HTTP_200_OK)
@@ -148,12 +148,12 @@ def get_pets(payments_id):
 @app.route('/payments', methods=['POST'])
 def create_payments():
     """
-    Creates a Payments
-    This endpoint will create a Payments based the data in the body that is posted
+    Creates a Payment
+    This endpoint will create a Payment based the data in the body that is posted
     """
     app.logger.info('Request to create a payments')
     check_content_type('application/json')
-    payment = Payments()
+    payment = Payment()
     payment.deserialize(request.get_json())
     payment.save()
     message = payment.serialize()
@@ -172,11 +172,11 @@ def update_pets(payments_id):
     """
     Update a Paymetns
 
-    This endpoint will update a Payments based the body that is posted
+    This endpoint will update a Payment based the body that is posted
     """
     app.logger.info('Request to update pet with id: %s', payments_id)
     check_content_type('application/json')
-    payment = Payments.find(payments_id)
+    payment = Payment.find(payments_id)
     if not payment:
         raise NotFound("Payment with id '{}' was not found.".format(payments_id))
     payment.deserialize(request.get_json())
@@ -195,7 +195,7 @@ def delete_payment(payments_id):
     This endpoint will delete a Pet based the id specified in the path
     """
     app.logger.info('Request to delete pet with id: %s', payments_id)
-    payment = Payments.find(payments_id)
+    payment = Payment.find(payments_id)
     if payment:
         payment.delete()
     return make_response('', status.HTTP_204_NO_CONTENT)
@@ -207,7 +207,7 @@ def delete_payment(payments_id):
 def init_db():
     """ Initialies the SQLAlchemy app """
     global app
-    Payments.init_db(app)
+    Payment.init_db(app)
 
 def check_content_type(content_type):
     """ Checks that the media type is correct """

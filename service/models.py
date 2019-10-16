@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """
-Models for Payments Demo Service
+Models for Payment Demo Service
 
 All of the models are stored in this module
 
@@ -39,9 +39,9 @@ class DataValidationError(Exception):
     """ Used for an data validation errors when deserializing """
     pass
 
-class Payments(db.Model):
+class Payment(db.Model):
     """
-    Class that represents a Payments
+    Class that represents a Payment
 
     This version uses a relational database for persistence which is hidden
     from us by SQLAlchemy's object relational mappings (ORM)
@@ -57,25 +57,25 @@ class Payments(db.Model):
     available = db.Column(db.Boolean())
 
     def __repr__(self):
-        return '<Payments %r>' % (self.name)
+        return '<Payment %r>' % (self.name)
 
     def save(self):
         """
-        Saves a Payments to the data store
+        Saves a Payment to the data store
         """
-        Payments.logger.info('Saving %s', self.id)
+        Payment.logger.info('Saving %s', self.id)
         if not self.id:
             db.session.add(self)
         db.session.commit()
 
     def delete(self):
-        """ Removes a Payments from the data store """
-        Payments.logger.info('Deleting %s', self.id)
+        """ Removes a Payment from the data store """
+        Payment.logger.info('Deleting %s', self.id)
         db.session.delete(self)
         db.session.commit()
 
     def serialize(self):
-        """ Serializes a Payments into a dictionary """
+        """ Serializes a Payment into a dictionary """
         return {"id": self.id,
                 "order_id": self.order_id,
                 "customer_id": self.customer_id,
@@ -85,10 +85,10 @@ class Payments(db.Model):
 
     def deserialize(self, data):
         """
-        Deserializes a Payments from a dictionary
+        Deserializes a Payment from a dictionary
 
         Args:
-            data (dict): A dictionary containing the Payments data
+            data (dict): A dictionary containing the Payment data
         """
         try:
             self.order_id = data['order_id']
@@ -120,7 +120,7 @@ class Payments(db.Model):
 
     @classmethod
     def find(cls, payments_id):
-        """ Finds a Payments by it's ID """
+        """ Finds a Payment by it's ID """
         cls.logger.info('Processing lookup for id %s ...', payments_id)
         return cls.query.get(payments_id)
 
