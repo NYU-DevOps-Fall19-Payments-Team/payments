@@ -109,7 +109,7 @@ def index():
 ######################################################################
 @app.route('/payments', methods=['GET'])
 def list_payments():
-    """ Returns all of the Payment """
+    """ Returns all of the Payments """
     app.logger.info('Request for payments list')
     payments = []
     customer_id = request.args.get('customer_id')

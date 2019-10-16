@@ -114,8 +114,8 @@ class Payment(db.Model):
 
     @classmethod
     def all(cls):
-        """ Returns all of the Payment in the database """
-        cls.logger.info('Processing all Payment')
+        """ Returns all of the Payments in the database """
+        cls.logger.info('Processing all Payments')
         return cls.query.all()
 
     @classmethod
