@@ -92,7 +92,7 @@ class TestPayments(unittest.TestCase):
         """ Find a payment by ID"""
         payment = Payment(order_id="1", customer_id="1", available=True, payments_type = "credit card")
         payment.save()
-        #adding extra row in case the find method return something randomly 
+        #adding extra row in case the find method return something randomly
         Payment(order_id="2", customer_id="2", available=False, payments_type = "paypal").save()
         self.assertTrue(payment != None)
         self.assertIsNot(payment.id, None)

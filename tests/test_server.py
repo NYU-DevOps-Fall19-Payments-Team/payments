@@ -178,6 +178,24 @@ class TestPaymentsServer(unittest.TestCase):
         updated_payment = resp.get_json()
         self.assertEqual(new_payment['available'] , not old_available)
 
+    def test_toggle_payments_availability(self):
+        """ toggle payments availability"""
+        test_payment = PaymentsFactory()
+        resp = self.app.post('/payments',
+                             json=test_payment.serialize(),
+                             content_type='application/json')
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        new_payment = resp.get_json()
+        old_available = new_payment['available']
+        new_payment['available'] = not old_available
+        resp = self.app.put('/payments/{}/toggle'.format(new_payment['id']),
+                            json=new_payment,
+                            content_type='application/json')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        updated_payment = resp.get_json()
+        self.assertEqual(new_payment['available'] , not old_available)
+
     def test_delete_payment(self):
         """ Delete a Payment """
         test_payment = self._create_payments(1)[0]
@@ -190,7 +208,7 @@ class TestPaymentsServer(unittest.TestCase):
                             content_type='application/json')
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
-    
+
     # @patch('app.service.Pet.find_by_name')
     # def test_bad_request(self, bad_request_mock):
     #     """ Test a Bad Request error from Find By Name """
