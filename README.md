@@ -39,6 +39,6 @@ Run `nosetests` within the `/vagrant` directory of the Vagrant environment.
 * Update a payment method: [PUT] `/payments/<id>`
     * Needs a JSON body with the same fields as above.
 * Delete a payment method: [DELETE] `/payments/<id>`
-* Query a payment method by an attribute:
+* Query payment methods by an attribute:
     * Customer id: [GET] `/payments?customer_id=<int>`
 * Toggle a payment method's availability: [PUT] `payments/<id>/toggle`
