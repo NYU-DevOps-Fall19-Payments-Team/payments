@@ -124,11 +124,11 @@ class Payment(db.Model):
         cls.logger.info('Processing lookup for id %s ...', payments_id)
         return cls.query.get(payments_id)
 
-    @classmethod
-    def find_or_404(cls, payments_id):
-        """ Find a payments by it's id """
-        cls.logger.info('Processing lookup or 404 for id %s ...', payments_id)
-        return cls.query.get_or_404(payments_id)
+    # @classmethod
+    # def find_or_404(cls, payments_id):
+    #     """ Find a payments by it's id """
+    #     cls.logger.info('Processing lookup or 404 for id %s ...', payments_id)
+    #     return cls.query.get_or_404(payments_id)
 
     @classmethod
     def find_by_customer(cls, customer_id):
