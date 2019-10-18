@@ -7,3 +7,4 @@
 !/service
 !/tests
 !/database
+!/.travis.yml
