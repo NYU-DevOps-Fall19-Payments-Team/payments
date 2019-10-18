@@ -61,7 +61,7 @@ Vagrant.configure(2) do |config|
     # Update apt.
     apt-get update
     # Install Python 3.
-    apt-get install -y git python3-dev python3-pip python3-venv
+    apt-get install -y git python3 python3-pip python3-venv
     # Clear apt.
     apt-get -y autoremove
     # Install Python dependencies.
