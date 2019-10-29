@@ -60,7 +60,7 @@ class Payment(db.Model):
     info = db.Column(db.JSON)
 
     def __repr__(self):
-        return '<Payment %r>' % (self.name)
+        return '<Payment %r>' % self.name
 
     def save(self):
         """
@@ -101,10 +101,11 @@ class Payment(db.Model):
             self.payments_type = data['payments_type']
             self.info = data['info']
         except KeyError as error:
-            raise DataValidationError('Invalid payments: missing ' + error.args[0])
-        except TypeError as error:
-            raise DataValidationError('Invalid payments: body of request contained' \
-                                      'bad or no data')
+            raise DataValidationError('Invalid payments: missing ' +
+                                      error.args[0])
+        except TypeError:
+            raise DataValidationError('Invalid payments: body of request '
+                                      'contained bad or no data')
         return self
 
     @classmethod
@@ -125,7 +126,7 @@ class Payment(db.Model):
 
     @classmethod
     def find(cls, payments_id):
-        """ Finds a Payment by it's ID """
+        """ Finds a Payment by its ID """
         cls.logger.info('Processing lookup for id %s ...', payments_id)
         return cls.query.get(payments_id)
 
@@ -140,39 +141,33 @@ class Payment(db.Model):
         """ Returns all the customer's payments with the given customer_id
 
         Args:
-            id (integer): the id of customer you want to match
+            customer_id (integer): the customer id of Payments you want to match
         """
         cls.logger.info('Processing customer query for %s ...', customer_id)
         return cls.query.filter(cls.customer_id == customer_id)
 
     @classmethod
     def find_by_order(cls, order_id):
-        """ Returns all of the Payments in a category
+        """ Returns all of the Payments with the given order_id
 
         Args:
-            category (string): the category of the Payments you want to match
+            order_id (Integer): the order id of the Payments you want to match
         """
         cls.logger.info('Processing category query for %s ...', order_id)
         return cls.query.filter(cls.order_id == order_id)
 
     @classmethod
     def find_by_availability(cls, available=True):
-        """ Query that finds Payments by their availability """
-        """ Returns all Payments by their availability
-
-        Args:
-            available (boolean): True for payments that are available
-        """
+        """ Query that finds all available Payments """
         cls.logger.info('Processing available query for %s ...', available)
         return cls.query.filter(cls.available == available)
 
     @classmethod
     def find_by_type(cls, payments_type):
-        """ Query that finds Payments by their availability """
-        """ Returns all Payments by their availability
+        """ Returns all of the Payments with the given payments_type
 
         Args:
-            available (boolean): True for payments that are available
+            payments_type (string): the type of the Payments you want to match
         """
         cls.logger.info('Processing type query for %s ...', payments_type)
         return cls.query.filter(cls.payments_type == payments_type)
