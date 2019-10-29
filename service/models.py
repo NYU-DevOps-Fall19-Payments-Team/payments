@@ -35,9 +35,11 @@ from flask_sqlalchemy import SQLAlchemy
 # Create the SQLAlchemy object to be initialized later in init_db()
 db = SQLAlchemy()
 
+
 class DataValidationError(Exception):
     """ Used for an data validation errors when deserializing """
     pass
+
 
 class Payment(db.Model):
     """
@@ -55,6 +57,7 @@ class Payment(db.Model):
     customer_id = db.Column(db.Integer)
     payments_type = db.Column(db.String(50))
     available = db.Column(db.Boolean())
+    info = db.Column(db.JSON)
 
     def __repr__(self):
         return '<Payment %r>' % (self.name)
@@ -80,7 +83,8 @@ class Payment(db.Model):
                 "order_id": self.order_id,
                 "customer_id": self.customer_id,
                 "available": self.available,
-                "payments_type" : self.payments_type
+                "payments_type": self.payments_type,
+                "info": self.info
                 }
 
     def deserialize(self, data):
@@ -95,6 +99,7 @@ class Payment(db.Model):
             self.customer_id = data['customer_id']
             self.available = data['available']
             self.payments_type = data['payments_type']
+            self.info = data['info']
         except KeyError as error:
             raise DataValidationError('Invalid payments: missing ' + error.args[0])
         except TypeError as error:
