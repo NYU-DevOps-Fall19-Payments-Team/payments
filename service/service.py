@@ -13,6 +13,8 @@ DELETE /payments/{id} - deletes a Payment record in the database
 import os
 import sys
 import logging
+import jsonschema
+from schemas.payment_info_schema import *
 from flask import Flask, jsonify, request, url_for, make_response, abort
 from flask_api import status    # HTTP Status Codes
 from werkzeug.exceptions import NotFound
