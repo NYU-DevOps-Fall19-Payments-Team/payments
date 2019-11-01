@@ -48,7 +48,7 @@ Vagrant.configure(2) do |config|
 
   # Copy your IBM Clouid API Key if you have one
   if File.exists?(File.expand_path("~/.bluemix/apiKey-nyu-devops-payments.json"))
-    config.vm.provision "file", source: "~/.bluemix/apiKey.json", destination: "~/.bluemix/apiKey-nyu-devops-payments.json.json"
+    config.vm.provision "file", source: "~/.bluemix/apiKey-nyu-devops-payments.json", destination: "~/.bluemix/apiKey-nyu-devops-payments.json"
   end
 
   # Copy your .vimrc file so that your VI editor looks right
@@ -93,10 +93,10 @@ Vagrant.configure(2) do |config|
     sudo -H -u vagrant sh -c "echo 'source <(kubectl completion bash)' >> ~/.bashrc"
     sudo -H -u vagrant sh -c "echo alias ic=/usr/local/bin/ibmcloud >> ~/.bash_aliases"
     echo "\n"
-    echo "If you have an IBM Cloud API key in ~/.bluemix/apiKey.json"
+    echo "If you have an IBM Cloud API key in ~/.bluemix/apiKey-nyu-devops-payments.json"
     echo "You can login with the following command:"
     echo "\n"
-    echo "ibmcloud login -a https://cloud.ibm.com --apikey @~/.bluemix/apiKey.json -r us-south"
+    echo "ibmcloud login -a https://cloud.ibm.com --apikey @~/.bluemix/apiKey-nyu-devops-payments.json -r us-south"
     echo "\n"
     echo "\n************************************"
     echo " For the Kubernetes Dashboard use:"
