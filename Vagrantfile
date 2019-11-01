@@ -47,8 +47,8 @@ Vagrant.configure(2) do |config|
   end
 
   # Copy your IBM Clouid API Key if you have one
-  if File.exists?(File.expand_path("~/.bluemix/apiKey.json"))
-    config.vm.provision "file", source: "~/.bluemix/apiKey.json", destination: "~/.bluemix/apiKey.json"
+  if File.exists?(File.expand_path("~/.bluemix/apiKey-nyu-devops-payments.json"))
+    config.vm.provision "file", source: "~/.bluemix/apiKey.json", destination: "~/.bluemix/apiKey-nyu-devops-payments.json.json"
   end
 
   # Copy your .vimrc file so that your VI editor looks right
@@ -103,5 +103,5 @@ Vagrant.configure(2) do |config|
     echo " kubectl proxy --address='0.0.0.0'"
     echo "************************************\n"
   SHELL
-  
+
 end
