@@ -48,7 +48,7 @@ Vagrant.configure(2) do |config|
 
   # Copy your IBM Clouid API Key if you have one
   if File.exists?(File.expand_path("~/.bluemix/apiKey-nyu-devops-payments.json"))
-    config.vm.provision "file", source: "~/.bluemix/apiKey.json", destination: "~/.bluemix/apiKey-nyu-devops-payments.json.json"
+    config.vm.provision "file", source: "~/.bluemix/apiKey-nyu-devops-payments.json", destination: "~/.bluemix/apiKey-nyu-devops-payments.json"
   end
 
   # Copy your .vimrc file so that your VI editor looks right
