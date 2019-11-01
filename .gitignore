@@ -8,4 +8,5 @@
 !/tests
 !/database
 !/.travis.yml
+!manifest.yml
 !Procfile
