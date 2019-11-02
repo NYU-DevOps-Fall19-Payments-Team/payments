@@ -144,7 +144,9 @@ def create_payments():
     app.logger.info('Request to create a payments')
     check_content_type('application/json')
     payment = Payment()
-    payment.deserialize(request.get_json())
+    request_data = request.get_json()
+    jsonschema.validate(request_data, payment_schema)
+    payment.deserialize(request_data)
     payment.save()
     message = payment.serialize()
     location_url = url_for('get_payments', payments_id=payment.id, _external=True)
@@ -169,7 +171,9 @@ def update_payments(payments_id):
     payment = Payment.find(payments_id)
     if not payment:
         raise NotFound("Payment with id '{}' was not found.".format(payments_id))
-    payment.deserialize(request.get_json())
+    request_data = request.get_json()
+    jsonschema.validate(request_data, payment_schema)
+    payment.deserialize(request_data)
     payment.id = payments_id
     payment.save()
     return make_response(jsonify(payment.serialize()), status.HTTP_200_OK)
