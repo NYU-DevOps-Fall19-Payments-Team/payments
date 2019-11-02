@@ -1,3 +1,4 @@
+# pylint: disable=no-member
 """
 Payments Store Service
 
@@ -10,16 +11,14 @@ PUT /payments/{id} - updates a Payment record in the database
 DELETE /payments/{id} - deletes a Payment record in the database
 """
 
-import os
 import sys
 import logging
-from flask import Flask, jsonify, request, url_for, make_response, abort
+from flask import jsonify, request, url_for, make_response, abort
 from flask_api import status    # HTTP Status Codes
 from werkzeug.exceptions import NotFound
 
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
 # variety of backends including SQLite, MySQL, and PostgreSQL
-from flask_sqlalchemy import SQLAlchemy
 from service.models import Payment, DataValidationError
 
 # Import Flask application
