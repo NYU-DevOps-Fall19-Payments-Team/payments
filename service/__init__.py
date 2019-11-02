@@ -35,7 +35,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = SECRET_KEY
 
-# Import the rutes After the Flask app is created
+# Import the routes after the Flask app is created
 from service import service, models
 
 # Set up logging for production
@@ -48,7 +48,7 @@ app.logger.info(70 * '*')
 
 try:
     service.init_db()  # make our sqlalchemy tables
-except Exception as error:
+except RuntimeError as error:
     app.logger.critical('%s: Cannot continue', error)
     # gunicorn requires exit code 4 to stop spawning workers when they die
     sys.exit(4)
