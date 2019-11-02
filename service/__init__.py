@@ -1,3 +1,4 @@
+# pylint: disable=no-member
 # Copyright 2016, 2019 John J. Rofrano. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,7 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """
 Package: service
 Package for the application models and service routes
@@ -24,7 +24,8 @@ import logging
 from flask import Flask
 
 # Get configuration from environment
-DATABASE_URI = os.getenv('DATABASE_URI', 'postgres://postgres:postgres@localhost:5432/postgres')
+DATABASE_URI = os.getenv(
+    'DATABASE_URI', 'postgres://postgres:postgres@localhost:5432/postgres')
 SECRET_KEY = os.getenv('SECRET_KEY', 's3cr3t-key-shhhh')
 
 # Create Flask application
@@ -41,7 +42,8 @@ from service import service, models
 service.initialize_logging()
 
 app.logger.info(70 * '*')
-app.logger.info('  P A Y M E N T S   S E R V I C E   R U N N I N G  '.center(70, '*'))
+app.logger.info('  P A Y M E N T S   S E R V I C E   R U N N I N G  '.center(
+    70, '*'))
 app.logger.info(70 * '*')
 
 try:

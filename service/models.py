@@ -1,3 +1,4 @@
+# pylint: disable=no-member
 # Copyright 2016, 2019 John Rofrano. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the 'License');
@@ -11,7 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """
 Models for Payment Demo Service
 
@@ -35,9 +35,10 @@ from flask_sqlalchemy import SQLAlchemy
 # Create the SQLAlchemy object to be initialized later in init_db()
 db = SQLAlchemy()
 
+
 class DataValidationError(Exception):
     """ Used for an data validation errors when deserializing """
-    pass
+
 
 class Payment(db.Model):
     """
@@ -76,12 +77,13 @@ class Payment(db.Model):
 
     def serialize(self):
         """ Serializes a Payment into a dictionary """
-        return {"id": self.id,
-                "order_id": self.order_id,
-                "customer_id": self.customer_id,
-                "available": self.available,
-                "payments_type" : self.payments_type
-                }
+        return {
+            "id": self.id,
+            "order_id": self.order_id,
+            "customer_id": self.customer_id,
+            "available": self.available,
+            "payments_type": self.payments_type
+        }
 
     def deserialize(self, data):
         """
@@ -96,7 +98,8 @@ class Payment(db.Model):
             self.available = data['available']
             self.payments_type = data['payments_type']
         except KeyError as error:
-            raise DataValidationError('Invalid payments: missing ' + error.args[0])
+            raise DataValidationError('Invalid payments: missing ' +
+                                      error.args[0])
         except TypeError as error:
             raise DataValidationError('Invalid payments: body of request contained' \
                                       'bad or no data')
@@ -152,8 +155,9 @@ class Payment(db.Model):
 
     @classmethod
     def find_by_availability(cls, available=True):
-        """ Query that finds Payments by their availability """
-        """ Returns all Payments by their availability
+        """ Query that finds Payments by their availability
+
+        Returns all Payments by their availability
 
         Args:
             available (boolean): True for payments that are available
@@ -163,8 +167,9 @@ class Payment(db.Model):
 
     @classmethod
     def find_by_type(cls, payments_type):
-        """ Query that finds Payments by their availability """
-        """ Returns all Payments by their availability
+        """ Query that finds Payments by their availability
+
+        Returns all Payments by their availability
 
         Args:
             available (boolean): True for payments that are available
