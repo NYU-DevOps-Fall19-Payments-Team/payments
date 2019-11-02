@@ -81,6 +81,15 @@ def internal_server_error(error):
                    message=message), status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
+@app.errorhandler(jsonschema.exceptions.ValidationError)
+def json_validation_error(error):
+    """ Handles json validation error with ValidationError """
+    message = str(error)
+    app.logger.warning(message)
+    return jsonify(status=status.HTTP_400_BAD_REQUEST,
+                   error='JSON Validation Error',
+                   message=error.message), status.HTTP_400_BAD_REQUEST
+
 ######################################################################
 # GET INDEX
 ######################################################################
