@@ -4,11 +4,11 @@ payment_schema = {
     "properties": {
         "order_id": {
             "type": "number",
-            "minimum": 1
+            "minimum": 0
         },
         "customer_id": {
             "type": "number",
-            "minimum": 1
+            "minimum": 0
         },
         "available": {
             "type": "boolean"
