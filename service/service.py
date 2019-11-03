@@ -31,18 +31,26 @@ from . import app
 # Error Handlers
 ######################################################################
 @app.errorhandler(DataValidationError)
-def request_validation_error(error):
+def data_validation_error(error):
     """ Handles Value Errors from bad data """
     return bad_request(error)
 
+
+@app.errorhandler(jsonschema.exceptions.ValidationError)
+def json_validation_error(error):
+    """ Handles json validation error with ValidationError """
+    return bad_request(error.message)
+
+
 @app.errorhandler(status.HTTP_400_BAD_REQUEST)
 def bad_request(error):
-    """ Handles bad reuests with 400_BAD_REQUEST """
+    """ Handles bad requests with 400_BAD_REQUEST """
     message = str(error)
     app.logger.warning(message)
     return jsonify(status=status.HTTP_400_BAD_REQUEST,
                    error='Bad Request',
                    message=message), status.HTTP_400_BAD_REQUEST
+
 
 @app.errorhandler(status.HTTP_404_NOT_FOUND)
 def not_found(error):
@@ -53,6 +61,7 @@ def not_found(error):
                    error='Not Found',
                    message=message), status.HTTP_404_NOT_FOUND
 
+
 @app.errorhandler(status.HTTP_405_METHOD_NOT_ALLOWED)
 def method_not_supported(error):
     """ Handles unsuppoted HTTP methods with 405_METHOD_NOT_SUPPORTED """
@@ -62,14 +71,16 @@ def method_not_supported(error):
                    error='Method not Allowed',
                    message=message), status.HTTP_405_METHOD_NOT_ALLOWED
 
+
 @app.errorhandler(status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-def mediatype_not_supported(error):
+def media_type_not_supported(error):
     """ Handles unsuppoted media requests with 415_UNSUPPORTED_MEDIA_TYPE """
     message = str(error)
     app.logger.warning(message)
     return jsonify(status=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
                    error='Unsupported media type',
                    message=message), status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
+
 
 @app.errorhandler(status.HTTP_500_INTERNAL_SERVER_ERROR)
 def internal_server_error(error):
@@ -80,15 +91,6 @@ def internal_server_error(error):
                    error='Internal Server Error',
                    message=message), status.HTTP_500_INTERNAL_SERVER_ERROR
 
-
-@app.errorhandler(jsonschema.exceptions.ValidationError)
-def json_validation_error(error):
-    """ Handles json validation error with ValidationError """
-    message = str(error)
-    app.logger.warning(message)
-    return jsonify(status=status.HTTP_400_BAD_REQUEST,
-                   error='JSON Validation Error',
-                   message=error.message), status.HTTP_400_BAD_REQUEST
 
 ######################################################################
 # GET INDEX
@@ -169,7 +171,7 @@ def create_payments():
 # # UPDATE AN EXISTING PAYMENT
 # ######################################################################
 @app.route('/payments/<int:payments_id>', methods=['PUT'])
-def update_payments(payments_id):
+def update_payment(payments_id):
     """
     Update a Payment
 
@@ -208,7 +210,7 @@ def delete_payment(payments_id):
 # PERFORM A STATEFUL ACTION
 ######################################################################
 @app.route('/payments/<int:payments_id>/toggle', methods=['PUT'])
-def toggle_payments_availability(payments_id):
+def toggle_payment_availability(payments_id):
     """
     Toggle payment availability
     This toggles whether or not a payment is currently available
@@ -227,9 +229,10 @@ def toggle_payments_availability(payments_id):
 ######################################################################
 
 def init_db():
-    """ Initialies the SQLAlchemy app """
+    """ Initializes the SQLAlchemy app """
     global app
     Payment.init_db(app)
+
 
 def check_content_type(content_type):
     """ Checks that the media type is correct """
@@ -237,6 +240,7 @@ def check_content_type(content_type):
         return
     app.logger.error('Invalid Content-Type: %s', request.headers['Content-Type'])
     abort(415, 'Content-Type must be {}'.format(content_type))
+
 
 def initialize_logging(log_level=logging.INFO):
     """ Initialized the default logging to STDOUT """
