@@ -102,9 +102,9 @@ class Payment(db.Model):
         except KeyError as error:
             raise DataValidationError('Invalid payments: missing ' +
                                       error.args[0])
-        except TypeError as error:
-            raise DataValidationError('Invalid payments: body of request contained' \
-                                      'bad or no data')
+        except TypeError:
+            raise DataValidationError('Invalid payments: body of request '
+                                      'contained bad or no data')
         return self
 
     @classmethod

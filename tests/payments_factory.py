@@ -9,6 +9,7 @@ from service.models import Payment
 
 class PaymentsFactory(factory.Factory):
     """ Creates fake payments that you can't use to buy Ramen """
+
     class Meta:
         """ Class for testing the Payment class """
         model = Payment
@@ -31,4 +32,3 @@ class PaymentsFactory(factory.Factory):
             "token": "abc"
         }
     }[o.payments_type])
-

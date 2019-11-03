@@ -16,7 +16,7 @@ import logging
 import jsonschema
 from schemas.payment_schema import *
 from flask import jsonify, request, url_for, make_response, abort
-from flask_api import status    # HTTP Status Codes
+from flask_api import status  # HTTP Status Codes
 from werkzeug.exceptions import NotFound
 
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
@@ -25,6 +25,7 @@ from service.models import Payment, DataValidationError
 
 # Import Flask application
 from . import app
+
 
 ######################################################################
 # Error Handlers
@@ -63,7 +64,7 @@ def not_found(error):
 
 @app.errorhandler(status.HTTP_405_METHOD_NOT_ALLOWED)
 def method_not_supported(error):
-    """ Handles unsuppoted HTTP methods with 405_METHOD_NOT_SUPPORTED """
+    """ Handles unsupported HTTP methods with 405_METHOD_NOT_SUPPORTED """
     message = str(error)
     app.logger.warning(message)
     return jsonify(status=status.HTTP_405_METHOD_NOT_ALLOWED,
@@ -73,7 +74,7 @@ def method_not_supported(error):
 
 @app.errorhandler(status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 def media_type_not_supported(error):
-    """ Handles unsuppoted media requests with 415_UNSUPPORTED_MEDIA_TYPE """
+    """ Handles unsupported media requests with 415_UNSUPPORTED_MEDIA_TYPE """
     message = str(error)
     app.logger.warning(message)
     return jsonify(status=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
@@ -100,7 +101,8 @@ def index():
     return jsonify(name='Payment REST API Service',
                    version='1.0',
                    paths=url_for('list_payments', _external=True)
-                  ), status.HTTP_200_OK
+                   ), status.HTTP_200_OK
+
 
 ######################################################################
 # LIST ALL PAYMENT
@@ -109,14 +111,16 @@ def index():
 def list_payments():
     """ Returns all of the Payments """
     app.logger.info('Request for payments list')
-    payments = []
+    # payments = []
     customer_id = request.args.get('customer_id')
     order_id = request.args.get('order_id')
     if customer_id:
-        app.logger.info('Request for payments list with customer_id : %s', customer_id)
+        app.logger.info('Request for payments list with customer_id : %s',
+                        customer_id)
         payments = Payment.find_by_customer(customer_id)
     elif order_id:
-        app.logger.info('Request for payments list with order_id : %s', order_id)
+        app.logger.info('Request for payments list with order_id : %s',
+                        order_id)
         payments = Payment.find_by_order(order_id)
     else:
         payments = Payment.all()
@@ -132,13 +136,13 @@ def list_payments():
 def get_payments(payments_id):
     """
     Retrieve a single Payment
-
-    This endpoint will return a payment based on it's id
+    This endpoint will return a payment based on its id
     """
     app.logger.info('Request for payment with id: %s', payments_id)
     payment = Payment.find(payments_id)
     if not payment:
-        raise NotFound("Payment with id '{}' was not found.".format(payments_id))
+        raise NotFound(
+            "Payment with id '{}' was not found.".format(payments_id))
     return make_response(jsonify(payment.serialize()), status.HTTP_200_OK)
 
 
@@ -149,7 +153,7 @@ def get_payments(payments_id):
 def create_payments():
     """
     Creates a Payment
-    This endpoint will create a Payment based the data in the body that is posted
+    This endpoint will create a Payment based on the body that is posted
     """
     app.logger.info('Request to create a payments')
     check_content_type('application/json')
@@ -159,7 +163,8 @@ def create_payments():
     payment.deserialize(request_data)
     payment.save()
     message = payment.serialize()
-    location_url = url_for('get_payments', payments_id=payment.id, _external=True)
+    location_url = url_for('get_payments', payments_id=payment.id,
+                           _external=True)
     return make_response(jsonify(message), status.HTTP_201_CREATED,
                          {
                              'Location': location_url
@@ -173,14 +178,14 @@ def create_payments():
 def update_payment(payments_id):
     """
     Update a Payment
-
-    This endpoint will update a Payment based the body that is posted
+    This endpoint will update a Payment based on the body that is posted
     """
     app.logger.info('Request to update payment with id: %s', payments_id)
     check_content_type('application/json')
     payment = Payment.find(payments_id)
     if not payment:
-        raise NotFound("Payment with id '{}' was not found.".format(payments_id))
+        raise NotFound(
+            "Payment with id '{}' was not found.".format(payments_id))
     request_data = request.get_json()
     jsonschema.validate(request_data, payment_schema)
     payment.deserialize(request_data)
@@ -196,7 +201,7 @@ def update_payment(payments_id):
 def delete_payment(payments_id):
     """
     Delete a payment
-    This endpoint will delete a Payment based the id specified in the path
+    This endpoint will delete a Payment based on the id specified in the path
     """
     app.logger.info('Request to delete payment with id: %s', payments_id)
     payment = Payment.find(payments_id)
@@ -214,10 +219,12 @@ def toggle_payment_availability(payments_id):
     Toggle payment availability
     This toggles whether or not a payment is currently available
     """
-    app.logger.info('Request to toggle payment availability with id: %s', payments_id)
+    app.logger.info('Request to toggle payment availability with id: %s',
+                    payments_id)
     payment = Payment.find(payments_id)
     if not payment:
-        raise NotFound("Payment with id '{}' was not found.".format(payments_id))
+        raise NotFound(
+            "Payment with id '{}' was not found.".format(payments_id))
     payment.available = not payment.available
     payment.save()
     return make_response(jsonify(payment.serialize()), status.HTTP_200_OK)
@@ -237,7 +244,8 @@ def check_content_type(content_type):
     """ Checks that the media type is correct """
     if request.headers['Content-Type'] == content_type:
         return
-    app.logger.error('Invalid Content-Type: %s', request.headers['Content-Type'])
+    app.logger.error('Invalid Content-Type: %s',
+                     request.headers['Content-Type'])
     abort(415, 'Content-Type must be {}'.format(content_type))
 
 
