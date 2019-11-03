@@ -68,32 +68,13 @@ class TestPaymentsServer(unittest.TestCase):
         data = resp.get_json()
         self.assertEqual(data['name'], 'Payment REST API Service')
 
-    def test_get_payments_list(self):
+    def test_get_payment_list(self):
         """ Get a list of Payments """
         self._create_payments(5)
         resp = self.app.get('/payments')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(len(data), 5)
-
-    def test_get_payment(self):
-        """ Get a single Payment """
-        # get the id of a pet
-        test_payment = self._create_payments(1)[0]
-        resp = self.app.get('/payments/{}'.format(test_payment.id),
-                            content_type='application/json')
-        self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        data = resp.get_json()
-        self.assertEqual(data['order_id'], test_payment.order_id)
-        self.assertEqual(data['customer_id'], test_payment.customer_id)
-        self.assertEqual(data['available'], test_payment.available)
-        self.assertEqual(data['payments_type'], test_payment.payments_type)
-        self.assertEqual(data['info'], test_payment.info)
-
-    def test_get_payment_not_found(self):
-        """ Get a Payment that's not found """
-        resp = self.app.get('/payments/0')
-        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     def _assert_equal_payment(self, data, payment):
         self.assertEqual(data['order_id'], payment.order_id,
@@ -106,6 +87,21 @@ class TestPaymentsServer(unittest.TestCase):
                          "payments_type do not match")
         self.assertEqual(data['info'], payment.info,
                          "info do not match")
+
+    def test_get_payment(self):
+        """ Get a single Payment """
+        # get the id of a pet
+        test_payment = self._create_payments(1)[0]
+        resp = self.app.get('/payments/{}'.format(test_payment.id),
+                            content_type='application/json')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self._assert_equal_payment(resp.get_json(), test_payment)
+
+    def test_get_payment_not_found(self):
+        """ Get a Payment that's not found """
+        resp = self.app.get('/payments/0')
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_create_payment(self):
         """ Create a new Payment """
