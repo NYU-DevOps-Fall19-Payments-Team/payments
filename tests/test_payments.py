@@ -19,6 +19,18 @@ DATABASE_URI = os.getenv('DATABASE_URI', 'postgres://postgres:postgres@localhost
 ######################################################################
 class TestPayments(unittest.TestCase):
     """ Test Cases for Payments """
+    _test_credit_card_info = {
+        "credit_card_number": "1234567890",
+        "card_holder_name": "John Doe",
+        "expiration_month": 4,
+        "expiration_year": 2022,
+        "security_code": "1234"
+    }
+    _test_paypal_info = {
+        "email": "test1@test1.com",
+        "phone_number": "123456789",
+        "token": "abcdefg"
+    }
 
     @classmethod
     def setUpClass(cls):
@@ -44,37 +56,67 @@ class TestPayments(unittest.TestCase):
         """ Create a payment and assert that it exists """
         payment = Payment(order_id="1", customer_id="1", available=True,
                           payments_type="credit card",
-                          info={"card_number": 12345, "exp_date": "2025-10-29"})
+                          info=self._test_credit_card_info)
         self.assertTrue(payment is not None)
         self.assertEqual(payment.id, None)
         self.assertEqual(payment.order_id, "1")
         self.assertEqual(payment.customer_id, "1")
         self.assertEqual(payment.available, True)
         self.assertEqual(payment.payments_type, "credit card")
-        self.assertEqual(payment.info,
-                         {"card_number": 12345, "exp_date": "2025-10-29"})
+        self.assertEqual(payment.info, self._test_credit_card_info)
 
-    def test_serialize(self):
-        """ Convert a payment to JSON"""
+    def test_add_a_payment(self):
+        """ Create a payment and add it to the database """
+        payments = Payment.all()
+        self.assertEqual(payments, [])
         payment = Payment(order_id="1", customer_id="1", available=True,
                           payments_type="credit card",
-                          info={"card_number": 12345, "exp_date": "2025-10-29"})
+                          info=self._test_credit_card_info)
+        self.assertTrue(payment is not None)
+        self.assertEqual(payment.id, None)
+        payment.save()
+        # Asert that it was assigned an id and shows up in the database
+        self.assertEqual(payment.id, 1)
+        payments = Payment.all()
+        self.assertEqual(len(payments), 1)
+
+    def test_delete_a_payment(self):
+        """ Delete a Payment """
+        payment = Payment(order_id="1", customer_id="1", available=True,
+                          payments_type="credit card",
+                          info=self._test_credit_card_info)
+        payment.save()
+        self.assertEqual(len(Payment.all()), 1)
+        # delete the pet and make sure it isn't in the database
+        payment.delete()
+        self.assertEqual(len(Payment.all()), 0)
+
+    def test_serialize(self):
+        """ Convert a payment to JSON """
+        payment = Payment(order_id="1", customer_id="1", available=True,
+                          payments_type="credit card",
+                          info=self._test_credit_card_info)
         payment_json = payment.serialize()
         self.assertEqual(payment_json['order_id'], "1")
         self.assertEqual(payment_json['customer_id'], "1")
         self.assertEqual(payment_json['available'], True)
         self.assertEqual(payment_json['payments_type'], "credit card")
-        self.assertEqual(payment_json['info'],
-                         {"card_number": 12345, "exp_date": "2025-10-29"})
+        self.assertEqual(payment_json['info'], self._test_credit_card_info)
 
     def test_deserialize(self):
-        """ Convert a JSON to payment object"""
+        """ Convert JSON to a payment object """
         data = {
             "order_id": "1",
             "customer_id": "1",
             "available": True,
             "payments_type": "credit card",
-            "info": {"account_number": 123, "token": "abc"}
+            "info": {
+                "credit_card_number": "1234567890",
+                "card_holder_name": "John Doe",
+                "expiration_month": 4,
+                "expiration_year": 2022,
+                "security_code": "1234"
+            }
         }
         payment = Payment()
         payment.deserialize(data)
@@ -84,145 +126,101 @@ class TestPayments(unittest.TestCase):
         self.assertEqual(data['payments_type'], payment.payments_type)
         self.assertEqual(data['info'], payment.info)
 
-    def test_bad_data_deserialize(self):
-        """ Test bad data """
+    def test_deserialize_with_key_error(self):
+        """ Test deserialization with KeyError """
+        data = {
+            "order_id": "1"
+        }
+        payment = Payment()
+        self.assertRaises(DataValidationError, payment.deserialize, data)
+
+    def test_deserialize_with_type_error(self):
+        """ Test deserialization with TypeError """
         data = "this is not a dictionary"
         payment = Payment()
         self.assertRaises(DataValidationError, payment.deserialize, data)
 
-    def test_delete_a_payment(self):
-        """ Delete a Payment """
-        payment = Payment(order_id="1", customer_id="1", available=True,
-                          payments_type="credit card",
-                          info={"card_number": 12345, "exp_date": "2025-10-29"})
-        payment.save()
-        self.assertEqual(len(Payment.all()), 1)
-        # delete the pet and make sure it isn't in the database
-        payment.delete()
-        self.assertEqual(len(Payment.all()), 0)
-
     def test_find_a_payment(self):
-        """ Find a payment by ID"""
-        payment = Payment(order_id="1", customer_id="1", available=True,
-                          payments_type = "credit card",
-                          info={"card_number": 12345, "exp_date": "2025-10-29"})
-        payment.save()
-        #adding extra row in case the find method return something randomly
+        """ Find a payment by ID """
+        saved_payment = Payment(order_id="1", customer_id="1", available=True,
+                                payments_type="credit card",
+                                info=self._test_credit_card_info)
+        saved_payment.save()
+        # adding extra row in case the find method return something randomly
         Payment(order_id="2", customer_id="2", available=False,
-                payments_type = "paypal",
-                info={"account_number": 123, "token": "abc"}).save()
-        self.assertTrue(payment is not None)
-        self.assertIsNot(payment.id, None)
-        new_payment = Payment.find(payment.id)
-        self.assertEqual(new_payment.id, payment.id)
+                payments_type="paypal",
+                info=self._test_paypal_info).save()
 
-    def test_add_a_payment(self):
-        """ Create a payment and add it to the database """
-        payments = Payment.all()
-        self.assertEqual(payments, [])
-        payment = Payment(order_id="1", customer_id="1", available=True,
-                          payments_type="credit card",
-                          info={"card_number": 12345, "exp_date": "2025-10-29"})
-        self.assertTrue(payment is not None)
-        self.assertEqual(payment.id, None)
-        payment.save()
-        # Asert that it was assigned an id and shows up in the database
-        self.assertEqual(payment.id, 1)
-        payments = Payment.all()
-        self.assertEqual(len(payments), 1)
+        payment = Payment.find(saved_payment.id)
+        self.assertIsNot(payment, None)
+        self.assertEqual(payment.id, saved_payment.id)
+        self.assertEqual(payment.order_id, saved_payment.order_id)
+        self.assertEqual(payment.customer_id, saved_payment.customer_id)
+        self.assertEqual(payment.available, saved_payment.available)
+        self.assertEqual(payment.payments_type, saved_payment.payments_type)
+        self.assertEqual(payment.info, saved_payment.info)
 
-    def test_find_by_order(self):
-        """ Find Payments by order id"""
+    def _add_two_test_payments(self):
         Payment(order_id="1", customer_id="1", available=True,
                 payments_type="credit card",
-                info={"card_number": 12345, "exp_date": "2025-10-29"}).save()
+                info=self._test_credit_card_info).save()
         Payment(order_id="2", customer_id="2", available=False,
                 payments_type="paypal",
-                info={"account_number": 123, "token": "abc"}).save()
-        payment_in_db = Payment.find_by_order(1)
-        self.assertIsNot(payment_in_db, None)
-        self.assertEqual(payment_in_db[0].order_id, 1)
-        self.assertEqual(payment_in_db[0].customer_id, 1)
-        self.assertEqual(payment_in_db[0].available, True)
-        self.assertEqual(payment_in_db[0].payments_type, "credit card")
-        self.assertEqual(payment_in_db[0].info,
-                         {"card_number": 12345, "exp_date": "2025-10-29"})
-        payment_in_db = Payment.find_by_order(2)
-        self.assertIsNot(payment_in_db, None)
-        self.assertEqual(payment_in_db[0].order_id, 2)
-        self.assertEqual(payment_in_db[0].customer_id, 2)
-        self.assertEqual(payment_in_db[0].available, False)
-        self.assertEqual(payment_in_db[0].payments_type, "paypal")
-        self.assertEqual(payment_in_db[0].info,
-                         {"account_number": 123, "token": "abc"})
+                info=self._test_paypal_info).save()
+
+    def _assert_equal_test_payment_1(self, payment):
+        self.assertEqual(payment.order_id, 1)
+        self.assertEqual(payment.customer_id, 1)
+        self.assertEqual(payment.available, True)
+        self.assertEqual(payment.payments_type, "credit card")
+        self.assertEqual(payment.info, self._test_credit_card_info)
+
+    def _assert_equal_test_payment_2(self, payment):
+        self.assertEqual(payment.order_id, 2)
+        self.assertEqual(payment.customer_id, 2)
+        self.assertEqual(payment.available, False)
+        self.assertEqual(payment.payments_type, "paypal")
+        self.assertEqual(payment.info, self._test_paypal_info)
+
+    def test_find_by_order(self):
+        """ Find Payments by order id """
+        self._add_two_test_payments()
+        payments = Payment.find_by_order(1)
+        self.assertIsNot(payments, None)
+        self._assert_equal_test_payment_1(payments[0])
+        payments = Payment.find_by_order(2)
+        self.assertIsNot(payments, None)
+        self._assert_equal_test_payment_2(payments[0])
 
     def test_find_by_customer(self):
-        """ Find Payments by customer id"""
-        Payment(order_id="1", customer_id="2", available=True,
-                payments_type="credit card",
-                info={"card_number": 12345, "exp_date": "2025-10-29"}).save()
-        Payment(order_id="3", customer_id="4", available=False,
-                payments_type="paypal",
-                info={"account_number": 123, "token": "abc"}).save()
-        payment_in_db = Payment.find_by_customer(2)
-        self.assertIsNot(payment_in_db, None)
-        self.assertEqual(payment_in_db[0].order_id, 1)
-        self.assertEqual(payment_in_db[0].customer_id, 2)
-        self.assertEqual(payment_in_db[0].available, True)
-        self.assertEqual(payment_in_db[0].payments_type, "credit card")
-        self.assertEqual(payment_in_db[0].info,
-                         {"card_number": 12345, "exp_date": "2025-10-29"})
-        payment_in_db = Payment.find_by_customer(4)
-        self.assertIsNot(payment_in_db, None)
-        self.assertEqual(payment_in_db[0].order_id, 3)
-        self.assertEqual(payment_in_db[0].customer_id, 4)
-        self.assertEqual(payment_in_db[0].available, False)
-        self.assertEqual(payment_in_db[0].payments_type, "paypal")
-        self.assertEqual(payment_in_db[0].info,
-                         {"account_number": 123, "token": "abc"})
+        """ Find Payments by customer id """
+        self._add_two_test_payments()
+        payments = Payment.find_by_customer(1)
+        self.assertIsNot(payments, None)
+        self._assert_equal_test_payment_1(payments[0])
+        payments = Payment.find_by_customer(2)
+        self.assertIsNot(payments, None)
+        self._assert_equal_test_payment_2(payments[0])
+
+    def test_find_by_availability(self):
+        """ Find Payments by availability """
+        self._add_two_test_payments()
+        payments = Payment.find_by_availability(True)
+        self.assertIsNot(payments, None)
+        self._assert_equal_test_payment_1(payments[0])
+        payments = Payment.find_by_availability(False)
+        self.assertIsNot(payments, None)
+        self._assert_equal_test_payment_2(payments[0])
 
     def test_find_by_type(self):
         """ Find Payments by type"""
-        Payment(order_id="1", customer_id="1", available=True,
-                payments_type="credit card",
-                info={"card_number": 12345, "exp_date": "2025-10-29"}).save()
-        Payment(order_id="2", customer_id="1", available=False,
-                payments_type="paypal",
-                info={"account_number": 123, "token": "abc"}).save()
-        Payment(order_id="3", customer_id="2", available=False,
-                payments_type="credit card",
-                info={"card_number": 67890, "exp_date": "2022-01-15"}).save()
-        Payment(order_id="4", customer_id="2", available=True,
-                payments_type="paypal",
-                info={"account_number": 456, "token": "def"}).save()
-        payment_in_db = Payment.find_by_type("credit card")
-        self.assertIsNot(payment_in_db, None)
-        self.assertEqual(payment_in_db[0].order_id, 1)
-        self.assertEqual(payment_in_db[0].customer_id, 1)
-        self.assertEqual(payment_in_db[0].available, True)
-        self.assertEqual(payment_in_db[0].payments_type, "credit card")
-        self.assertEqual(payment_in_db[0].info,
-                         {"card_number": 12345, "exp_date": "2025-10-29"})
-        self.assertEqual(payment_in_db[1].order_id, 3)
-        self.assertEqual(payment_in_db[1].customer_id, 2)
-        self.assertEqual(payment_in_db[1].available, False)
-        self.assertEqual(payment_in_db[1].payments_type, "credit card")
-        self.assertEqual(payment_in_db[1].info,
-                         {"card_number": 67890, "exp_date": "2022-01-15"})
-        payment_in_db = Payment.find_by_type("paypal")
-        self.assertIsNot(payment_in_db, None)
-        self.assertEqual(payment_in_db[0].order_id, 2)
-        self.assertEqual(payment_in_db[0].customer_id, 1)
-        self.assertEqual(payment_in_db[0].available, False)
-        self.assertEqual(payment_in_db[0].payments_type, "paypal")
-        self.assertEqual(payment_in_db[0].info,
-                         {"account_number": 123, "token": "abc"})
-        self.assertEqual(payment_in_db[1].order_id, 4)
-        self.assertEqual(payment_in_db[1].customer_id, 2)
-        self.assertEqual(payment_in_db[1].available, True)
-        self.assertEqual(payment_in_db[1].payments_type, "paypal")
-        self.assertEqual(payment_in_db[1].info,
-                         {"account_number": 456, "token": "def"})
+        self._add_two_test_payments()
+        payments = Payment.find_by_type("credit card")
+        self.assertIsNot(payments, None)
+        self._assert_equal_test_payment_1(payments[0])
+        payments = Payment.find_by_type("paypal")
+        self.assertIsNot(payments, None)
+        self._assert_equal_test_payment_2(payments[0])
 
 
 ######################################################################
