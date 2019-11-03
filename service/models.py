@@ -1,3 +1,4 @@
+# pylint: disable=no-member
 # Copyright 2016, 2019 John Rofrano. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the 'License');
@@ -11,7 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """
 Models for Payment Demo Service
 
@@ -38,7 +38,6 @@ db = SQLAlchemy()
 
 class DataValidationError(Exception):
     """ Used for an data validation errors when deserializing """
-    pass
 
 
 class Payment(db.Model):
@@ -103,9 +102,9 @@ class Payment(db.Model):
         except KeyError as error:
             raise DataValidationError('Invalid payments: missing ' +
                                       error.args[0])
-        except TypeError:
-            raise DataValidationError('Invalid payments: body of request '
-                                      'contained bad or no data')
+        except TypeError as error:
+            raise DataValidationError('Invalid payments: body of request contained' \
+                                      'bad or no data')
         return self
 
     @classmethod

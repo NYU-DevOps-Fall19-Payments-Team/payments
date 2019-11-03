@@ -8,10 +8,10 @@ Test cases can be run with:
 import unittest
 import os
 from service.models import Payment, DataValidationError, db
-from tests.payments_factory import PaymentsFactory
 from service import app
 
-DATABASE_URI = os.getenv('DATABASE_URI', 'postgres://postgres:postgres@localhost:5432/postgres')
+DATABASE_URI = os.getenv(
+    'DATABASE_URI', 'postgres://postgres:postgres@localhost:5432/postgres')
 
 
 ######################################################################
@@ -45,7 +45,7 @@ class TestPayments(unittest.TestCase):
 
     def setUp(self):
         Payment.init_db(app)
-        db.drop_all()    # clean up the last tests
+        db.drop_all()  # clean up the last tests
         db.create_all()  # make our sqlalchemy tables
 
     def tearDown(self):
@@ -54,7 +54,9 @@ class TestPayments(unittest.TestCase):
 
     def test_create_a_payment(self):
         """ Create a payment and assert that it exists """
-        payment = Payment(order_id="1", customer_id="1", available=True,
+        payment = Payment(order_id="1",
+                          customer_id="1",
+                          available=True,
                           payments_type="credit card",
                           info=self._test_credit_card_info)
         self.assertTrue(payment is not None)
@@ -69,7 +71,9 @@ class TestPayments(unittest.TestCase):
         """ Create a payment and add it to the database """
         payments = Payment.all()
         self.assertEqual(payments, [])
-        payment = Payment(order_id="1", customer_id="1", available=True,
+        payment = Payment(order_id="1",
+                          customer_id="1",
+                          available=True,
                           payments_type="credit card",
                           info=self._test_credit_card_info)
         self.assertTrue(payment is not None)
@@ -82,7 +86,9 @@ class TestPayments(unittest.TestCase):
 
     def test_delete_a_payment(self):
         """ Delete a Payment """
-        payment = Payment(order_id="1", customer_id="1", available=True,
+        payment = Payment(order_id="1",
+                          customer_id="1",
+                          available=True,
                           payments_type="credit card",
                           info=self._test_credit_card_info)
         payment.save()
@@ -93,7 +99,9 @@ class TestPayments(unittest.TestCase):
 
     def test_serialize(self):
         """ Convert a payment to JSON """
-        payment = Payment(order_id="1", customer_id="1", available=True,
+        payment = Payment(order_id="1",
+                          customer_id="1",
+                          available=True,
                           payments_type="credit card",
                           info=self._test_credit_card_info)
         payment_json = payment.serialize()
@@ -142,15 +150,18 @@ class TestPayments(unittest.TestCase):
 
     def test_find_a_payment(self):
         """ Find a payment by ID """
-        saved_payment = Payment(order_id="1", customer_id="1", available=True,
+        saved_payment = Payment(order_id="1",
+                                customer_id="1",
+                                available=True,
                                 payments_type="credit card",
                                 info=self._test_credit_card_info)
         saved_payment.save()
         # adding extra row in case the find method return something randomly
-        Payment(order_id="2", customer_id="2", available=False,
+        Payment(order_id="2",
+                customer_id="2",
+                available=False,
                 payments_type="paypal",
                 info=self._test_paypal_info).save()
-
         payment = Payment.find(saved_payment.id)
         self.assertIsNot(payment, None)
         self.assertEqual(payment.id, saved_payment.id)

@@ -1,3 +1,4 @@
+# pylint: disable=no-member
 """
 Payments API Service Test Suite
 Test cases can be run with the following:
@@ -9,21 +10,22 @@ Test cases can be run with the following:
 import unittest
 import os
 import logging
-from flask_api import status    # HTTP Status Codes
-from mock import MagicMock, patch
-from service.models import Payment, DataValidationError, db
-from tests.payments_factory import PaymentsFactory
+from flask_api import status  # HTTP Status Codes
+from mock import patch
+from service.models import DataValidationError, db
 from service.service import internal_server_error
 import service.service as service
+from tests.payments_factory import PaymentsFactory
 
-DATABASE_URI = os.getenv('DATABASE_URI', 'postgres://postgres:postgres@localhost:5432/postgres')
+DATABASE_URI = os.getenv(
+    'DATABASE_URI', 'postgres://postgres:postgres@localhost:5432/postgres')
+
 
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
 class TestPaymentsServer(unittest.TestCase):
     """ Payments Server Tests """
-
     @classmethod
     def setUpClass(cls):
         """ Run once before all tests """
@@ -39,7 +41,7 @@ class TestPaymentsServer(unittest.TestCase):
     def setUp(self):
         """ Runs before each test """
         service.init_db()
-        db.drop_all()    # clean up the last tests
+        db.drop_all()  # clean up the last tests
         db.create_all()  # create new tables
         self.app = service.app.test_client()
 
@@ -55,7 +57,8 @@ class TestPaymentsServer(unittest.TestCase):
             resp = self.app.post('/payments',
                                  json=test_payment.serialize(),
                                  content_type='application/json')
-            self.assertEqual(resp.status_code, status.HTTP_201_CREATED, 'Could not create test pet')
+            self.assertEqual(resp.status_code, status.HTTP_201_CREATED,
+                             'Could not create test pet')
             new_payment = resp.get_json()
             test_payment.id = new_payment['id']
             payments.append(test_payment)
@@ -116,8 +119,7 @@ class TestPaymentsServer(unittest.TestCase):
         # Check the data is correct
         self._assert_equal_payment(resp.get_json(), test_payment)
         # Check that the location header was correct
-        resp = self.app.get(location,
-                            content_type='application/json')
+        resp = self.app.get(location, content_type='application/json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self._assert_equal_payment(resp.get_json(), test_payment)
 
@@ -130,8 +132,8 @@ class TestPaymentsServer(unittest.TestCase):
             payment.order_id = test_order_id
             payments.append(payment)
             self.app.post('/payments',
-                             json=payment.serialize(),
-                             content_type='application/json')
+                          json=payment.serialize(),
+                          content_type='application/json')
         resp = self.app.get('/payments',
                             query_string='order_id={}'.format(test_order_id))
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
@@ -152,8 +154,9 @@ class TestPaymentsServer(unittest.TestCase):
             self.app.post('/payments',
                           json=payment.serialize(),
                           content_type='application/json')
-        resp = self.app.get('/payments',
-                            query_string='customer_id={}'.format(test_customer_id))
+        resp = self.app.get(
+            '/payments',
+            query_string='customer_id={}'.format(test_customer_id))
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(len(data), len(payments))
@@ -221,13 +224,14 @@ class TestPaymentsServer(unittest.TestCase):
         payment_id = 1
         resp = self.app.put('/payments/{}/toggle'.format(payment_id))
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
-    
+
     def test_wrong_type(self):
         """
         Test post request with content_type not equal to application/json
         """
         resp = self.app.post('/payments', content_type='Text')
-        self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+        self.assertEqual(resp.status_code,
+                         status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     def test_wrong_method(self):
         """ Test sending a put request to '/' """
@@ -269,7 +273,8 @@ class TestPaymentsServer(unittest.TestCase):
         """ Test a request with internal_server_error """
         bad_request_mock.side_effect = internal_server_error("")
         resp = self.app.get('/payments', query_string='customer_id=1')
-        self.assertEqual(resp.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
+        self.assertEqual(resp.status_code,
+                         status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     # @patch('app.service.Pet.find_by_name')
     # def test_bad_request(self, bad_request_mock):
