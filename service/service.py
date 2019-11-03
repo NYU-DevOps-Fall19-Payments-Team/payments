@@ -14,10 +14,10 @@ DELETE /payments/{id} - deletes a Payment record in the database
 import sys
 import logging
 import jsonschema
-from schemas.payment_schema import *
 from flask import jsonify, request, url_for, make_response, abort
 from flask_api import status  # HTTP Status Codes
 from werkzeug.exceptions import NotFound
+from schemas.payment_schema import payment_schema
 
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
 # variety of backends including SQLite, MySQL, and PostgreSQL
