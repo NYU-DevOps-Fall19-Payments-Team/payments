@@ -57,14 +57,14 @@ class TestPayments(unittest.TestCase):
         payment = Payment(order_id="1",
                           customer_id="1",
                           available=True,
-                          payments_type="credit card",
+                          type="credit card",
                           info=self._test_credit_card_info)
         self.assertTrue(payment is not None)
         self.assertEqual(payment.id, None)
         self.assertEqual(payment.order_id, "1")
         self.assertEqual(payment.customer_id, "1")
         self.assertEqual(payment.available, True)
-        self.assertEqual(payment.payments_type, "credit card")
+        self.assertEqual(payment.type, "credit card")
         self.assertEqual(payment.info, self._test_credit_card_info)
 
     def test_add_a_payment(self):
@@ -74,7 +74,7 @@ class TestPayments(unittest.TestCase):
         payment = Payment(order_id="1",
                           customer_id="1",
                           available=True,
-                          payments_type="credit card",
+                          type="credit card",
                           info=self._test_credit_card_info)
         self.assertTrue(payment is not None)
         self.assertEqual(payment.id, None)
@@ -89,7 +89,7 @@ class TestPayments(unittest.TestCase):
         payment = Payment(order_id="1",
                           customer_id="1",
                           available=True,
-                          payments_type="credit card",
+                          type="credit card",
                           info=self._test_credit_card_info)
         payment.save()
         self.assertEqual(len(Payment.all()), 1)
@@ -102,13 +102,13 @@ class TestPayments(unittest.TestCase):
         payment = Payment(order_id="1",
                           customer_id="1",
                           available=True,
-                          payments_type="credit card",
+                          type="credit card",
                           info=self._test_credit_card_info)
         payment_json = payment.serialize()
         self.assertEqual(payment_json['order_id'], "1")
         self.assertEqual(payment_json['customer_id'], "1")
         self.assertEqual(payment_json['available'], True)
-        self.assertEqual(payment_json['payments_type'], "credit card")
+        self.assertEqual(payment_json['type'], "credit card")
         self.assertEqual(payment_json['info'], self._test_credit_card_info)
 
     def test_deserialize(self):
@@ -117,7 +117,7 @@ class TestPayments(unittest.TestCase):
             "order_id": "1",
             "customer_id": "1",
             "available": True,
-            "payments_type": "credit card",
+            "type": "credit card",
             "info": {
                 "credit_card_number": "1234567890",
                 "card_holder_name": "John Doe",
@@ -131,7 +131,7 @@ class TestPayments(unittest.TestCase):
         self.assertEqual(data['order_id'], payment.order_id)
         self.assertEqual(data['customer_id'], payment.customer_id)
         self.assertEqual(data['available'], payment.available)
-        self.assertEqual(data['payments_type'], payment.payments_type)
+        self.assertEqual(data['type'], payment.type)
         self.assertEqual(data['info'], payment.info)
 
     def test_deserialize_with_key_error(self):
@@ -153,14 +153,14 @@ class TestPayments(unittest.TestCase):
         saved_payment = Payment(order_id="1",
                                 customer_id="1",
                                 available=True,
-                                payments_type="credit card",
+                                type="credit card",
                                 info=self._test_credit_card_info)
         saved_payment.save()
         # adding extra row in case the find method return something randomly
         Payment(order_id="2",
                 customer_id="2",
                 available=False,
-                payments_type="paypal",
+                type="paypal",
                 info=self._test_paypal_info).save()
         payment = Payment.find(saved_payment.id)
         self.assertIsNot(payment, None)
@@ -168,29 +168,29 @@ class TestPayments(unittest.TestCase):
         self.assertEqual(payment.order_id, saved_payment.order_id)
         self.assertEqual(payment.customer_id, saved_payment.customer_id)
         self.assertEqual(payment.available, saved_payment.available)
-        self.assertEqual(payment.payments_type, saved_payment.payments_type)
+        self.assertEqual(payment.type, saved_payment.type)
         self.assertEqual(payment.info, saved_payment.info)
 
     def _add_two_test_payments(self):
         Payment(order_id="1", customer_id="1", available=True,
-                payments_type="credit card",
+                type="credit card",
                 info=self._test_credit_card_info).save()
         Payment(order_id="2", customer_id="2", available=False,
-                payments_type="paypal",
+                type="paypal",
                 info=self._test_paypal_info).save()
 
     def _assert_equal_test_payment_1(self, payment):
         self.assertEqual(payment.order_id, 1)
         self.assertEqual(payment.customer_id, 1)
         self.assertEqual(payment.available, True)
-        self.assertEqual(payment.payments_type, "credit card")
+        self.assertEqual(payment.type, "credit card")
         self.assertEqual(payment.info, self._test_credit_card_info)
 
     def _assert_equal_test_payment_2(self, payment):
         self.assertEqual(payment.order_id, 2)
         self.assertEqual(payment.customer_id, 2)
         self.assertEqual(payment.available, False)
-        self.assertEqual(payment.payments_type, "paypal")
+        self.assertEqual(payment.type, "paypal")
         self.assertEqual(payment.info, self._test_paypal_info)
 
     def test_find_by_order(self):

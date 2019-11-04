@@ -16,7 +16,7 @@ class PaymentsFactory(factory.Factory):
 
     order_id = factory.Sequence(lambda n: n)
     customer_id = factory.Sequence(lambda n: n)
-    payments_type = FuzzyChoice(choices=['credit card', 'paypal'])
+    type = FuzzyChoice(choices=['credit card', 'paypal'])
     available = FuzzyChoice(choices=[True, False])
     info = factory.LazyAttribute(lambda o: {
         "credit card": {
@@ -31,4 +31,4 @@ class PaymentsFactory(factory.Factory):
             "phone_number": "123456789",
             "token": "abc"
         }
-    }[o.payments_type])
+    }[o.type])

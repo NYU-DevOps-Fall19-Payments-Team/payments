@@ -87,8 +87,8 @@ class TestPaymentsServer(unittest.TestCase):
                          "customer_id do not match")
         self.assertEqual(data['available'], payment.available,
                          "available do not match")
-        self.assertEqual(data['payments_type'], payment.payments_type,
-                         "payments_type do not match")
+        self.assertEqual(data['type'], payment.type,
+                         "type do not match")
         self.assertEqual(data['info'], payment.info,
                          "info do not match")
 
@@ -253,7 +253,7 @@ class TestPaymentsServer(unittest.TestCase):
         data = {
             "order_id": 1,
             "customer_id": 1,
-            "payments_type": "paypal",  # wrong type
+            "type": "paypal",  # wrong type
             "available": True,
             "info": {
                 "credit_card_number": "1234567890",

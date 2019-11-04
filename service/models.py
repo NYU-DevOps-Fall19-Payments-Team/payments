@@ -26,7 +26,7 @@ Attributes:
 order_id (Integer) - the order that the payment was been used for.
 customer_id (Integer) - the customer that owns the payments.
 available (boolean) - True for payments that are available to pay.
-payments_type - The type of the payments, so far we only support credit card.
+type - The type of the payments, so far we only support credit card.
 
 """
 import logging
@@ -54,7 +54,7 @@ class Payment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer)
     customer_id = db.Column(db.Integer)
-    payments_type = db.Column(db.String(50))
+    type = db.Column(db.String(50))
     available = db.Column(db.Boolean())
     info = db.Column(db.JSON)
 
@@ -82,7 +82,7 @@ class Payment(db.Model):
                 "order_id": self.order_id,
                 "customer_id": self.customer_id,
                 "available": self.available,
-                "payments_type": self.payments_type,
+                "type": self.type,
                 "info": self.info
                 }
 
@@ -97,7 +97,7 @@ class Payment(db.Model):
             self.order_id = data['order_id']
             self.customer_id = data['customer_id']
             self.available = data['available']
-            self.payments_type = data['payments_type']
+            self.type = data['type']
             self.info = data['info']
         except KeyError as error:
             raise DataValidationError('Invalid payments: missing ' +
@@ -162,11 +162,11 @@ class Payment(db.Model):
         return cls.query.filter(cls.available == available)
 
     @classmethod
-    def find_by_type(cls, payments_type):
-        """ Returns all of the Payments with the given payments_type
+    def find_by_type(cls, type):
+        """ Returns all of the Payments with the given type
 
         Args:
-            payments_type (string): the type of the Payments you want to match
+            type (string): the type of the Payments you want to match
         """
-        cls.logger.info('Processing type query for %s ...', payments_type)
-        return cls.query.filter(cls.payments_type == payments_type)
+        cls.logger.info('Processing type query for %s ...', type)
+        return cls.query.filter(cls.type == type)

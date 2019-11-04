@@ -13,7 +13,7 @@ payment_schema = {
         "available": {
             "type": "boolean"
         },
-        "payments_type": {
+        "type": {
             "type": "string",
             "enum": ["credit card", "paypal"]
         }
@@ -22,7 +22,7 @@ payment_schema = {
         {
             "if": {
                 "properties": {
-                    "payments_type": {"const": "credit card"}
+                    "type": {"const": "credit card"}
                 }
             },
             "then": {
@@ -68,7 +68,7 @@ payment_schema = {
         {
             "if": {
                 "properties": {
-                    "payments_type": {"const": "paypal"}
+                    "type": {"const": "paypal"}
                 }
             },
             "then": {
@@ -104,7 +104,7 @@ payment_schema = {
         "order_id",
         "customer_id",
         "available",
-        "payments_type",
+        "type",
         "info"
     ]
 }
