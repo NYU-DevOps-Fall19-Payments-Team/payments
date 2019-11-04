@@ -59,7 +59,7 @@ class Payment(db.Model):
     info = db.Column(db.JSON)
 
     def __repr__(self):
-        return '<Payment %r>' % self.name
+        return '<Payment %r>' % self.id
 
     def save(self):
         """
