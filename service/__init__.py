@@ -20,7 +20,6 @@ and SQL database
 """
 import os
 import sys
-import logging
 from flask import Flask
 
 # Get configuration from environment
@@ -53,4 +52,4 @@ except RuntimeError as error:
     # gunicorn requires exit code 4 to stop spawning workers when they die
     sys.exit(4)
 
-app.logger.info('Service inititalized!')
+app.logger.info('Service initialized!')

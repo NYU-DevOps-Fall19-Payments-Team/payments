@@ -26,7 +26,7 @@ Attributes:
 order_id (Integer) - the order that the payment was been used for.
 customer_id (Integer) - the customer that owns the payments.
 available (boolean) - True for payments that are available to pay.
-payments_type - The type of the payments, so far we only support credit card.
+type - The type of the payments, so far we only support credit card.
 
 """
 import logging
@@ -54,11 +54,12 @@ class Payment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer)
     customer_id = db.Column(db.Integer)
-    payments_type = db.Column(db.String(50))
+    type = db.Column(db.String(50))
     available = db.Column(db.Boolean())
+    info = db.Column(db.JSON)
 
     def __repr__(self):
-        return '<Payment %r>' % (self.name)
+        return '<Payment %r>' % self.id
 
     def save(self):
         """
@@ -77,13 +78,13 @@ class Payment(db.Model):
 
     def serialize(self):
         """ Serializes a Payment into a dictionary """
-        return {
-            "id": self.id,
-            "order_id": self.order_id,
-            "customer_id": self.customer_id,
-            "available": self.available,
-            "payments_type": self.payments_type
-        }
+        return {"id": self.id,
+                "order_id": self.order_id,
+                "customer_id": self.customer_id,
+                "available": self.available,
+                "type": self.type,
+                "info": self.info
+                }
 
     def deserialize(self, data):
         """
@@ -96,13 +97,14 @@ class Payment(db.Model):
             self.order_id = data['order_id']
             self.customer_id = data['customer_id']
             self.available = data['available']
-            self.payments_type = data['payments_type']
+            self.type = data['type']
+            self.info = data['info']
         except KeyError as error:
             raise DataValidationError('Invalid payments: missing ' +
                                       error.args[0])
-        except TypeError as error:
-            raise DataValidationError('Invalid payments: body of request contained' \
-                                      'bad or no data')
+        except TypeError:
+            raise DataValidationError('Invalid payments: body of request '
+                                      'contained bad or no data')
         return self
 
     @classmethod
@@ -123,7 +125,7 @@ class Payment(db.Model):
 
     @classmethod
     def find(cls, payments_id):
-        """ Finds a Payment by it's ID """
+        """ Finds a Payment by its ID """
         cls.logger.info('Processing lookup for id %s ...', payments_id)
         return cls.query.get(payments_id)
 
@@ -138,41 +140,33 @@ class Payment(db.Model):
         """ Returns all the customer's payments with the given customer_id
 
         Args:
-            id (integer): the id of customer you want to match
+            customer_id (integer): the customer id of Payments you want to match
         """
         cls.logger.info('Processing customer query for %s ...', customer_id)
         return cls.query.filter(cls.customer_id == customer_id)
 
     @classmethod
     def find_by_order(cls, order_id):
-        """ Returns all of the Payments in a category
+        """ Returns all of the Payments with the given order_id
 
         Args:
-            category (string): the category of the Payments you want to match
+            order_id (Integer): the order id of the Payments you want to match
         """
         cls.logger.info('Processing category query for %s ...', order_id)
         return cls.query.filter(cls.order_id == order_id)
 
     @classmethod
     def find_by_availability(cls, available=True):
-        """ Query that finds Payments by their availability
-
-        Returns all Payments by their availability
-
-        Args:
-            available (boolean): True for payments that are available
-        """
+        """ Query that finds all available Payments """
         cls.logger.info('Processing available query for %s ...', available)
         return cls.query.filter(cls.available == available)
 
     @classmethod
-    def find_by_type(cls, payments_type):
-        """ Query that finds Payments by their availability
-
-        Returns all Payments by their availability
+    def find_by_type(cls, type):
+        """ Returns all of the Payments with the given type
 
         Args:
-            available (boolean): True for payments that are available
+            type (string): the type of the Payments you want to match
         """
-        cls.logger.info('Processing type query for %s ...', payments_type)
-        return cls.query.filter(cls.payments_type == payments_type)
+        cls.logger.info('Processing type query for %s ...', type)
+        return cls.query.filter(cls.type == type)

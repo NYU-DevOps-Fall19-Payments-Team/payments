@@ -8,6 +8,7 @@
 !/tests
 !/database
 !/.travis.yml
+!/schemas
 !manifest.yml
 !Procfile
 !runtime.txt
