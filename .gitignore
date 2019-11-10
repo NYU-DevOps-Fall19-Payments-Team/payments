@@ -5,7 +5,6 @@
 !/requirements.txt
 !/setup.cfg
 !/service
-!/service/static
 !/tests
 !/database
 !/.travis.yml
