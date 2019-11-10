@@ -1,7 +1,4 @@
 /*
 !/.git*
 !/*.py
-!/*.js
-!/*.html
-!/*.css
-!static
+!/static
