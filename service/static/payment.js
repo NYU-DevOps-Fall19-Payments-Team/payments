@@ -2,6 +2,7 @@ var credit_card = document.getElementById("credit_card")
 var paypal = document.getElementById("paypal")
 var type = document.getElementById("type")
 var submit = document.getElementById("submit")
+var errorMessage = document.getElementsByClassName("error")[0];
 
 type.addEventListener('change',()=>{
     let index = type.selectedIndex;
@@ -22,7 +23,7 @@ type.addEventListener('change',()=>{
 
 submit.addEventListener('click',(event)=>{
     event.preventDefault();
-    document.getElementsByClassName("error")[0].style.display = 'none';
+    errorMessage.style.display = 'none';
     try{
         let customer_id = parseInt(document.getElementById("customer_id").value);
         let order_id = parseInt(document.getElementById("order_id").value);
@@ -75,18 +76,22 @@ submit.addEventListener('click',(event)=>{
                 window.location.href = "/payments";
             })
             .catch((err)=>{
-                alert(err);
+                showError(err);
             })
     } catch(err){
-        document.getElementsByClassName("error")[0].style.display = 'block';
+        showError(err);
     }
 })
 
-function handleErrors(response){
-    console.log(response.message);
+function showError(error){
+    errorMessage.style.display = 'block';
+    errorMessage.innerHTML = error.message;
+}
+
+async function handleErrors(response){
     if(!response.ok){
-        console.log(response);
-        throw Error(response.message);
+        let error = await response.json();
+        throw Error(error.message);
     }
     return response;
 }
