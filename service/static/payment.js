@@ -71,6 +71,7 @@ submit.addEventListener('click',(event)=>{
             body:JSON.stringify(data)})
             .then(handleErrors)
             .then((res)=>{
+                console.log("redirecting...")
                 window.location.href = "/payments";
             })
             .catch((err)=>{
