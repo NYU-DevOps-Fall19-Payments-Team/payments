@@ -66,4 +66,3 @@ Scenario: Update a Pet
     And I press the "Search" button
     Then I should see "Boxer" in the results
     Then I should not see "fido" in the results
-amirshirif@Amirs-MacBook-Pro features %
