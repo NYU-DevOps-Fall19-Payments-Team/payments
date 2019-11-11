@@ -33,10 +33,12 @@ payment_schema = {
                         "properties": {
                             "credit_card_number": {
                                 "type": "string",
+                                "minLength": 1,
                                 "maxLength": 30
                             },
                             "card_holder_name": {
                                 "type": "string",
+                                "minLength": 1,
                                 "maxLength": 30
                             },
                             "expiration_month": {
@@ -51,6 +53,7 @@ payment_schema = {
                             },
                             "security_code": {
                                 "type": "string",
+                                "minLength": 1,
                                 "maxLength": 4
                             }
                         },
@@ -79,14 +82,17 @@ payment_schema = {
                         "properties": {
                             "email": {
                                 "type": "string",
+                                "minLength": 1,
                                 "maxLength": 30,
                             },
                             "phone_number": {
                                 "type": "string",
+                                "minLength": 1,
                                 "maxLength": 20,
                             },
                             "token": {
                                 "type": "string",
+                                "minLength": 1,
                                 "maxLength": 30
                             }
                         },
