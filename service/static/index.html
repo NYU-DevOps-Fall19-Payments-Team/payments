@@ -33,13 +33,13 @@
             <div class="form-group">
               <label for="type">Payment Type</label>
               <select class="form-control" id="type" required>
-                <option value="" selected disabled hidden>Please Choose...</option>
+                <option value="" selected disabled>Please Choose...</option>
                 <option>Credit Card</option>
                 <option>PayPal</option>
               </select>
             </div>
             <div id='credit_card'>
-                <hr></hr>
+                <hr/>
                 <div class="form-group">
                     <label for="credit_card_number">Credit Card Number</label>
                     <input type="text" class="form-control" id = "credit_card_number" placeholder="Enter credit card number" maxlength="30" required>
@@ -64,27 +64,27 @@
                 </div>
             </div>
             <div id='paypal'>
-                <hr></hr>
+                <hr/>
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" id = "email" placeholder="Enter your email address" required>
                 </div>
                 <div class="form-group">
                     <label for="phone_number">Phone Number</label>
-                    <input type="text" class="form-control" id = "phone_number" placeholder="Enter order id" required>
+                    <input type="text" class="form-control" id = "phone_number" placeholder="Enter your phone number" required>
                 </div>
                 <div class="form-group">
                     <label for="token">Token</label>
-                    <input type="text" class="form-control" id = "token" placeholder="Enter the name of card holder" maxlength="30" required>
+                    <input type="text" class="form-control" id = "token" placeholder="Enter the token" maxlength="30" required>
                 </div>
             </div>
             <button id = "submit" type="submit" class="btn btn-primary">Submit</button>
           </form>
     </div>
-    
+
 
     <div class = "card">
-        <h2>Recent added</h2>
+        <h2>Recently added</h2>
         <div class='row'>
           <div class='col'><p class = 'table_name'>ID</p></div>
           <div class='col'><p class = 'table_name'>Type</p></div>
