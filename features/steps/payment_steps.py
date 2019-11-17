@@ -19,6 +19,24 @@ from selenium.webdriver.support import expected_conditions
 
 WAIT_SECONDS = int(getenv('WAIT_SECONDS', '60'))
 
+@given('the following pets')
+def step_impl(context):
+    """ Delete all Pets and load new ones """
+    headers = {'Content-Type': 'application/json'}
+    create_url = context.base_url + '/payments'
+    for row in context.table:
+        data = {
+            "order_id": int(row['order_id']),
+            "customer_id": int(row['customer_id']),
+            "type": row['type'],
+            "available": row['available'] in ['True', 'true', '1'],
+            "info": json.loads(row['info'])["info"]
+            }
+        payload = json.dumps(data)
+        context.resp = requests.post(create_url, data=payload, headers=headers)
+        expect(context.resp.status_code).to_equal(201)
+
+
 @when('I visit the "home page"')
 def step_impl(context):
     """ Make a call to the base URL """
