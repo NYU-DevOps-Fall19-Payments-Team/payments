@@ -1,7 +1,7 @@
 """
-Pet Steps
+Payment Steps
 
-Steps file for Pet.feature
+Steps file for payment.feature
 
 For information on Waiting until elements are present in the HTML see:
     https://selenium-python.readthedocs.io/waits.html
@@ -19,9 +19,9 @@ from selenium.webdriver.support import expected_conditions
 
 WAIT_SECONDS = int(getenv('WAIT_SECONDS', '60'))
 
-@given('the following pets')
+@given('a list of payment methods')
 def step_impl(context):
-    """ Delete all Pets and load new ones """
+    """ Load a database of payment methods """
     headers = {'Content-Type': 'application/json'}
     create_url = context.base_url + '/payments'
     for row in context.table:
@@ -36,10 +36,8 @@ def step_impl(context):
         context.resp = requests.post(create_url, data=payload, headers=headers)
         expect(context.resp.status_code).to_equal(201)
 
-
 @when('I visit the "home page"')
 def step_impl(context):
     """ Make a call to the base URL """
     context.driver.get(context.base_url)
-    # Uncomment next line to take a screenshot of the web page
-    #context.driver.save_screenshot('home_page.png')
+    context.driver.save_screenshot('home_page.png')
