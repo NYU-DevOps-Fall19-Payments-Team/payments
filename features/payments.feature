@@ -1,7 +1,7 @@
-Feature: The pet store service back-end
-    As a Pet Store Owner
+Feature: A store service back-end
+    As a Goods or Services provider
     I need a RESTful catalog service
-    So that I can keep track of all my pets
+    So that I can keep track of my consumer's payment methods
 
     Background:
         Given a list of payment methods
