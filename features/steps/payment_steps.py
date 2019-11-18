@@ -40,7 +40,7 @@ def step_impl(context):
 def step_impl(context):
     """ Make a call to the base URL """
     context.driver.get(context.base_url)
-    context.driver.save_screenshot('home_page.png')
+    #context.driver.save_screenshot('home_page.png')
 
 @when('I press the "{button}" button')
 def step_impl(context, button):
@@ -49,7 +49,7 @@ def step_impl(context, button):
 
 @when('I set the "{element_name}" to "{text_string}"')
 def step_impl(context, element_name, text_string):
-    element_id = 'payment_' + element_name.lower()
+    element_id = 'payment_in_' + element_name.lower()
     element = context.driver.find_element_by_id(element_id)
     element.clear()
     element.send_keys(text_string)

@@ -118,7 +118,7 @@ $(function () {
 
     $("#delete-btn").click(function () {
       event.preventDefault();
-        var payment_id = $("#payment_id").val();
+        var payment_id = $("#payment_in_id").val();
 
         var ajax = $.ajax({
             type: "DELETE",
