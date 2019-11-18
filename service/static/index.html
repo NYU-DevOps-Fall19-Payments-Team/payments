@@ -8,8 +8,18 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="static/css/style.css">
     <script type="text/javascript" src = "static/js/jquery-3.1.1.min.js"></script>
+    <script defer src="static/js/all.js"></script>
   </head>
   <body>
+    <div class = "card">
+        <div id='display_credit_card'>
+          <h4>Credit card</h2>
+        </div>
+        <hr/>
+        <div id='display_paypal'>
+          <h4>Paypal</h2>
+        </div>
+    </div>
     <div class = "card">
         <form>
             <div class="alert alert-danger error" role="alert">
@@ -81,14 +91,12 @@
             <button id = "submit" type="submit" class="btn btn-primary">Submit</button>
           </form>
     </div>
-
-
     <div class = "card">
         <h2>Recently added</h2>
         <div class='row'>
-          <div class='col'><p class = 'table_name'>ID</p></div>
           <div class='col'><p class = 'table_name'>Type</p></div>
-          <div class='col'><p class = 'table_name'>Available</p></div>
+          <div class='col'><p class = 'table_name'>ID</p></div>
+          <div class='col'><p class = 'table_name'>Info</p></div>
         </div>
         <div class='row'>
           <div class='col'><p id="payment_id"></p></div>
@@ -97,5 +105,5 @@
         </div>
     </div>
   </body>
-  <script type="text/javascript" src="/static/js/payment.js"></script>
+  <script type="text/javascript" src="/static/js/payments.js"></script>
 </html>
