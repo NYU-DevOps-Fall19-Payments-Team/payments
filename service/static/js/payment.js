@@ -1,4 +1,5 @@
 $(function () {
+<<<<<<< HEAD
     // ****************************************
     // UTILITY FUNCTION
     // ****************************************
@@ -65,6 +66,37 @@ $(function () {
     // ****************************************
 
     // create a new payment.
+=======
+  // ****************************************
+  //  U T I L I T Y   F U N C T I O N S
+  // ****************************************
+
+  // Updates the form with data from the response
+  function update_form_data(res) {
+    $("#pet_id").val(res._id);
+    $("#pet_name").val(res.name);
+    $("#pet_category").val(res.category);
+    if (res.available == true) {
+        $("#pet_available").val("true");
+      } else {
+        $("#pet_available").val("false");
+      }
+    }
+
+    /// Clears all form fields
+    function clear_form_data() {
+      $("#pet_name").val("");
+      $("#pet_category").val("");
+      $("#pet_available").val("");
+    }
+
+    // Updates the flash message area
+    function flash_message(message) {
+      $("#flash_message").empty();
+      $("#flash_message").append(message);
+    }
+
+>>>>>>> create-delete-BDD-UI
     $("#submit").click(function () {
         // don't refresh the page.
         event.preventDefault();
@@ -195,6 +227,7 @@ $("#delete-btn").click(function () {
     })
 
     ajax.done(function(res){
+        print("done")
         clear_form_data()
         flash_message("Payment has been Deleted!")
     });
