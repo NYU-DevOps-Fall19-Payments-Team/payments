@@ -118,7 +118,7 @@ $(function () {
 
     $("#delete-btn").click(function () {
       event.preventDefault();
-        var payment_id = $("#payment_id").val();
+        var payment_id = $("#payment_in_id").val();
 
         var ajax = $.ajax({
             type: "DELETE",
@@ -137,4 +137,39 @@ $(function () {
             flash_message("Server error!")
         });
     });
+
+    // ****************************************
+// Update a Pet
+// ****************************************
+
+$("#update-btn").click(function () {
+
+    var pet_id = $("#pet_id").val();
+    var name = $("#pet_name").val();
+    var category = $("#pet_category").val();
+    var available = $("#pet_available").val() == "true";
+
+    var data = {
+        "name": name,
+        "category": category,
+        "available": available
+    };
+
+    var ajax = $.ajax({
+            type: "PUT",
+            url: "/pets/" + pet_id,
+            contentType: "application/json",
+            data: JSON.stringify(data)
+        })
+
+    ajax.done(function(res){
+        update_form_data(res)
+        flash_message("Success")
+    });
+
+    ajax.fail(function(res){
+        flash_message(res.responseJSON.message)
+    });
+
+  });
 });
