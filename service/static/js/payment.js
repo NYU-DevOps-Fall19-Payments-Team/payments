@@ -106,6 +106,14 @@ $(function () {
         }
     });
 
+    // Clear the create form.
+    // function clear_delete_form(){
+    //   $("#customer_in_id").val("");
+    //       credit_card.style.display = 'none';
+    //       paypal.style.display = 'none';
+    //     }
+    //   });
+
     function showError(error) {
         let errorMessage = $(".error");
         errorMessage.css("display", "block");
@@ -128,8 +136,8 @@ $(function () {
         })
 
         ajax.done(function(res){
-            console.log("done")
             clear_form_data()
+            $("#payment_in_id").val("")
             flash_message("Payment has been Deleted!")
         });
 
@@ -139,37 +147,37 @@ $(function () {
     });
 
     // ****************************************
-// Update a Pet
-// ****************************************
+    // Update a Pet
+    // ****************************************
 
-$("#update-btn").click(function () {
+    $("#update-btn").click(function () {
 
-    var pet_id = $("#pet_id").val();
-    var name = $("#pet_name").val();
-    var category = $("#pet_category").val();
-    var available = $("#pet_available").val() == "true";
+      var pet_id = $("#pet_id").val();
+      var name = $("#pet_name").val();
+      var category = $("#pet_category").val();
+      var available = $("#pet_available").val() == "true";
 
-    var data = {
-        "name": name,
-        "category": category,
-        "available": available
-    };
+      var data = {
+          "name": name,
+          "category": category,
+          "available": available
+        };
 
-    var ajax = $.ajax({
-            type: "PUT",
-            url: "/pets/" + pet_id,
-            contentType: "application/json",
-            data: JSON.stringify(data)
-        })
+        var ajax = $.ajax({
+              type: "PUT",
+              url: "/pets/" + pet_id,
+              contentType: "application/json",
+              data: JSON.stringify(data)
+            })
 
-    ajax.done(function(res){
-        update_form_data(res)
-        flash_message("Success")
-    });
+            ajax.done(function(res){
+              update_form_data(res)
+              flash_message("Success")
+            });
 
-    ajax.fail(function(res){
-        flash_message(res.responseJSON.message)
-    });
+            ajax.fail(function(res){
+              flash_message(res.responseJSON.message)
+            });
 
-  });
+          });
 });
