@@ -124,6 +124,14 @@ class Payment(db.Model):
         return cls.query.all()
 
     @classmethod
+    def remove_all(cls):
+        """ Removes all documents from the database (use for testing)  """
+        cls.logger.info('Drop all the tables')
+        db.drop_all()
+        cls.logger.info('Recreate all the tables')
+        db.create_all()
+
+    @classmethod
     def find(cls, payments_id):
         """ Finds a Payment by its ID """
         cls.logger.info('Processing lookup for id %s ...', payments_id)
