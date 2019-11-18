@@ -111,30 +111,30 @@ $(function () {
         errorMessage.css("display", "block");
         errorMessage.text(error.message);
     }
-});
 
-// ****************************************
-// Delete a Payment
-// ****************************************
+    // ****************************************
+    // Delete a Payment
+    // ****************************************
 
-$("#delete-btn").click(function () {
+    $("#delete-btn").click(function () {
+      event.preventDefault();
+        var payment_id = $("#payment_id").val();
 
-    var payment_id = $("#payment_id").val();
+        var ajax = $.ajax({
+            type: "DELETE",
+            url: "/payments/" + payment_id,
+            contentType: "application/json",
+            data: '',
+        })
 
-    var ajax = $.ajax({
-        type: "DELETE",
-        url: "/payments/" + payment_id,
-        contentType: "application/json",
-        data: '',
-    })
+        ajax.done(function(res){
+            console.log("done")
+            clear_form_data()
+            flash_message("Payment has been Deleted!")
+        });
 
-    ajax.done(function(res){
-        print("done")
-        clear_form_data()
-        flash_message("Payment has been Deleted!")
-    });
-
-    ajax.fail(function(res){
-        flash_message("Server error!")
+        ajax.fail(function(res){
+            flash_message("Server error!")
+        });
     });
 });
