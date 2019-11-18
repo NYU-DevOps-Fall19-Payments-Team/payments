@@ -93,6 +93,23 @@
             <button id = "submit" type="submit" class="btn btn-primary">Submit</button>
           </form>
     </div>
+
+    <div class = "card">
+        <form>
+            <div class="form-group">
+              <h2><label for="delete_title">Delete Payment</label></h2>
+            </div>
+            <div class="alert alert-danger error" role="alert">
+                Missing field.
+            </div>
+            <div class="form-group">
+              <label for="payment_id">Payment ID</label>
+              <input type="number" class="form-control" id="payment_id" placeholder="Enter payment id" required>
+            </div>
+            <button type="submit" class="btn btn-danger" id="delete-btn">Delete</button>
+          </form>
+    </div>
+
     <div class = "card">
         <h2>Recently added</h2>
         <div class='row'>
@@ -101,7 +118,7 @@
           <div class='col'><p class = 'table_name'>Info</p></div>
         </div>
         <div class='row'>
-          <div class='col'><p id="payment_id"></p></div>
+          <!-- <div class='col'><p id="payment_id"></p></div> -->
           <div class='col'><p id="payment_type"></p></div>
           <div class='col'><p id="payment_available"></p></div>
         </div>

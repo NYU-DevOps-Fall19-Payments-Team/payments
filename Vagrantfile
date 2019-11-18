@@ -65,6 +65,13 @@ Vagrant.configure(2) do |config|
     apt-get -y autoremove
     pip3 install --upgrade pip3
     # Install app dependencies
+
+    echo "\n*****************************************"
+    echo " Installing Chrome Headless and Selenium"
+    echo "*****************************************\n"
+    apt-get install -y chromium-chromedriver python3-selenium
+    chromedriver --version
+
     cd /vagrant
     pip3 install -r requirements.txt
   SHELL
@@ -97,6 +104,7 @@ Vagrant.configure(2) do |config|
     echo "You can login with the following command:"
     echo "\n"
     echo "ibmcloud login -a https://cloud.ibm.com --apikey @~/.bluemix/apiKey-nyu-devops-payments.json -r us-south"
+    echo "ibm cloud target --cf-api https://api.ng.bluemix.net -o \"NYU DevOps Payments\" -s dev"
     echo "\n"
     echo "\n************************************"
     echo " For the Kubernetes Dashboard use:"
