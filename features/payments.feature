@@ -13,6 +13,6 @@ Feature: A store service back-end
 
 Scenario: Delete a payment method
   When I visit the "home page"
-  And I set the "ID" to "14"
+  And I set the "ID" to "3"
   And I press the "Delete" button
   Then I should see the message "Payment has been Deleted!"

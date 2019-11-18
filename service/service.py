@@ -209,6 +209,18 @@ def delete_payment(payments_id):
         payment.delete()
     return make_response('', status.HTTP_204_NO_CONTENT)
 
+######################################################################
+# DELETE A PAYMENT(Using for test only)
+######################################################################
+@app.route('/payments/reset', methods=['DELETE'])
+def reset_payment():
+    """
+    Delete a payment
+    This endpoint will delete a Payment based on the id specified in the path
+    """
+    app.logger.info('Remove all the payments inside the database')
+    Payment.remove_all()
+    return make_response('', status.HTTP_204_NO_CONTENT)
 
 ######################################################################
 # PERFORM A STATEFUL ACTION

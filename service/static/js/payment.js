@@ -152,7 +152,7 @@ $(function () {
 
     $("#update-btn").click(function () {
 
-      var pet_id = $("#pet_id").val();
+      var payment_id = $("#payment_id").val();
       var name = $("#pet_name").val();
       var category = $("#pet_category").val();
       var available = $("#pet_available").val() == "true";
