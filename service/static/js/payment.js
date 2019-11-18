@@ -123,7 +123,7 @@ $(function () {
                 $("#payment_type").text(res.type);
                 $("#payment_available").text(res.available);
                 addRow(res);
-                clearForm();
+                clearCreateForm();
                 showSuccess("create a new payment!");
             });
             
@@ -155,7 +155,7 @@ $(function () {
     });
 
     // Clear the create form.
-    function clearForm(){
+    function clearCreateForm(){
         $("#customer_id").val("");
         $("#order_id").val("");
         $("#available").val("")
