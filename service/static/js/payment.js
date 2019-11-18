@@ -1,5 +1,8 @@
 $(function () {
-    // ------------------UTILITY FUNCTION---------------------
+    // ****************************************
+    // UTILITY FUNCTION
+    // ****************************************
+
     // Show the error message.
     function showError(error) {
         let errorMessage = $(".error");
@@ -7,6 +10,7 @@ $(function () {
         errorMessage.text(error.message);
     }
 
+    // Show the success message.
     function showSuccess(message){
         let successMessage = $(".success");
         successMessage.css("display", "block");
@@ -20,9 +24,12 @@ $(function () {
         let errorMessage = $(".error");
         errorMessage.css("display", "none");
     }
-    // ---------------------------------------------------------
 
-    // load all the payments from the database, insert it into 
+    // ****************************************
+    // Read all the payments
+    // ****************************************
+
+    // load all the payments from the database, insert it into table.
     console.log("----------loading table------------")
     var ajax = $.ajax({
         type: "GET",
@@ -52,6 +59,10 @@ $(function () {
                 console.log(payment.type)
         }
     };
+
+    // ****************************************
+    // Create a the payment
+    // ****************************************
 
     // create a new payment.
     $("#submit").click(function () {
@@ -143,9 +154,7 @@ $(function () {
         }
     });
 
-
-
-    // Clear the form.
+    // Clear the create form.
     function clearForm(){
         $("#customer_id").val("");
         $("#order_id").val("");
