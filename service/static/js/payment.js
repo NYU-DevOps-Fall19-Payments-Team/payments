@@ -87,7 +87,7 @@ $(function () {
                 $("#payment_type").text(res.type);
                 $("#payment_available").text(res.available);
                 addRow(res);
-                $("#submit").trigger('reset');
+                clearForm();
             });
             
             // if the ajax request is failed, show the error.
@@ -124,5 +124,28 @@ $(function () {
         errorMessage.text(error.message);
     }
 
+    // Clear the form.
+    function clearForm(){
+        $("#customer_id").val("");
+        $("#order_id").val("");
+        $("#available").val("")
+        let type = "paypal";
+        if ($("#type").val() == "Credit Card")
+            type = "credit card";
+        $("#type").val("");
+        if (type == "credit card") {
+            $("#credit_card_number").val("");
+            $("#card_holder_name").val("");
+            $("#expiration_month").val("");
+            $("#expiration_year").val("");
+            $("#security_code").val("");
+        } else {
+            $("#email").val("");
+            $("#phone_number").val("");
+            $("#token").val("");
+        }
+        credit_card.style.display = 'none';
+        paypal.style.display = 'none';
+    }
 });
 
