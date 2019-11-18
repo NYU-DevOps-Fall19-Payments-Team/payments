@@ -11,6 +11,11 @@
     <script defer src="static/js/all.js"></script>
   </head>
   <body>
+    <div class="alert alert-success success" id='flash_message' role="alert">
+    </div>
+    <div class="alert alert-danger error" role="alert">
+        Missing field.
+    </div>
     <div class = "card">
         <div id='display_credit_card'>
           <h4>Credit card</h2>
@@ -22,9 +27,6 @@
     </div>
     <div class = "card">
         <form>
-            <div class="alert alert-danger error" role="alert">
-                Missing field.
-            </div>
             <div class="form-group">
               <label for="customer_id">Customer ID</label>
               <input type="number" class="form-control" id="customer_id" placeholder="Enter customer id" required>

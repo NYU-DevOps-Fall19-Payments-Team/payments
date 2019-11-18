@@ -1,4 +1,27 @@
 $(function () {
+    // ------------------UTILITY FUNCTION---------------------
+    // Show the error message.
+    function showError(error) {
+        let errorMessage = $(".error");
+        errorMessage.css("display", "block");
+        errorMessage.text(error.message);
+    }
+
+    function showSuccess(message){
+        let successMessage = $(".success");
+        successMessage.css("display", "block");
+        successMessage.text(message);
+    }
+
+    // Hide all the message.
+    function hideMessage(){
+        let successMessage = $(".success");
+        successMessage.css("display", "none");
+        let errorMessage = $(".error");
+        errorMessage.css("display", "none");
+    }
+    // ---------------------------------------------------------
+
     // load all the payments from the database, insert it into 
     console.log("----------loading table------------")
     var ajax = $.ajax({
@@ -34,6 +57,8 @@ $(function () {
     $("#submit").click(function () {
         // don't refresh the page.
         event.preventDefault();
+        // each time we click the button we reset the message.
+        hideMessage();
         // in case any field is empty, if so it will throw an error. The error will be caught by the catch block.
         try {
             let available = false;
@@ -88,6 +113,7 @@ $(function () {
                 $("#payment_available").text(res.available);
                 addRow(res);
                 clearForm();
+                showSuccess("create a new payment!");
             });
             
             // if the ajax request is failed, show the error.
@@ -117,12 +143,7 @@ $(function () {
         }
     });
 
-    // Show the error message.
-    function showError(error) {
-        let errorMessage = $(".error");
-        errorMessage.css("display", "block");
-        errorMessage.text(error.message);
-    }
+
 
     // Clear the form.
     function clearForm(){
