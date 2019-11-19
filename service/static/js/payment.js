@@ -44,15 +44,17 @@ $(function () {
     function addRow(payment){
         let type = payment.type;
         let id = payment.id;
-        let info;
         switch (type){
             case "credit card":
-                info = payment.info.credit_card_number;
-                $("#display_credit_card").append(`<div class='row'><div class='col'><i class=\"far fa-credit-card\"></i></div><div class='col-2'><p>${id}</p></div><div class='col'><p>${info}</p></div></div>`);
+                let credit_card_number = payment.info.credit_card_number;
+                let card_holder_name = payment.info.card_holder_name;
+                let expiration = payment.info.expiration_month + "/" + payment.info.expiration_year;
+                $("#display_credit_card").append(`<div class='row'><div class='col-2'><i class=\"far fa-credit-card\"></i></div><div class='col-1'><p>${id}</p></div><div class='col-3'><p>${card_holder_name}</p></div><div class='col-3'><p>${credit_card_number}</p></div><div class='col-3'><p>${expiration}</p></div></div>`);
                 break;
             case "paypal":
-                info = payment.info.email;
-                $("#display_paypal").append(`<div class='row'><div class='col'><i class="fab fa-cc-paypal"></i></div><div class='col-2'><p>${id}</p></div><div class='col'><p>${info}</p></div></div>`);
+                let email = payment.info.email;
+                let phone_number = payment.info.phone_number;
+                $("#display_paypal").append(`<div class='row'><div class='col-2'><i class="fab fa-cc-paypal"></i></div><div class='col-1'><p>${id}</p></div><div class='col-3'><p>${email}</p></div><div class='col-3'><p>${phone_number}</p></div></div>`);
                 break;
             default:
                 console.log(payment.type)
@@ -135,22 +137,24 @@ $(function () {
     });
 
     // Different forms will be shown base on the type of the payment.
-    type.addEventListener('change', () => {
-        let index = type.selectedIndex;
-        switch (index) {
-            case 1:
-                credit_card.style.display = 'block';
-                paypal.style.display = 'none';
+    $("#type").change(() =>{
+        let type = $("#type").val();
+        let creditCard = $("#credit_card");
+        let paypal =$("#paypal");
+        switch (type) {
+            case "Credit Card":
+                $("#credit_card").css("display","block");
+                $("#paypal").css("display","none");
                 break;
-            case 2:
-                credit_card.style.display = 'none';
-                paypal.style.display = 'block';
+            case "PayPal":
+                $("#credit_card").css("display","none");
+                $("#paypal").css("display","block");
                 break;
             default:
-                credit_card.style.display = 'none';
-                paypal.style.display = 'none';
+                $("#credit_card").css("display","none");
+                $("#paypal").css("display","none");
         }
-    });
+    })
 
     // Clear the create form.
     function clearCreateForm(){

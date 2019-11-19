@@ -23,6 +23,8 @@ WAIT_SECONDS = int(getenv('WAIT_SECONDS', '60'))
 def step_impl(context):
     """ Load a database of payment methods """
     headers = {'Content-Type': 'application/json'}
+    context.resp = requests.delete(context.base_url + '/payments/reset', headers=headers)
+    expect(context.resp.status_code).to_equal(204)
     create_url = context.base_url + '/payments'
     for row in context.table:
         data = {
@@ -49,9 +51,9 @@ def step_impl(context, button):
     button_id = button.lower() + '-btn'
     context.driver.find_element_by_id(button_id).click()
 
-@when('I set the "{element_name}" to "{text_string}"')
-def step_impl(context, element_name, text_string):
-    element_id = 'payment_' + element_name.lower()
+@when('I set the "{element_name}" to "{text_string}" in "{form}" form')
+def step_impl(context, element_name, text_string, form):
+    element_id = form + "_" + element_name.lower()
     element = context.driver.find_element_by_id(element_id)
     element.clear()
     element.send_keys(text_string)

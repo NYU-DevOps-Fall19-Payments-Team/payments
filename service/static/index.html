@@ -16,23 +16,34 @@
     <div class="alert alert-danger error" role="alert">
         Missing field.
     </div>
-    <div class = "card">
+    <div class = "card" id = "show_payment_card">
         <div id='display_credit_card'>
           <h4>Credit card</h2>
+          <div class='row'>
+            <div class='col-2'><span>Type</span></i></div>
+            <div class='col-1'><p>ID</p></div>
+            <div class='col-3'><p>Card Holder</p></div>
+            <div class='col-3'><p>Card Number</p></div>
+            <div class='col-3'><p>Expiration date</p></div>
+          </div>
         </div>
         <hr/>
         <div id='display_paypal'>
           <h4>Paypal</h2>
+          <div class='row'>
+              <div class='col-2'><span>Type</span></i></div>
+              <div class='col-1'><p>ID</p></div>
+              <div class='col-3'><p>Email</p></div>
+              <div class='col-3'><p>Phone Number</p></div> 
+            </div>
         </div>
-    </div>
-    <div class="table-responsive">
-        <table class="table">
-          <tr><td>Status:</td><td><span id="flash_message"></span></td></tr>
-        </table>
     </div>
 
     <div class = "card">
         <form>
+            <div class="form-group">
+                <h2><label for="delete_title">Create Payment</label></h2>
+              </div>
             <div class="form-group">
               <label for="customer_id">Customer ID</label>
               <input type="number" class="form-control" id="customer_id" placeholder="Enter customer id" required>
@@ -96,7 +107,7 @@
                     <input type="text" class="form-control" id = "token" placeholder="Enter the token" maxlength="30" required>
                 </div>
             </div>
-            <button id = "submit" type="submit" class="btn btn-primary">Submit</button>
+            <button id = "create-btn" type="submit" class="btn btn-primary">Create</button>
           </form>
     </div>
 
@@ -110,7 +121,7 @@
             </div>
             <div class="form-group">
               <label for="payment_id">Payment ID</label>
-              <input type="number" class="form-control" id="payment_id" placeholder="Enter payment id" required>
+              <input type="number" class="form-control" id="delete_id" placeholder="Enter payment id" required>
             </div>
             <button type="submit" class="btn btn-danger" id="delete-btn">Delete</button>
           </form>
