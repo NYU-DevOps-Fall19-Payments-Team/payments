@@ -218,4 +218,21 @@ $(function () {
             showError(err);
         }
     });
+
+    $("#update_type").change(() => {
+        let type = $("update_type").val();
+        switch (type) {
+            case "Credit Card":
+                $("#credit_card").css("display", "block")
+                $("#paypal").css("display", "none")
+                break;
+            case "PayPal":
+                $("#credit_card").css("display", "none")
+                $("#paypal").css("display", "block")
+                break;
+            default:
+                $("#credit_card").css("display", "none")
+                $("#paypal").css("display", "none")
+        }
+    });
 });
