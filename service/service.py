@@ -111,19 +111,22 @@ def index():
 def list_payments():
     """ Returns all of the Payments """
     app.logger.info('Request for payments list')
-    # payments = []
     customer_id = request.args.get('customer_id')
     order_id = request.args.get('order_id')
-    if customer_id:
-        app.logger.info('Request for payments list with customer_id : %s',
-                        customer_id)
-        payments = Payment.find_by_customer(customer_id)
-    elif order_id:
-        app.logger.info('Request for payments list with order_id : %s',
-                        order_id)
-        payments = Payment.find_by_order(order_id)
-    else:
-        payments = Payment.all()
+    available = request.args.get('available')
+    type = request.args.get('type')
+
+    payments = Payment.find_by(customer_id, order_id, available, type)
+    # if customer_id:
+    #     app.logger.info('Request for payments list with customer_id : %s',
+    #                     customer_id)
+    #     payments = Payment.find_by_customer(customer_id)
+    # elif order_id:
+    #     app.logger.info('Request for payments list with order_id : %s',
+    #                     order_id)
+    #     payments = Payment.find_by_order(order_id)
+    # else:
+    #     payments = Payment.all()
 
     results = [payment.serialize() for payment in payments]
     return make_response(jsonify(results), status.HTTP_200_OK)

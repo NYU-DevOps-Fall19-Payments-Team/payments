@@ -170,3 +170,18 @@ class Payment(db.Model):
         """
         cls.logger.info('Processing type query for %s ...', type)
         return cls.query.filter(cls.type == type)
+
+    @classmethod
+    def find_by(cls, customer_id, order_id, available, type):
+        """ Find Payments using multiple filters """
+        cls.logger.info('Processing query for customer_id %s, order_id %s,'
+                        ' available %s, type %s ...', customer_id, order_id,
+                        available, type)
+        arg_list = [customer_id, order_id, available, type]
+        filter_list = [cls.customer_id == customer_id, cls.order_id == order_id,
+                       cls.available == available, cls.type == type]
+        filter_args = []
+        for i, val in enumerate(arg_list):
+            if val is not None:
+                filter_args.append(filter_list[i])
+        return cls.query.filter(*filter_args)
