@@ -221,7 +221,10 @@ def reset_payment():
     app.logger.info('Remove all the payments inside the database')
     Payment.remove_all()
     return make_response('', status.HTTP_204_NO_CONTENT)
+<<<<<<< HEAD
 
+=======
+>>>>>>> create-delete-BDD-UI
 
 ######################################################################
 # PERFORM A STATEFUL ACTION

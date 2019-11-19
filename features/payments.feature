@@ -21,6 +21,6 @@ Scenario: Read all the payments
 
 Scenario: Delete a payment method
   When I visit the "home page"
-  And I set the "ID" to "3" in "delete" form
+  And I set the "payment_id" to "3" in "delete" form
   And I press the "Delete" button
   Then I should see the message "Payment has been Deleted!"
