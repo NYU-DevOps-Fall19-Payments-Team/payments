@@ -136,7 +136,7 @@ def list_payments():
 # RETRIEVE A PAYMENTS
 ######################################################################
 @app.route('/payments/<int:payments_id>', methods=['GET'])
-def get_payments(payments_id):
+def get_payment(payments_id):
     """
     Retrieve a single Payment
     This endpoint will return a payment based on its id
