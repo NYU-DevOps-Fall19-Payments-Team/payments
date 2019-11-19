@@ -118,7 +118,7 @@ $(function () {
 
     $("#delete-btn").click(function () {
       event.preventDefault();
-        var payment_id = $("#delete_id").val();
+        var payment_id = $("#delete_payment_id").val();
 
         var ajax = $.ajax({
             type: "DELETE",
@@ -129,7 +129,7 @@ $(function () {
 
         ajax.done(function(res){
             clear_form_data()
-            $("#delete_id").val("")
+            $("#delete_payment_id").val("")
             flash_message("Payment has been Deleted!")
         });
 
