@@ -16,3 +16,14 @@ Scenario: Delete a payment method
   And I set the "payment_id" to "3" in "delete" form
   And I press the "Delete" button
   Then I should see the message "Payment has been Deleted!"
+
+Scenario: Update a payment method for a credit card
+  When I visit the "home page"
+  And I set the "payment_id" to "1" in "update" form
+  And I set the "customer_id" to "1" in "update" form
+  And I set the "order_id" to "1" in "update" form
+  And I set the "credit_card_number" to "7896987987" in "update" form
+  And I set the "card_holder_name" to "Zheng Jiang" in "update" form
+  And I set the "expiration_month" to "1" in "update" form
+  And I set the "expiration_year" to "2026" in "update" form
+  And I set the "security_code" to "675" in "update" form
