@@ -106,14 +106,6 @@ $(function () {
         }
     });
 
-    // Clear the create form.
-    // function clear_delete_form(){
-    //   $("#customer_in_id").val("");
-    //       credit_card.style.display = 'none';
-    //       paypal.style.display = 'none';
-    //     }
-    //   });
-
     function showError(error) {
         let errorMessage = $(".error");
         errorMessage.css("display", "block");
@@ -144,6 +136,9 @@ $(function () {
         ajax.fail(function(res){
             flash_message("Server error!")
         });
+        // ajax.fail(function (res) {
+        //     showError(res.responseJSON);
+        // });
     });
 
     // ****************************************
@@ -151,33 +146,76 @@ $(function () {
     // ****************************************
 
     $("#update-btn").click(function () {
-
-      var payment_id = $("#payment_id").val();
-      var name = $("#pet_name").val();
-      var category = $("#pet_category").val();
-      var available = $("#pet_available").val() == "true";
-
-      var data = {
-          "name": name,
-          "category": category,
-          "available": available
-        };
-
-        var ajax = $.ajax({
-              type: "PUT",
-              url: "/pets/" + pet_id,
-              contentType: "application/json",
-              data: JSON.stringify(data)
-            })
+        event.preventDefault();
+        var payment_id = $("#payment_id_update").val();
+        try {
+            let available = false;
+            if ($("#available_update").val() == "Yes")
+                available = true;
+            let type = "paypal";
+            if ($("#type_update").val() == "Credit Card")
+                type = "credit card";
+            let info = {}
+            if (type == "credit card") {
+                let credit_card_number = $("#credit_card_number_update").val();
+                let card_holder_name = $("#card_holder_name_update").val();
+                let expiration_month = parseInt($("#expiration_month_update").val());
+                let expiration_year = parseInt($("#expiration_year_update").val());
+                let security_code = $("#security_code_update").val();
+                info = {
+                    credit_card_number: credit_card_number,
+                    card_holder_name: card_holder_name,
+                    expiration_month: expiration_month,
+                    expiration_year: expiration_year,
+                    security_code: security_code
+                }
+            } else {
+                let email = $("#email_update").val();
+                let phone_number = $("#phone_number_update").val();
+                let token = $("#token_update").val();
+                info = {
+                    email: email,
+                    phone_number: phone_number,
+                    token: token
+                }
+            }
+            let data = {
+                customer_id: parseInt($("#customer_id_update").val()),
+                order_id: parseInt($("#order_id_update").val()),
+                available: available,
+                type: type,
+                info: info
+            };
+            var ajax = $.ajax({
+                type: "PUT",
+                url: "/payments/" + payment_id,
+                contentType: "application/json",
+                data: JSON.stringify(data),
+            });
+            console.log(payment_id);
 
             ajax.done(function(res){
-              update_form_data(res)
-              flash_message("Success")
+                $("#payment_id_update").val("")
+                $("#customer_id_update").val("")
+                $("#order_id_update").val("")
+                $("#available_update").val("") // TODO: not the correct emptying
+                $("#type_update").val("")
+                $("#credit_card_number_update").val("")
+                $("#card_holder_name_update").val("")
+                $("#expiration_month_update").val("")
+                $("#expiration_year_update").val("")
+                $("#security_code_update").val("")
+                $("#email_update").val("")
+                $("#phone_number_update").val("")
+                $("#token_update").val("")
+                flash_message("Payment has been Updated!")
             });
 
-            ajax.fail(function(res){
-              flash_message(res.responseJSON.message)
+            ajax.fail(function (res) {
+                showError(res.responseJSON);
             });
-
-          });
+        } catch (err) {
+            showError(err);
+        }
+    });
 });
