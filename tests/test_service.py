@@ -183,6 +183,27 @@ class TestPaymentsServer(unittest.TestCase):
         for payment in data:
             self.assertEqual(payment['available'], test_available)
 
+    def test_query_by_type(self):
+        """ Get the payments with given type """
+        test_type = 'credit card'
+        payments = []
+        for _ in range(5):
+            payment = PaymentsFactory()
+            if payment.type == test_type:
+                payments.append(payment)
+            self.app.post('/payments',
+                          json=payment.serialize(),
+                          content_type='application/json')
+        resp = self.app.get(
+            '/payments',
+            query_string='type={}'.format(test_type))
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), len(payments))
+        # check the data just to be sure
+        for payment in data:
+            self.assertEqual(payment['type'], test_type)
+
     def test_update_payment(self):
         """ Update a payment"""
         payment = PaymentsFactory()
