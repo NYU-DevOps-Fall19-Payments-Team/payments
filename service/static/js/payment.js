@@ -61,7 +61,7 @@ $(function () {
                 $("#display_paypal").append(`<div class='row display_payments'><div class='col-2'><i class="fab fa-cc-paypal"></i></div><div class='col-1'><p>${id}</p></div><div class='col-3'><p>${email}</p></div><div class='col-3'><p>${phone_number}</p></div></div>`);
                 break;
             default:
-                console.log(payment.type)
+                showError(`invaild payment type: ${payment.type}`);
         }
     };
 
