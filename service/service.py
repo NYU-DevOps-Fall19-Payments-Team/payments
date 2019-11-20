@@ -104,6 +104,7 @@ def index():
     #                paths=url_for('list_payments', _external=True)
     #                ), status.HTTP_200_OK
 
+
 ######################################################################
 # LIST ALL PAYMENT
 ######################################################################
@@ -209,6 +210,7 @@ def delete_payment(payments_id):
         payment.delete()
     return make_response('', status.HTTP_204_NO_CONTENT)
 
+
 ######################################################################
 # DELETE A PAYMENT(Using for test only)
 ######################################################################
@@ -216,8 +218,10 @@ def delete_payment(payments_id):
 def reset_payments():
     """ Removes all pets from the database """
     app.logger.info('Remove all the payments inside the database')
+    Payment.disconnect()
     Payment.remove_all()
     return make_response('', status.HTTP_204_NO_CONTENT)
+
 
 ######################################################################
 # PERFORM A STATEFUL ACTION
