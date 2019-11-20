@@ -32,7 +32,7 @@ $(function () {
     // load all the payments from the database, insert it into table.
     $("#list_all-btn").click(()=>{
         event.preventDefault();
-        $(".display_payments").remove();
+        cleanDisplayCard()
         var ajax = $.ajax({
             type: "GET",
             url: "/payments",
@@ -44,6 +44,10 @@ $(function () {
                 addRow(res[i])
         });
     })
+
+    function cleanDisplayCard(){
+        $(".display_payments").remove();
+    }
 
     function addRow(payment){
         let type = payment.type;
