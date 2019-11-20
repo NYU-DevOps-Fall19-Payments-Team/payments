@@ -281,26 +281,21 @@ $(function () {
             switch ($("#query_type").val()) {
                 case "Credit Card":
                     type = "credit card";
+                    break;
                 case "Paypal":
                     type = "paypal";
-
+                    break;
             }
-            if ($("#query_type").val() == "Credit Card")
-                type = "credit card";
 
             var ajax = $.ajax({
                 type: "GET",
                 url: "/payments?customer_id=" + customer_id + "&order_id=" +
                     order_id + "&available=" + available + "&type=" + type
             });
-            // console.log(payment_id);
 
             ajax.done(function (res) {
-                // $("#query_customer_id").text(customer_id);
-                // $("#query_order_id").text(order_id);
-                // $("#query_available").text(available ? "Yes" : "No");
-                for (i = 0; i < res.length; i++)
-                    addRow(res[i])
+                for (let i = 0; i < res.length; i++)
+                    addRow(res[i]);
                 flash_message("Query succesful!");
             });
 
