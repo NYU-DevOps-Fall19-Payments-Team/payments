@@ -210,6 +210,42 @@
           </form>
     </div>
 
+    <!-- query payments -->
+    <div class = "card">
+        <form>
+          <div class="form-group">
+            <h2><label for="query_title">Query Payments</label></h2>
+          </div>
+            <div class="alert alert-danger error" role="alert">
+                Missing field.
+            </div>
+            <div class="form-group">
+              <label for="query_customer_id">Customer ID</label>
+              <input type="number" class="form-control" id="query_customer_id" placeholder="Enter customer id">
+            </div>
+            <div class="form-group">
+              <label for="query_order_id">Order ID</label>
+              <input type="number" class="form-control" id="query_order_id" placeholder="Enter order id" >
+            </div>
+            <div class="form-group">
+                <label for="query_available">Available</label>
+                <select class="form-control" id="query_available">
+                  <option selected>Yes</option>
+                  <option>No</option>
+                </select>
+              </div>
+            <div class="form-group">
+              <label for="query_type">Payment Type</label>
+              <select class="form-control" id="query_type">
+                <option value="" selected disabled>Please Choose...</option>
+                <option>Credit Card</option>
+                <option>PayPal</option>
+              </select>
+            </div>
+            <button id = "query-btn" type="submit" class="btn btn-primary">Query</button>
+          </form>
+    </div>
+
     <div class = "card">
         <h2>Recently added</h2>
         <div class='row'>

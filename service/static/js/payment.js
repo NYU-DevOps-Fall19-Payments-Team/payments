@@ -300,4 +300,50 @@ $(function () {
                 $("#update_paypal").css("display", "none")
         }
     });
+
+    // ****************************************
+    // Query payments
+    // ****************************************
+
+    $("#query-btn").click(function () {
+        event.preventDefault();
+        var payment_id = $("#query_payment_id").val();
+        try {
+            let customer_id = parseInt($("#update_customer_id").val());
+            let order_id = parseInt($("#update_order_id").val());
+            let available = $("#query_available").val() == "Yes";
+            let type = "";
+            switch ($("#query_type").val()) {
+                case "Credit Card":
+                    type = "credit card";
+                case "Paypal":
+                    type = "paypal";
+
+            }
+            if ($("#query_type").val() == "Credit Card")
+                type = "credit card";
+
+            var ajax = $.ajax({
+                type: "GET",
+                url: "/payments?customer_id=" + customer_id + "&order_id=" +
+                    order_id + "&available=" + available + "&type=" + type
+            });
+            // console.log(payment_id);
+
+            ajax.done(function (res) {
+                // $("#query_customer_id").text(customer_id);
+                // $("#query_order_id").text(order_id);
+                // $("#query_available").text(available ? "Yes" : "No");
+                for (i = 0; i < res.length; i++)
+                    addRow(res[i])
+                flash_message("Query succesful!");
+            });
+
+            ajax.fail(function (res) {
+                showError(res.responseJSON);
+            });
+        } catch (err) {
+            showError(err);
+        }
+    });
 });

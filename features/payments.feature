@@ -95,5 +95,5 @@ Scenario: Update a payment method for PayPal
 Scenario: Query by order id
     When I visit the "home Page"
     And I set the "order_id" to "100" in "query" form
-    And I press the "Search" button
+    And I press the "Query" button
     Then I should see the "credit_card" with "123123123" in the display card
