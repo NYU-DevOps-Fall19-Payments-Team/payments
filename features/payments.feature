@@ -25,10 +25,41 @@ Scenario: Read all the payments
     Then I should see the "paypal" with "awesome@hotmail.com" in the display card
     Then I should see the "paypal" with "great@outlook.com" in the display card
     Then I should see the "paypal" with "prefect@icloude.com" in the display card
-    
+
+Scenario: Create a credit card payment method
+    When I visit the "home page"
+    And I set the "customer_id" to "5" in "create" form
+    And I set the "order_id" to "303" in "create" form
+    And I select "Yes" in the "available" dropdown in "create" form
+    And I select "Credit Card" in the "type" dropdown in "create" form
+    And I set the "credit_card_number" to "4345792072142100" in "create" form
+    And I set the "card_holder_name" to "James Phillips" in "create" form
+    And I set the "expiration_month" to "9" in "create" form
+    And I set the "expiration_year" to "2023" in "create" form
+    And I set the "security_code" to "219" in "create" form
+    And I press the "Create" button
+    Then I should see the message "create a new payment!"
+    When I visit the "home page"
+    Then I should see the "credit_card" with "4345792072142100" in the display card
+
+Scenario: Create a paypal payment method
+    When I visit the "home page"
+    And I set the "customer_id" to "5" in "create" form
+    And I set the "order_id" to "303" in "create" form
+    And I select "Yes" in the "available" dropdown in "create" form
+    And I select "PayPal" in the "type" dropdown in "create" form
+    And I set the "email" to "udydamma-1603@yopmail.com" in "create" form
+    And I set the "phone_number" to "(744) 449-7930" in "create" form
+    And I set the "token" to "9" in "create" form
+    And I press the "Create" button
+    Then I should see the message "create a new payment!"
+    When I visit the "home page"
+    Then I should see the "paypal" with "udydamma-1603@yopmail.com" in the display card
 
 Scenario: Delete a payment method
   When I visit the "home page"
   And I set the "payment_id" to "3" in "delete" form
   And I press the "Delete" button
   Then I should see the message "Payment has been Deleted!"
+  When I visit the "home page"
+  Then I should not see the "Zheng Jiang" in the display card

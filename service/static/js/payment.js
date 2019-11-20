@@ -65,7 +65,7 @@ $(function () {
     // Create a the payment
     // ****************************************
     
-    $("#create_submit").click(function () {
+    $("#create-btn").click(function () {
         // don't refresh the page.
         event.preventDefault();
         // each time we click the button we reset the message.
@@ -124,7 +124,7 @@ $(function () {
                 $("#create_payment_available").text(res.available);
                 addRow(res);
                 clearCreateForm();
-                showSuccess("create a new payment!");
+                flash_message("create a new payment!");
             });
             
             // if the ajax request is failed, show the error.
