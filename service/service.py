@@ -216,7 +216,7 @@ def delete_payment(payments_id):
 ######################################################################
 @app.route('/payments/reset', methods=['DELETE'])
 def reset_payments():
-    """ Removes all pets from the database """
+    """ Removes all payments from the database """
     app.logger.info('Remove all the payments inside the database')
     Payment.disconnect()
     Payment.remove_all()

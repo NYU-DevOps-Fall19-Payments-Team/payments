@@ -218,7 +218,7 @@ class TestPaymentsServer(unittest.TestCase):
         self.assertEqual(new_payment['available'], payment.available)
 
     def test_reset_payments(self):
-        """ Removes all pets from the database """
+        """ Removes all payments from the database """
         self._create_payments(2)
         resp = self.app.get('/payments')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
