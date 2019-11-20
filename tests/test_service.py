@@ -122,7 +122,7 @@ class TestPaymentsServer(unittest.TestCase):
         self._assert_equal_payment(resp.get_json(), test_payment)
 
     def test_query_by_order_id(self):
-        """ Get the payments with given order_id"""
+        """ Get the payments with given order_id """
         test_order_id = 1
         payments = []
         for _ in range(5):
@@ -142,7 +142,7 @@ class TestPaymentsServer(unittest.TestCase):
             self.assertEqual(payment['order_id'], test_order_id)
 
     def test_query_by_customer_id(self):
-        """ Get the payments with given customer_id"""
+        """ Get the payments with given customer_id """
         test_customer_id = 1
         payments = []
         for _ in range(5):
@@ -161,6 +161,27 @@ class TestPaymentsServer(unittest.TestCase):
         # check the data just to be sure
         for payment in data:
             self.assertEqual(payment['customer_id'], test_customer_id)
+
+    def test_query_by_availability(self):
+        """ Get the payments with given availability """
+        test_available = True
+        payments = []
+        for _ in range(5):
+            payment = PaymentsFactory()
+            payment.available = test_available
+            payments.append(payment)
+            self.app.post('/payments',
+                          json=payment.serialize(),
+                          content_type='application/json')
+        resp = self.app.get(
+            '/payments',
+            query_string='available={}'.format(test_available))
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), len(payments))
+        # check the data just to be sure
+        for payment in data:
+            self.assertEqual(payment['available'], test_available)
 
     def test_update_payment(self):
         """ Update a payment"""
