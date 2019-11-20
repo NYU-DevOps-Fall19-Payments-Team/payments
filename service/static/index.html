@@ -10,6 +10,12 @@
     <script type="text/javascript" src = "static/js/jquery-3.1.1.min.js"></script>
   </head>
   <body>
+    <div class="table-responsive">
+        <table class="table">
+          <tr><td>Status:</td><td><span id="flash_message"></span></td></tr>
+        </table>
+    </div>
+
     <div class = "card">
         <form>
             <div class="alert alert-danger error" role="alert">
@@ -82,6 +88,21 @@
           </form>
     </div>
 
+    <div class = "card">
+        <form>
+            <div class="form-group">
+              <h2><label for="delete_title">Delete Payment</label></h2>
+            </div>
+            <div class="alert alert-danger error" role="alert">
+                Missing field.
+            </div>
+            <div class="form-group">
+              <label for="payment_id">Payment ID</label>
+              <input type="number" class="form-control" id="delete_payment_id" placeholder="Enter payment id" required>
+            </div>
+            <button type="submit" class="btn btn-danger" id="delete-btn">Delete</button>
+          </form>
+    </div>
 
     <div class = "card">
         <h2>Recently added</h2>
@@ -91,7 +112,7 @@
           <div class='col'><p class = 'table_name'>Available</p></div>
         </div>
         <div class='row'>
-          <div class='col'><p id="payment_id"></p></div>
+          <!-- <div class='col'><p id="payment_id"></p></div> -->
           <div class='col'><p id="payment_type"></p></div>
           <div class='col'><p id="payment_available"></p></div>
         </div>
