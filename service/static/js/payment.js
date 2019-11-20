@@ -30,16 +30,20 @@ $(function () {
     // ****************************************
 
     // load all the payments from the database, insert it into table.
-    var ajax = $.ajax({
-        type: "GET",
-        url: "/payments",
-        contentType: "application/json"
-    });
-
-    ajax.done(function(res){
-        for(i = 0; i < res.length; i++)
-            addRow(res[i])
-    });
+    $("#list_all-btn").click(()=>{
+        event.preventDefault();
+        $(".display_payments").remove();
+        var ajax = $.ajax({
+            type: "GET",
+            url: "/payments",
+            contentType: "application/json"
+        });
+    
+        ajax.done(function(res){
+            for(i = 0; i < res.length; i++)
+                addRow(res[i])
+        });
+    })
 
     function addRow(payment){
         let type = payment.type;
@@ -49,12 +53,12 @@ $(function () {
                 let credit_card_number = payment.info.credit_card_number;
                 let card_holder_name = payment.info.card_holder_name;
                 let expiration = payment.info.expiration_month + "/" + payment.info.expiration_year;
-                $("#display_credit_card").append(`<div class='row'><div class='col-2'><i class=\"far fa-credit-card\"></i></div><div class='col-1'><p>${id}</p></div><div class='col-3'><p>${card_holder_name}</p></div><div class='col-3'><p>${credit_card_number}</p></div><div class='col-3'><p>${expiration}</p></div></div>`);
+                $("#display_credit_card").append(`<div class='row display_payments'><div class='col-2'><i class=\"far fa-credit-card\"></i></div><div class='col-1'><p>${id}</p></div><div class='col-3'><p>${card_holder_name}</p></div><div class='col-3'><p>${credit_card_number}</p></div><div class='col-3'><p>${expiration}</p></div></div>`);
                 break;
             case "paypal":
                 let email = payment.info.email;
                 let phone_number = payment.info.phone_number;
-                $("#display_paypal").append(`<div class='row'><div class='col-2'><i class="fab fa-cc-paypal"></i></div><div class='col-1'><p>${id}</p></div><div class='col-3'><p>${email}</p></div><div class='col-3'><p>${phone_number}</p></div></div>`);
+                $("#display_paypal").append(`<div class='row display_payments'><div class='col-2'><i class="fab fa-cc-paypal"></i></div><div class='col-1'><p>${id}</p></div><div class='col-3'><p>${email}</p></div><div class='col-3'><p>${phone_number}</p></div></div>`);
                 break;
             default:
                 console.log(payment.type)

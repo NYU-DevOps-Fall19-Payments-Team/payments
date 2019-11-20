@@ -45,3 +45,7 @@ hr {
     display: none;
     margin: 0 auto;
 }
+
+#list_all-btn{
+    display:inline
+}
