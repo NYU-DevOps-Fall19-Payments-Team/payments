@@ -217,6 +217,22 @@ class TestPaymentsServer(unittest.TestCase):
         new_payment = resp.get_json()
         self.assertEqual(new_payment['available'], payment.available)
 
+    def test_reset_payments(self):
+        """ Removes all pets from the database """
+        self._create_payments(2)
+        resp = self.app.get('/payments')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), 2)
+        resp = self.app.delete('/payments/reset',
+                               content_type='application/json')
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(len(resp.data), 0)
+        resp = self.app.get('/payments')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), 0)
+
     def test_toggle_payment_availability_not_found(self):
         """ Toggle the availability of a payment that does not exist """
         payment_id = 1
