@@ -1,5 +1,4 @@
 $(function () {
-<<<<<<< HEAD
   // ****************************************
   //  U T I L I T Y   F U N C T I O N S
   // ****************************************
@@ -21,24 +20,6 @@ $(function () {
       $("#payment_name").val("");
       $("#payment_category").val("");
       $("#payment_available").val("");
-=======
-    // ****************************************
-    // UTILITY FUNCTION
-    // ****************************************
-
-    // Show the error message.
-    function showError(error) {
-        let errorMessage = $(".error");
-        errorMessage.css("display", "block");
-        errorMessage.text(error.message);
-    }
-
-    // Show the success message.
-    function flash_message(message){
-        let successMessage = $(".success");
-        successMessage.css("display", "block");
-        successMessage.text(message);
->>>>>>> f88f6ce229b1758efe90c64149aeb73670e4ba37
     }
 
     // Hide all the message.
