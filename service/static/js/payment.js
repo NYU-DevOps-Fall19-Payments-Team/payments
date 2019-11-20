@@ -11,7 +11,7 @@ $(function () {
     }
 
     // Show the success message.
-    function showSuccess(message){
+    function flash_message(message){
         let successMessage = $(".success");
         successMessage.css("display", "block");
         successMessage.text(message);
@@ -65,7 +65,7 @@ $(function () {
     // Create a the payment
     // ****************************************
     
-    $("#submit").click(function () {
+    $("#create_submit").click(function () {
         // don't refresh the page.
         event.preventDefault();
         // each time we click the button we reset the message.
@@ -73,18 +73,18 @@ $(function () {
         // in case any field is empty, if so it will throw an error. The error will be caught by the catch block.
         try {
             let available = false;
-            if ($("#available").val() == "Yes")
+            if ($("#create_available").val() == "Yes")
                 available = true;
             let type = "paypal";
-            if ($("#type").val() == "Credit Card")
+            if ($("#create_type").val() == "Credit Card")
                 type = "credit card";
             let info = {}
             if (type == "credit card") {
-                let credit_card_number = $("#credit_card_number").val();
-                let card_holder_name = $("#card_holder_name").val();
-                let expiration_month = parseInt($("#expiration_month").val());
-                let expiration_year = parseInt($("#expiration_year").val());
-                let security_code = $("#security_code").val();
+                let credit_card_number = $("#create_credit_card_number").val();
+                let card_holder_name = $("#create_card_holder_name").val();
+                let expiration_month = parseInt($("#create_expiration_month").val());
+                let expiration_year = parseInt($("#create_expiration_year").val());
+                let security_code = $("#create_security_code").val();
                 info = {
                     credit_card_number: credit_card_number,
                     card_holder_name: card_holder_name,
@@ -93,9 +93,9 @@ $(function () {
                     security_code: security_code
                 }
             } else {
-                let email = $("#email").val();
-                let phone_number = $("#phone_number").val();
-                let token = $("#token").val();
+                let email = $("#create_email").val();
+                let phone_number = $("#create_phone_number").val();
+                let token = $("#create_token").val();
                 info = {
                     email: email,
                     phone_number: phone_number,
@@ -103,8 +103,8 @@ $(function () {
                 }
             }
             let data = {
-                customer_id: parseInt($("#customer_id").val()),
-                order_id: parseInt($("#order_id").val()),
+                customer_id: parseInt($("#create_customer_id").val()),
+                order_id: parseInt($("#create_order_id").val()),
                 available: available,
                 type: type,
                 info: info
@@ -119,9 +119,9 @@ $(function () {
             
             // if the ajax request is succeed, add to the table and reset the form.
             ajax.done(function(res){
-                $("#payment_id").text(res.id);
-                $("#payment_type").text(res.type);
-                $("#payment_available").text(res.available);
+                $("#create_payment_id").text(res.id);
+                $("#create_payment_type").text(res.type);
+                $("#create_payment_available").text(res.available);
                 addRow(res);
                 clearCreateForm();
                 showSuccess("create a new payment!");
@@ -137,10 +137,8 @@ $(function () {
     });
 
     // Different forms will be shown base on the type of the payment.
-    $("#type").change(() =>{
-        let type = $("#type").val();
-        let creditCard = $("#credit_card");
-        let paypal =$("#paypal");
+    $("#create_type").change(() =>{
+        let type = $("#create_type").val();
         switch (type) {
             case "Credit Card":
                 $("#credit_card").css("display","block");
@@ -158,23 +156,23 @@ $(function () {
 
     // Clear the create form.
     function clearCreateForm(){
-        $("#customer_id").val("");
-        $("#order_id").val("");
-        $("#available").val("")
+        $("#create_customer_id").val("");
+        $("#create_order_id").val("");
+        $("#create_available").val("")
         let type = "paypal";
-        if ($("#type").val() == "Credit Card")
+        if ($("#create_type").val() == "Credit Card")
             type = "credit card";
-        $("#type").val("");
+        $("#create_type").val("");
         if (type == "credit card") {
-            $("#credit_card_number").val("");
-            $("#card_holder_name").val("");
-            $("#expiration_month").val("");
-            $("#expiration_year").val("");
-            $("#security_code").val("");
+            $("#create_credit_card_number").val("");
+            $("#create_card_holder_name").val("");
+            $("#create_expiration_month").val("");
+            $("#create_expiration_year").val("");
+            $("#create_security_code").val("");
         } else {
-            $("#email").val("");
-            $("#phone_number").val("");
-            $("#token").val("");
+            $("#create_email").val("");
+            $("#create_phone_number").val("");
+            $("#create_token").val("");
         }
         credit_card.style.display = 'none';
         paypal.style.display = 'none';
@@ -201,12 +199,12 @@ $(function () {
             flash_message("Payment has been Deleted!")
         });
 
-        ajax.fail(function(res){
-            flash_message("Server error!")
-        });
-        // ajax.fail(function (res) {
-        //     showError(res.responseJSON);
+        // ajax.fail(function(res){
+        //     flash_message("Server error!")
         // });
+        ajax.fail(function (res) {
+            showError(res.responseJSON);
+        });
     });
 
     // ****************************************

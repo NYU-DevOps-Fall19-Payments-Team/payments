@@ -219,12 +219,9 @@ def reset_payment():
     This endpoint will delete a Payment based on the id specified in the path
     """
     app.logger.info('Remove all the payments inside the database')
+    Payment.disconnect()
     Payment.remove_all()
     return make_response('', status.HTTP_204_NO_CONTENT)
-<<<<<<< HEAD
-
-=======
->>>>>>> create-delete-BDD-UI
 
 ######################################################################
 # PERFORM A STATEFUL ACTION

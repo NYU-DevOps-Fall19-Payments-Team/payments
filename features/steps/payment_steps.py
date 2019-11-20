@@ -42,13 +42,7 @@ def step_impl(context):
 def step_impl(context):
     """ Make a call to the base URL """
     context.driver.get(context.base_url)
-<<<<<<< HEAD
-    # Uncomment next line to take a screenshot of the web page
-    #c ontext.driver.save_screenshot('home_page.png')
-    context.driver.save_screenshot('home_page.png')
-=======
     #context.driver.save_screenshot('home_page.png')
->>>>>>> create-delete-BDD-UI
 
 @when('I press the "{button}" button')
 def step_impl(context, button):
@@ -73,3 +67,16 @@ def step_impl(context, message):
         )
     )
     expect(found).to_be(True)
+
+# Use for test the read function.
+@then('I should see the "{payment_type}" with "{info}" in the display card')
+def step_impl(context, payment_type, info):
+    context.driver.save_screenshot('home_page.png')
+    id = "display_" + payment_type
+    found1 = WebDriverWait(context.driver, WAIT_SECONDS).until(
+        expected_conditions.text_to_be_present_in_element(
+            (By.ID, id),
+            info
+        )
+    )
+    expect(found1).to_be(True)

@@ -124,6 +124,11 @@ class Payment(db.Model):
         return cls.query.all()
 
     @classmethod
+    def disconnect(cls):
+        """ Disconnect from the database """
+        db.session.remove()
+
+    @classmethod
     def remove_all(cls):
         """ Removes all documents from the database (use for testing)  """
         cls.logger.info('Drop all the tables')
