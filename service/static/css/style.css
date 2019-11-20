@@ -10,6 +10,10 @@
     width: 90%;
 }
 
+#list_all-btn{
+    margin-top:2em
+}
+
 #paypal{
     display: none;
 }

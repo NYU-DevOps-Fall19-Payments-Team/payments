@@ -95,3 +95,4 @@ Scenario: Update a payment method for PayPal
   And I set the "token" to "hereisyourtoken" in "update" form
   And I press the "Update" button
   Then I should see the message "Payment has been Updated!"
+
