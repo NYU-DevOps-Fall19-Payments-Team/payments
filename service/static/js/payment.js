@@ -194,7 +194,6 @@ $(function () {
         })
 
         ajax.done(function(res){
-            clearDeleteForm()
             $("#delete_payment_id").val("")
             flash_message("Payment has been Deleted!")
         });
@@ -206,10 +205,6 @@ $(function () {
             showError(res.responseJSON);
         });
     });
-
-    function clearDeleteForm(){
-        $("#delete_payment_id").val("")
-    }
 
     // ****************************************
     // Update a Pet
