@@ -5,21 +5,21 @@ $(function () {
 
   // Updates the form with data from the response
   function update_form_data(res) {
-    $("#pet_id").val(res._id);
-    $("#pet_name").val(res.name);
-    $("#pet_category").val(res.category);
+    $("#payment_id").val(res._id);
+    $("#payment_name").val(res.name);
+    $("#payment_category").val(res.category);
     if (res.available == true) {
-        $("#pet_available").val("true");
+        $("#payment_available").val("true");
       } else {
-        $("#pet_available").val("false");
+        $("#payment_available").val("false");
       }
     }
 
     /// Clears all form fields
     function clear_form_data() {
-      $("#pet_name").val("");
-      $("#pet_category").val("");
-      $("#pet_available").val("");
+      $("#payment_name").val("");
+      $("#payment_category").val("");
+      $("#payment_available").val("");
     }
 
     // Updates the flash message area
@@ -198,7 +198,7 @@ $(function () {
                 $("#update_payment_id").val("")
                 $("#update_customer_id").val("")
                 $("#update_order_id").val("")
-                $("#update_available").val("") // TODO: not the correct emptying
+                $("#update_available").val("")
                 $("#update_type").val("")
                 $("#update_credit_card_number").val("")
                 $("#update_card_holder_name").val("")
