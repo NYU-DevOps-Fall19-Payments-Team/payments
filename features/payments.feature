@@ -65,7 +65,8 @@ Scenario: Delete a payment method
   Then I should see the message "Payment has been Deleted!"
   Then I should not see the "credit_card" with "7896987987" in the display card
   When I visit the "home page"
-  Then I should not see the "Zheng Jiang" in the display card
+  And I press the "list_all" button
+  Then I should not see the "credit_card" with "Zheng Jiang" in the display card
 
 Scenario: Update a payment method for a credit card
   When I visit the "home page"
