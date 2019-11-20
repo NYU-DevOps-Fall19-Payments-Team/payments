@@ -13,7 +13,7 @@ Feature: A store service back-end
             | 200 | 1 | paypal | True | {"info": {"email": "cool@gmail.com", "phone_number": "(896) 734-6080", "token": "12"}} |
             | 201 | 2 | paypal | False | {"info": {"email": "awesome@hotmail.com", "phone_number": "(246) 719-6381", "token": "3"}} |
             | 202 | 3 | paypal | True | {"info": {"email": "great@outlook.com", "phone_number": "(292) 536-5570", "token": "1"}} |
-            | 204 | 4 | paypal | False | {"info": {"email": "prefect@icloud.com", "phone_number": "(631) 714-8611", "token": "1"}} |
+            | 204 | 4 | paypal | False | {"info": {"email": "perfect@icloud.com", "phone_number": "(631) 714-8611", "token": "1"}} |
 
 Scenario: Read all the payments
     When I visit the "home page"
@@ -25,7 +25,7 @@ Scenario: Read all the payments
     Then I should see the "paypal" with "cool@gmail.com" in the display card
     Then I should see the "paypal" with "awesome@hotmail.com" in the display card
     Then I should see the "paypal" with "great@outlook.com" in the display card
-    Then I should see the "paypal" with "prefect@icloud.com" in the display card
+    Then I should see the "paypal" with "perfect@icloud.com" in the display card
 
 Scenario: Create a credit card payment method
     When I visit the "home page"
