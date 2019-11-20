@@ -40,7 +40,7 @@ $(function () {
         for(i = 0; i < res.length; i++)
             addRow(res[i])
     });
-    
+
     function addRow(payment){
         let type = payment.type;
         let id = payment.id;
@@ -64,7 +64,7 @@ $(function () {
     // ****************************************
     // Create a the payment
     // ****************************************
-    
+
     $("#create-btn").click(function () {
         // don't refresh the page.
         event.preventDefault();
@@ -116,7 +116,7 @@ $(function () {
                 contentType: "application/json",
                 data: JSON.stringify(data),
             });
-            
+
             // if the ajax request is succeed, add to the table and reset the form.
             ajax.done(function(res){
                 $("#create_payment_id").text(res.id);
@@ -126,7 +126,7 @@ $(function () {
                 clearCreateForm();
                 flash_message("create a new payment!");
             });
-            
+
             // if the ajax request is failed, show the error.
             ajax.fail(function (res) {
                 showError(res.responseJSON);
@@ -284,5 +284,3 @@ $(function () {
         }
     });
 });
-
-
