@@ -25,7 +25,6 @@ Scenario: Read all the payments
     Then I should see the "paypal" with "awesome@hotmail.com" in the display card
     Then I should see the "paypal" with "great@outlook.com" in the display card
     Then I should see the "paypal" with "prefect@icloude.com" in the display card
-    
 
 Scenario: Delete a payment method
   When I visit the "home page"
