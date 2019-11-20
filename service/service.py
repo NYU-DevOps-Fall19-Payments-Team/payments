@@ -166,7 +166,7 @@ def create_payments():
     payment.deserialize(request_data)
     payment.save()
     message = payment.serialize()
-    location_url = url_for('get_payments', payments_id=payment.id,
+    location_url = url_for('get_payment', payments_id=payment.id,
                            _external=True)
     return make_response(jsonify(message), status.HTTP_201_CREATED,
                          {

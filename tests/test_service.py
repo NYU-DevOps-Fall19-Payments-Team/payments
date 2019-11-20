@@ -266,7 +266,7 @@ class TestPaymentsServer(unittest.TestCase):
                              content_type='application/json')
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
 
-    @patch('service.models.Payment.find_by_customer')
+    @patch('service.models.Payment.find_by')
     def test_internal_server_error(self, bad_request_mock):
         """ Test a request with internal_server_error """
         bad_request_mock.side_effect = internal_server_error("")
