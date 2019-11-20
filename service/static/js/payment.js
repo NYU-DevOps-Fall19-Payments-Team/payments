@@ -1,25 +1,20 @@
 $(function () {
-  // ****************************************
-  //  U T I L I T Y   F U N C T I O N S
-  // ****************************************
+    // ****************************************
+    // UTILITY FUNCTIONS
+    // ****************************************
 
-  // Updates the form with data from the response
-  function update_form_data(res) {
-    $("#payment_id").val(res._id);
-    $("#payment_name").val(res.name);
-    $("#payment_category").val(res.category);
-    if (res.available == true) {
-        $("#payment_available").val("true");
-      } else {
-        $("#payment_available").val("false");
-      }
+    // Show the error message.
+    function showError(error) {
+        let errorMessage = $(".error");
+        errorMessage.css("display", "block");
+        errorMessage.text(error.message);
     }
 
-    /// Clears all form fields
-    function clear_form_data() {
-      $("#payment_name").val("");
-      $("#payment_category").val("");
-      $("#payment_available").val("");
+    // Show the success message.
+    function flash_message(message){
+        let successMessage = $(".success");
+        successMessage.css("display", "block");
+        successMessage.text(message);
     }
 
     // Hide all the message.
