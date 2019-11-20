@@ -44,17 +44,18 @@ $(function () {
     function addRow(payment){
         let type = payment.type;
         let id = payment.id;
+        let available = payment.available;
         switch (type){
             case "credit card":
                 let credit_card_number = payment.info.credit_card_number;
                 let card_holder_name = payment.info.card_holder_name;
                 let expiration = payment.info.expiration_month + "/" + payment.info.expiration_year;
-                $("#display_credit_card").append(`<div class='row'><div class='col-2'><i class=\"far fa-credit-card\"></i></div><div class='col-1'><p>${id}</p></div><div class='col-3'><p>${card_holder_name}</p></div><div class='col-3'><p>${credit_card_number}</p></div><div class='col-3'><p>${expiration}</p></div></div>`);
+                $("#display_credit_card").append(`<div class='row'><div class='col-2'><i class=\"far fa-credit-card\"></i></div><div class='col-0'><p>${available}</p></div><div class='col-1'><p>${id}</p></div><div class='col-3'><p>${card_holder_name}</p></div><div class='col-3'><p>${credit_card_number}</p></div><div class='col-3'><p>${expiration}</p></div></div>`);
                 break;
             case "paypal":
                 let email = payment.info.email;
                 let phone_number = payment.info.phone_number;
-                $("#display_paypal").append(`<div class='row'><div class='col-2'><i class="fab fa-cc-paypal"></i></div><div class='col-1'><p>${id}</p></div><div class='col-3'><p>${email}</p></div><div class='col-3'><p>${phone_number}</p></div></div>`);
+                $("#display_paypal").append(`<div class='row'><div class='col-2'><i class="fab fa-cc-paypal"></i></div><div class='col-0'><p>${available}</p></div><div class='col-1'><p>${id}</p></div><div class='col-3'><p>${email}</p></div><div class='col-3'><p>${phone_number}</p></div></div>`);
                 break;
             default:
                 console.log(payment.type)
@@ -62,7 +63,7 @@ $(function () {
     };
 
     // ****************************************
-    // Create a the payment
+    // Create a payment
     // ****************************************
 
     $("#create-btn").click(function () {
@@ -299,5 +300,29 @@ $(function () {
                 $("#update_credit_card").css("display", "none")
                 $("#update_paypal").css("display", "none")
         }
+    });
+});
+
+// ****************************************
+// Toggle a Payment
+// ****************************************
+
+$("#toggle-btn").click(function () {
+  event.preventDefault();
+    var payment_id = $("#toggle_payment_id").val();
+
+    var ajax = $.ajax({
+        type: "PUT",
+        url: "/payments/" + payment_id + "/toggle",
+        contentType: "application/json",
+        data: '',
+    })
+
+    ajax.done(function(res){
+        flash_message("Payment availability has been toggled!")
+    });
+
+    ajax.fail(function (res) {
+        showError(res.responseJSON);
     });
 });
