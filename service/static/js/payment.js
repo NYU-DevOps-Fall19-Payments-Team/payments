@@ -25,6 +25,64 @@ $(function () {
         errorMessage.css("display", "none");
     }
 
+    // for create and update route, construct the data.
+    function constructData(type, available,route){
+        if (type == "credit card") {
+            let credit_card_number = $(`#${route}_credit_card_number`).val();
+            let card_holder_name = $(`#${route}_card_holder_name`).val();
+            let expiration_month = parseInt($(`#${route}_expiration_month`).val());
+            let expiration_year = parseInt($(`#${route}_expiration_year`).val());
+            let security_code = $(`#${route}_security_code`).val();
+            info = {
+                credit_card_number: credit_card_number,
+                card_holder_name: card_holder_name,
+                expiration_month: expiration_month,
+                expiration_year: expiration_year,
+                security_code: security_code
+            }
+        } else {
+            let email = $(`#${route}_email`).val();
+            let phone_number = $(`#${route}_phone_number`).val();
+            let token = $(`#${route}_token`).val();
+            info = {
+                email: email,
+                phone_number: phone_number,
+                token: token
+            }
+        }
+        let data = {
+            customer_id: parseInt($(`#${route}_customer_id`).val()),
+            order_id: parseInt($(`#${route}_order_id`).val()),
+            available: available,
+            type: type,
+            info: info
+        };
+        return data
+    }
+
+    // Clear the form.
+    function clearForm(type){
+        $(`#${type}_customer_id`).val("");
+        $(`#${type}_order_id`).val("");
+        $(`#${type}_available`).val("")
+        let this_type = ($(`#${type}_type`).val() == "Credit Card")? "credit card" : "paypal";
+        $(`#${type}_type`).val("");
+        if (this_type == "credit card") {
+            $(`#${type}_credit_card_number`).val("");
+            $(`#${type}_card_holder_name`).val("");
+            $(`#${type}_expiration_month`).val("");
+            $(`#${type}_expiration_year`).val("");
+            $(`#${type}_security_code`).val("");
+        } else {
+            $(`#${type}_email`).val("");
+            $(`#${type}_phone_number`).val("");
+            $(`#${type}_token`).val("");
+        }
+        $(`#${type}_credit_card`).css("display","none");
+        $(`#${type}_paypal`).css("display","none");
+    }
+
+
     // ****************************************
     // Read all the payments
     // ****************************************
@@ -88,43 +146,9 @@ $(function () {
         hideMessage();
         // in case any field is empty, if so it will throw an error. The error will be caught by the catch block.
         try {
-            let available = false;
-            if ($("#create_available").val() == "Yes")
-                available = true;
-            let type = "paypal";
-            if ($("#create_type").val() == "Credit Card")
-                type = "credit card";
-            let info = {}
-            if (type == "credit card") {
-                let credit_card_number = $("#create_credit_card_number").val();
-                let card_holder_name = $("#create_card_holder_name").val();
-                let expiration_month = parseInt($("#create_expiration_month").val());
-                let expiration_year = parseInt($("#create_expiration_year").val());
-                let security_code = $("#create_security_code").val();
-                info = {
-                    credit_card_number: credit_card_number,
-                    card_holder_name: card_holder_name,
-                    expiration_month: expiration_month,
-                    expiration_year: expiration_year,
-                    security_code: security_code
-                }
-            } else {
-                let email = $("#create_email").val();
-                let phone_number = $("#create_phone_number").val();
-                let token = $("#create_token").val();
-                info = {
-                    email: email,
-                    phone_number: phone_number,
-                    token: token
-                }
-            }
-            let data = {
-                customer_id: parseInt($("#create_customer_id").val()),
-                order_id: parseInt($("#create_order_id").val()),
-                available: available,
-                type: type,
-                info: info
-            };
+            let available = ($("#create_available").val() == "Yes")? true : false;
+            let type = ($("#create_type").val() == "Credit Card")? "credit card" : "paypal";
+            let data = constructData(type,available,"create");
             // send the data to database.
             var ajax = $.ajax({
                 type: "POST",
@@ -139,7 +163,7 @@ $(function () {
                 $("#create_payment_type").text(res.type);
                 $("#create_payment_available").text(res.available);
                 addRow(res);
-                clearCreateForm();
+                clearForm("create");
                 flash_message("create a new payment!");
             });
 
@@ -157,138 +181,63 @@ $(function () {
         let type = $("#create_type").val();
         switch (type) {
             case "Credit Card":
-                $("#credit_card").css("display","block");
-                $("#paypal").css("display","none");
+                $("#create_credit_card").css("display","block");
+                $("#create_paypal").css("display","none");
                 break;
             case "PayPal":
-                $("#credit_card").css("display","none");
-                $("#paypal").css("display","block");
+                $("#create_credit_card").css("display","none");
+                $("#create_paypal").css("display","block");
                 break;
             default:
-                $("#credit_card").css("display","none");
-                $("#paypal").css("display","none");
+                $("#create_credit_card").css("display","none");
+                $("#create_paypal").css("display","none");
         }
     })
 
-    // Clear the create form.
-    function clearCreateForm(){
-        $("#create_customer_id").val("");
-        $("#create_order_id").val("");
-        $("#create_available").val("")
-        let type = "paypal";
-        if ($("#create_type").val() == "Credit Card")
-            type = "credit card";
-        $("#create_type").val("");
-        if (type == "credit card") {
-            $("#create_credit_card_number").val("");
-            $("#create_card_holder_name").val("");
-            $("#create_expiration_month").val("");
-            $("#create_expiration_year").val("");
-            $("#create_security_code").val("");
-        } else {
-            $("#create_email").val("");
-            $("#create_phone_number").val("");
-            $("#create_token").val("");
-        }
-        credit_card.style.display = 'none';
-        paypal.style.display = 'none';
-    }
-
+    
     // ****************************************
     // Delete a Payment
     // ****************************************
 
     $("#delete-btn").click(function () {
-      event.preventDefault();
+        event.preventDefault();
+        hideMessage();
         var payment_id = $("#delete_payment_id").val();
-
         var ajax = $.ajax({
             type: "DELETE",
             url: "/payments/" + payment_id,
             contentType: "application/json",
             data: '',
         })
-
         ajax.done(function(res){
             $("#delete_payment_id").val("")
             flash_message("Payment has been Deleted!")
         });
-
-        // ajax.fail(function(res){
-        //     flash_message("Server error!")
-        // });
         ajax.fail(function (res) {
             showError(res.responseJSON);
         });
     });
 
     // ****************************************
-    // Update a Pet
+    // Update a Payments
     // ****************************************
 
     $("#update-btn").click(function () {
         event.preventDefault();
         var payment_id = $("#update_payment_id").val();
         try {
-            let available = false;
-            if ($("#update_available").val() == "Yes")
-                available = true;
-            let type = "paypal";
-            if ($("#update_type").val() == "Credit Card")
-                type = "credit card";
-            let info = {}
-            if (type == "credit card") {
-                let credit_card_number = $("#update_credit_card_number").val();
-                let card_holder_name = $("#update_card_holder_name").val();
-                let expiration_month = parseInt($("#update_expiration_month").val());
-                let expiration_year = parseInt($("#update_expiration_year").val());
-                let security_code = $("#update_security_code").val();
-                info = {
-                    credit_card_number: credit_card_number,
-                    card_holder_name: card_holder_name,
-                    expiration_month: expiration_month,
-                    expiration_year: expiration_year,
-                    security_code: security_code
-                }
-            } else {
-                let email = $("#update_email").val();
-                let phone_number = $("#update_phone_number").val();
-                let token = $("#update_token").val();
-                info = {
-                    email: email,
-                    phone_number: phone_number,
-                    token: token
-                }
-            }
-            let data = {
-                customer_id: parseInt($("#update_customer_id").val()),
-                order_id: parseInt($("#update_order_id").val()),
-                available: available,
-                type: type,
-                info: info
-            };
+            let available = ($("#update_available").val() == "Yes")? true : false;
+            let type = ($("#update_type").val() == "Credit Card")? "credit card":"paypal";
+            let data = constructData(type,available,"update");
             var ajax = $.ajax({
                 type: "PUT",
                 url: "/payments/" + payment_id,
                 contentType: "application/json",
                 data: JSON.stringify(data),
             });
-            console.log(payment_id);
 
             ajax.done(function(res){
-                $("#update_payment_id").val("")
-                $("#update_customer_id").val("")
-                $("#update_order_id").val("")
-                $("#update_available").val("")
-                $("#update_type").val("")
-                $("#update_credit_card_number").val("")
-                $("#update_card_holder_name").val("")
-                $("#update_expiration_month").val("")
-                $("#update_expiration_year").val("")
-                $("#update_security_code").val("")
-                $("#update_email").val("")
-                $("#update_phone_number").val("")
-                $("#update_token").val("")
+                clearForm("update");
                 flash_message("Payment has been Updated!")
             });
 

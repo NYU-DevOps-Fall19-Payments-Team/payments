@@ -14,11 +14,11 @@
     margin-top:2em
 }
 
-#paypal{
+#create_paypal{
     display: none;
 }
 
-#credit_card{
+#create_credit_card{
     display: none;
 }
 
@@ -29,7 +29,6 @@
 #update_paypal{
     display: none;
 }
-
 
 hr {
     border: 0;
