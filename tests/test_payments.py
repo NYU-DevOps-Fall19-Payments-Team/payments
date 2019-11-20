@@ -233,6 +233,14 @@ class TestPayments(unittest.TestCase):
         self.assertIsNot(payments, None)
         self._assert_equal_test_payment_2(payments[0])
 
+    def test_remove_all(self):
+        """ Test dropping and recreating all tables in the database """
+        self._add_two_test_payments()
+        self.assertEqual(len(Payment.all()), 2)
+        Payment.disconnect()
+        Payment.remove_all()
+        self.assertEqual(len(Payment.all()), 0)
+
 
 ######################################################################
 #   M A I N
