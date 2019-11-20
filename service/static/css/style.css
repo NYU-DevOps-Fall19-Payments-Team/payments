@@ -7,7 +7,11 @@
 }
 
 #show_payment_card{
-    width: 70%;
+    width: 90%;
+}
+
+#list_all-btn{
+    margin-top:2em
 }
 
 #paypal{
@@ -44,4 +48,8 @@ hr {
     width:40%;
     display: none;
     margin: 0 auto;
+}
+
+#list_all-btn{
+    display:inline
 }

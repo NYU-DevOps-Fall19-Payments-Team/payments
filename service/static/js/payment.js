@@ -30,34 +30,50 @@ $(function () {
     // ****************************************
 
     // load all the payments from the database, insert it into table.
-    var ajax = $.ajax({
-        type: "GET",
-        url: "/payments",
-        contentType: "application/json"
-    });
+    $("#list_all-btn").click(()=>{
+        event.preventDefault();
+        cleanDisplayCard()
+        var ajax = $.ajax({
+            type: "GET",
+            url: "/payments",
+            contentType: "application/json"
+        });
+    
+        ajax.done(function(res){
+            for(i = 0; i < res.length; i++)
+                addRow(res[i])
+        });
+    })
 
-    ajax.done(function(res){
-        for(i = 0; i < res.length; i++)
-            addRow(res[i])
-    });
+    function cleanDisplayCard(){
+        $(".display_payments").remove();
+    }
 
     function addRow(payment){
         let type = payment.type;
-        let id = payment.id;
+        console.log(payment)
+        let id = `<div class ='col-1'>${payment.id}</div>`;
+        let customer_id = `<div class ='col-2'>${payment.customer_id}</div>`;
+        let order_id = `<div class ='col-1'>${payment.order_id}</div>`;
+        let available = `<div class ='col-1'>${payment.available}</div>`;
         switch (type){
             case "credit card":
-                let credit_card_number = payment.info.credit_card_number;
-                let card_holder_name = payment.info.card_holder_name;
-                let expiration = payment.info.expiration_month + "/" + payment.info.expiration_year;
-                $("#display_credit_card").append(`<div class='row'><div class='col-2'><i class=\"far fa-credit-card\"></i></div><div class='col-1'><p>${id}</p></div><div class='col-3'><p>${card_holder_name}</p></div><div class='col-3'><p>${credit_card_number}</p></div><div class='col-3'><p>${expiration}</p></div></div>`);
+                let credit_card_icon = "<div class='col-1'><i class=\"far fa-credit-card\"></i></div>";
+                let credit_card_number = `<div class ='col-2'>${payment.info.credit_card_number}</div>`;
+                let card_holder_name = `<div class ='col-2'>${payment.info.card_holder_name}</div>`;
+                let expiration = `<div class ='col-2'>${payment.info.expiration_month + "/" + payment.info.expiration_year}</div>`;
+                let credit_new_row = id + customer_id + order_id + available + credit_card_icon + card_holder_name + credit_card_number + expiration; 
+                $("#display_credit_card").append(`<div class='row display_payments'>${credit_new_row}</div>`);
                 break;
             case "paypal":
-                let email = payment.info.email;
-                let phone_number = payment.info.phone_number;
-                $("#display_paypal").append(`<div class='row'><div class='col-2'><i class="fab fa-cc-paypal"></i></div><div class='col-1'><p>${id}</p></div><div class='col-3'><p>${email}</p></div><div class='col-3'><p>${phone_number}</p></div></div>`);
+                let paypal_icon = "<div class='col-1'><i class=\"fab fa-cc-paypal\"></i></div>";
+                let email = `<div class ='col-3'>${payment.info.email}</div>`;
+                let phone_number = `<div class ='col-2'>${payment.info.phone_number}</div>`;
+                let paypal_new_row = id + customer_id + order_id + available + paypal_icon + email + phone_number;
+                $("#display_paypal").append(`<div class='row display_payments'>${paypal_new_row}</div>`);
                 break;
             default:
-                console.log(payment.type)
+                showError(`invaild payment type: ${payment.type}`);
         }
     };
 

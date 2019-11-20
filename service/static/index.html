@@ -22,30 +22,39 @@
         <div id='display_credit_card'>
           <h4>Credit card</h2>
           <div class='row'>
-            <div class='col-2'><span>Type</span></i></div>
             <div class='col-1'><p>ID</p></div>
-            <div class='col-3'><p>Card Holder</p></div>
-            <div class='col-3'><p>Card Number</p></div>
-            <div class='col-3'><p>Expiration date</p></div>
+            <div class='col-2'><p>Customer ID</p></div>
+            <div class='col-1'><p>Order ID</p></div>
+            <div class='col-1'><p>Available</p></div>
+            <div class='col-1'><p>Type</p></div>
+            <div class='col-2'><p>Card Holder</p></div>
+            <div class='col-2'><p>Card Number</p></div>
+            <div class='col-2'><p>Expiration date</p></div>
           </div>
         </div>
         <hr/>
         <div id='display_paypal'>
           <h4>Paypal</h2>
           <div class='row'>
-              <div class='col-2'><span>Type</span></i></div>
               <div class='col-1'><p>ID</p></div>
+              <div class='col-2'><p>Customer ID</p></div>
+              <div class='col-1'><p>Order ID</p></div>
+              <div class='col-1'><p>Available</p></div>
+              <div class='col-1'><p>Type</p></div>
               <div class='col-3'><p>Email</p></div>
-              <div class='col-3'><p>Phone Number</p></div> 
+              <div class='col-2'><p>Phone Number</p></div> 
             </div>
         </div>
+        <form>
+            <button id = "list_all-btn" class="btn btn-primary">List All Payments</button>
+        </form>
     </div>
 
     <!-- create a payment -->
     <div class = "card">
         <form>
             <div class="form-group">
-                <h2><label for="delete_title">Create Payment</label></h2>
+                <h2><label for="create_title">Create Payment</label></h2>
               </div>
             <div class="form-group">
               <label for="customer_id">Customer ID</label>
