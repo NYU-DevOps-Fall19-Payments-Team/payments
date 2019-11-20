@@ -13,10 +13,11 @@ Feature: A store service back-end
             | 200 | 1 | paypal | True | {"info": {"email": "cool@gmail.com", "phone_number": "(896) 734-6080", "token": "12"}} |
             | 201 | 2 | paypal | False | {"info": {"email": "awesome@hotmail.com", "phone_number": "(246) 719-6381", "token": "3"}} |
             | 202 | 3 | paypal | True | {"info": {"email": "great@outlook.com", "phone_number": "(292) 536-5570", "token": "1"}} |
-            | 204 | 4 | paypal | False | {"info": {"email": "prefect@icloude.com", "phone_number": "(631) 714-8611", "token": "1"}} |
+            | 204 | 4 | paypal | False | {"info": {"email": "perfect@icloud.com", "phone_number": "(631) 714-8611", "token": "1"}} |
 
 Scenario: Read all the payments
     When I visit the "home page"
+    And I press the "list_all" button
     Then I should see the "credit_card" with "123123123" in the display card
     Then I should see the "credit_card" with "456456546" in the display card
     Then I should see the "credit_card" with "7896987987" in the display card
@@ -24,7 +25,7 @@ Scenario: Read all the payments
     Then I should see the "paypal" with "cool@gmail.com" in the display card
     Then I should see the "paypal" with "awesome@hotmail.com" in the display card
     Then I should see the "paypal" with "great@outlook.com" in the display card
-    Then I should see the "paypal" with "prefect@icloude.com" in the display card
+    Then I should see the "paypal" with "perfect@icloud.com" in the display card
 
 Scenario: Create a credit card payment method
     When I visit the "home page"
@@ -38,8 +39,8 @@ Scenario: Create a credit card payment method
     And I set the "expiration_year" to "2023" in "create" form
     And I set the "security_code" to "219" in "create" form
     And I press the "Create" button
+    And I press the "list_all" button
     Then I should see the message "create a new payment!"
-    When I visit the "home page"
     Then I should see the "credit_card" with "4345792072142100" in the display card
 
 Scenario: Create a paypal payment method
@@ -52,17 +53,20 @@ Scenario: Create a paypal payment method
     And I set the "phone_number" to "(744) 449-7930" in "create" form
     And I set the "token" to "9" in "create" form
     And I press the "Create" button
+    And I press the "list_all" button
     Then I should see the message "create a new payment!"
-    When I visit the "home page"
     Then I should see the "paypal" with "udydamma-1603@yopmail.com" in the display card
 
 Scenario: Delete a payment method
   When I visit the "home page"
   And I set the "payment_id" to "3" in "delete" form
   And I press the "Delete" button
+  And I press the "list_all" button
   Then I should see the message "Payment has been Deleted!"
+  Then I should not see the "credit_card" with "7896987987" in the display card
   When I visit the "home page"
-  Then I should not see the "Zheng Jiang" in the display card
+  And I press the "list_all" button
+  Then I should not see the "credit_card" with "Zheng Jiang" in the display card
 
 Scenario: Update a payment method for a credit card
   When I visit the "home page"

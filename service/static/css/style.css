@@ -7,14 +7,18 @@
 }
 
 #show_payment_card{
-    width: 70%;
+    width: 90%;
 }
 
-#paypal{
+#list_all-btn{
+    margin-top:2em
+}
+
+#create_paypal{
     display: none;
 }
 
-#credit_card{
+#create_credit_card{
     display: none;
 }
 
@@ -25,7 +29,6 @@
 #update_paypal{
     display: none;
 }
-
 
 hr {
     border: 0;
@@ -44,4 +47,8 @@ hr {
     width:40%;
     display: none;
     margin: 0 auto;
+}
+
+#list_all-btn{
+    display:inline
 }
