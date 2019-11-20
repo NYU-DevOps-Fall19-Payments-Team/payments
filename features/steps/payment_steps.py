@@ -89,9 +89,10 @@ def step_impl(context, payment_type, info):
         )
     )
     expect(found1).to_be(True)
-
-@then('I should not see the "{payment_info}" in the display card')
-def step_impl(context, payment_info):
-    element = context.driver.find_element_by_id('show_payment_card')
-    error_msg = "I should not see '%s' in '%s'" % (payment_info, element.text)
-    ensure(payment_info in element.text, False, error_msg)
+    
+@then('I should not see the "{payment_type}" with "{info}" in the display card')
+def step_impl(context, payment_type, info):
+    id = "display_" + payment_type
+    element = context.driver.find_element_by_id(id)
+    error_msg = "I should not see '%s' in '%s'" % (info, element.text)
+    ensure(info in element.text, False, error_msg)

@@ -63,4 +63,4 @@ Scenario: Delete a payment method
   And I press the "Delete" button
   And I press the "list_all" button
   Then I should see the message "Payment has been Deleted!"
-  Then I should not see the "Zheng Jiang" in the display card
+  Then I should not see the "credit_card" with "7896987987" in the display card
