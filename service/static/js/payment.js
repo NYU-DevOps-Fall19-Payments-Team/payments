@@ -1,6 +1,6 @@
 $(function () {
     // ****************************************
-    // UTILITY FUNCTION
+    // UTILITY FUNCTIONS
     // ****************************************
 
     // Show the error message.
@@ -212,21 +212,21 @@ $(function () {
 
     $("#update-btn").click(function () {
         event.preventDefault();
-        var payment_id = $("#payment_id_update").val();
+        var payment_id = $("#update_payment_id").val();
         try {
             let available = false;
-            if ($("#available_update").val() == "Yes")
+            if ($("#update_available").val() == "Yes")
                 available = true;
             let type = "paypal";
-            if ($("#type_update").val() == "Credit Card")
+            if ($("#update_type").val() == "Credit Card")
                 type = "credit card";
             let info = {}
             if (type == "credit card") {
-                let credit_card_number = $("#credit_card_number_update").val();
-                let card_holder_name = $("#card_holder_name_update").val();
-                let expiration_month = parseInt($("#expiration_month_update").val());
-                let expiration_year = parseInt($("#expiration_year_update").val());
-                let security_code = $("#security_code_update").val();
+                let credit_card_number = $("#update_credit_card_number").val();
+                let card_holder_name = $("#update_card_holder_name").val();
+                let expiration_month = parseInt($("#update_expiration_month").val());
+                let expiration_year = parseInt($("#update_expiration_year").val());
+                let security_code = $("#update_security_code").val();
                 info = {
                     credit_card_number: credit_card_number,
                     card_holder_name: card_holder_name,
@@ -235,9 +235,9 @@ $(function () {
                     security_code: security_code
                 }
             } else {
-                let email = $("#email_update").val();
-                let phone_number = $("#phone_number_update").val();
-                let token = $("#token_update").val();
+                let email = $("#update_email").val();
+                let phone_number = $("#update_phone_number").val();
+                let token = $("#update_token").val();
                 info = {
                     email: email,
                     phone_number: phone_number,
@@ -245,8 +245,8 @@ $(function () {
                 }
             }
             let data = {
-                customer_id: parseInt($("#customer_id_update").val()),
-                order_id: parseInt($("#order_id_update").val()),
+                customer_id: parseInt($("#update_customer_id").val()),
+                order_id: parseInt($("#update_order_id").val()),
                 available: available,
                 type: type,
                 info: info
@@ -260,19 +260,19 @@ $(function () {
             console.log(payment_id);
 
             ajax.done(function(res){
-                $("#payment_id_update").val("")
-                $("#customer_id_update").val("")
-                $("#order_id_update").val("")
-                $("#available_update").val("") // TODO: not the correct emptying
-                $("#type_update").val("")
-                $("#credit_card_number_update").val("")
-                $("#card_holder_name_update").val("")
-                $("#expiration_month_update").val("")
-                $("#expiration_year_update").val("")
-                $("#security_code_update").val("")
-                $("#email_update").val("")
-                $("#phone_number_update").val("")
-                $("#token_update").val("")
+                $("#update_payment_id").val("")
+                $("#update_customer_id").val("")
+                $("#update_order_id").val("")
+                $("#update_available").val("")
+                $("#update_type").val("")
+                $("#update_credit_card_number").val("")
+                $("#update_card_holder_name").val("")
+                $("#update_expiration_month").val("")
+                $("#update_expiration_year").val("")
+                $("#update_security_code").val("")
+                $("#update_email").val("")
+                $("#update_phone_number").val("")
+                $("#update_token").val("")
                 flash_message("Payment has been Updated!")
             });
 
@@ -281,6 +281,23 @@ $(function () {
             });
         } catch (err) {
             showError(err);
+        }
+    });
+
+    $("#update_type").change(() => {
+        let type = $("#update_type").val();
+        switch (type) {
+            case "Credit Card":
+                $("#update_credit_card").css("display", "block")
+                $("#update_paypal").css("display", "none")
+                break;
+            case "PayPal":
+                $("#update_credit_card").css("display", "none")
+                $("#update_paypal").css("display", "block")
+                break;
+            default:
+                $("#update_credit_card").css("display", "none")
+                $("#update_paypal").css("display", "none")
         }
     });
 });
