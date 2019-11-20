@@ -91,3 +91,9 @@ Scenario: Update a payment method for PayPal
   And I set the "token" to "hereisyourtoken" in "update" form
   And I press the "Update" button
   Then I should see the message "Payment has been Updated!"
+
+Scenario: Query by order id
+    When I visit the "home Page"
+    And I set the "order_id" to "100" in "query" form
+    And I press the "Search" button
+    Then I should see the "credit_card" with "123123123" in the display card
