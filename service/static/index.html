@@ -240,14 +240,15 @@
             <div class="form-group">
                 <label for="query_available">Available</label>
                 <select class="form-control" id="query_available">
-                  <option selected>Yes</option>
-                  <option>No</option>
+                  <option value="" selected>Both</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
                 </select>
               </div>
             <div class="form-group">
               <label for="query_type">Payment Type</label>
               <select class="form-control" id="query_type">
-                <option value="" selected disabled>Please Choose...</option>
+                <option value="" selected>All</option>
                 <option>Credit Card</option>
                 <option>PayPal</option>
               </select>
