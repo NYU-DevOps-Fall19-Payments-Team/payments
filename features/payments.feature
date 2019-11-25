@@ -15,7 +15,7 @@ Feature: A store service back-end
       | 202      | 3           | paypal      | False     | {"info": {"email": "great@outlook.com", "phone_number": "(292) 536-5570", "token": "1"}}                                                                  |
       | 204      | 4           | paypal      | False     | {"info": {"email": "perfect@icloud.com", "phone_number": "(631) 714-8611", "token": "1"}}                                                                 |
 
-  Scenario: Read all the payments
+  Scenario: List all the payments
     When I visit the "home page"
     And I press the "list_all" button
     Then I should see the "credit_card" with "123123123" in the display card
@@ -110,4 +110,11 @@ Feature: A store service back-end
     And I select "PayPal" in the "type" dropdown in "query" form
     And I press the "Query" button
     Then I should see the "paypal" with "awesome@hotmail.com" in the display card
+    And I should not see the "credit_card" with "123123123" in the display card
+
+  Scenario: Read a payment
+    When I visit the "home page"
+    And I set the "payment_id" to "8" in "read" form
+    And I press the "Read" button
+    Then I should see the "paypal" with "perfect@icloud.com" in the display card
     And I should not see the "credit_card" with "123123123" in the display card

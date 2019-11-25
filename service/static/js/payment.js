@@ -221,7 +221,7 @@ $(function () {
     });
 
     // ****************************************
-    // Update a Payments
+    // Update a Payment
     // ****************************************
 
     $("#update-btn").click(function () {
@@ -305,6 +305,33 @@ $(function () {
                     addRow(res[i]);
                 flash_message("Query successful! (" + res.length + " result" +
                     (res.length === 1 ? "" : "s") + ")");
+            });
+
+            ajax.fail(function (res) {
+                showError(res.responseJSON);
+            });
+        } catch (err) {
+            showError(err);
+        }
+    });
+
+    // ****************************************
+    // Read a payment
+    // ****************************************
+
+    $("#read-btn").click(function () {
+        event.preventDefault();
+        cleanDisplayCard();
+        const payment_id = $("#read_payment_id").val();
+        try {
+            var ajax = $.ajax({
+                type: "GET",
+                url: "/payments/" + payment_id
+            });
+
+            ajax.done(function (res) {
+                addRow(res);
+                flash_message("Read successful!");
             });
 
             ajax.fail(function (res) {
