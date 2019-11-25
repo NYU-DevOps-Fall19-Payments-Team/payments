@@ -101,6 +101,7 @@ Feature: A store service back-end
     And I set the "order_id" to "100" in "query" form
     And I press the "Query" button
     Then I should see the "credit_card" with "123123123" in the display card
+    And I should not see the "credit_card" with "456456546" in the display card
 
   Scenario: Query payments by customer id, available and type
     When I visit the "home Page"
@@ -109,4 +110,4 @@ Feature: A store service back-end
     And I select "PayPal" in the "type" dropdown in "query" form
     And I press the "Query" button
     Then I should see the "paypal" with "awesome@hotmail.com" in the display card
-    Then I should not see the "credit_card" with "123123123" in the display card
+    And I should not see the "credit_card" with "123123123" in the display card
