@@ -117,8 +117,6 @@ Feature: A store service back-end
     And I set the "payment_id" to "1" in "toggle" form
     And I press the "Toggle" button
     Then I should see the message "Payment availability has been toggled!"
-    When I visit the "home page"
-    Then I should not see the "availability" with "False" in the display card
 
   Scenario: Read a payment
     When I visit the "home page"
