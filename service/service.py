@@ -229,7 +229,7 @@ def reset_payments():
 ######################################################################
 # PERFORM A STATEFUL ACTION
 ######################################################################
-@app.route('/payments/<int:payments_id>/toggle', methods=['PUT'])
+@app.route('/payments/<int:payments_id>/toggle', methods=['PATCH'])
 def toggle_payment_availability(payments_id):
     """
     Toggle payment availability

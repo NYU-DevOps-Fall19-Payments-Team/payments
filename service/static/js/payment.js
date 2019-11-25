@@ -312,7 +312,7 @@ $("#toggle-btn").click(function () {
     var payment_id = $("#toggle_payment_id").val();
 
     var ajax = $.ajax({
-        type: "PUT",
+        type: "PATCH",
         url: "/payments/" + payment_id + "/toggle",
         contentType: "application/json",
         data: '',
