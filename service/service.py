@@ -26,6 +26,94 @@ from service.models import Payment, DataValidationError
 # Import Flask application
 from . import app
 
+######################################################################
+# Configure Swagger before initilaizing it
+######################################################################
+api = Api(app,
+          version='1.0.0',
+          title='Payment Demo REST API Service',
+          description='This is a sample server Payment store server.',
+          default='payments',
+          default_label='Payment company operations',#default_label='Pet shop operations',
+          doc='/apidocs/', # default also could use doc='/apidocs/'
+          authorizations=authorizations
+          # prefix='/api'
+         )
+
+#### TODO how to do integer and need info
+
+# Define the model so that the docs reflect what can be sent
+payment_model = api.model_schema('Payment', payment_schema_for_doc)
+
+create_model = api.model_schema('Payment', {
+    'id': fields.Integer(readOnly=True,
+                         description='The unique id assigned internally by service'),
+    'order_id': fields.Integer(required=True,
+                          description='The value of the order id'),
+    'customer_id': fields.Integer(required=True,
+                              description='The value of the customer id'),
+    'available': fields.Boolean(required=True,
+                                description='Is the Payment avaialble for use?'),
+    'type': fields.String(required=True,
+                                description='What is the payment type?',
+                                        enum=['credit card', 'paypal'])
+})
+
+# query string arguments
+payment_args = reqparse.RequestParser()
+payment_args.add_argument('order_id', type=int, required=False, help='List Payments by order id')
+payment_args.add_argument('customer_id', type=int, required=False, help='List Payments by customer id')
+payment_args.add_argument('available', type=inputs.boolean, required=False, help='List Payments by availability')
+payment_args.add_argument('type', type=str, required=False, help='List Payments by type')
+
+######################################################################
+# Special Error Handlers
+######################################################################
+@api.errorhandler(DataValidationError)
+def request_validation_error(error):
+    """ Handles Value Errors from bad data """
+    message = str(error)
+    app.logger.error(message)
+    return {
+        'status_code': status.HTTP_400_BAD_REQUEST,
+        'error': 'Bad Request',
+        'message': message
+    }, status.HTTP_400_BAD_REQUEST
+
+@api.errorhandler(DatabaseConnectionError)
+def database_connection_error(error):
+    """ Handles Database Errors from connection attempts """
+    message = str(error)
+    app.logger.critical(message)
+    return {
+        'status_code': status.HTTP_503_SERVICE_UNAVAILABLE,
+        'error': 'Service Unavailable',
+        'message': message
+    }, status.HTTP_503_SERVICE_UNAVAILABLE
+
+######################################################################
+# Authorization Decorator
+######################################################################
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        if 'X-Api-Key' in request.headers:
+            token = request.headers['X-Api-Key']
+
+        if app.config.get('API_KEY') and app.config['API_KEY'] == token:
+            return f(*args, **kwargs)
+        else:
+            return {'message': 'Invalid or missing token'}, 401
+    return decorated
+
+
+######################################################################
+# Function to generate a random API key (good for testing)
+######################################################################
+def generate_apikey():
+    """ Helper function used when testing API keys """
+    return uuid.uuid4().hex
 
 ######################################################################
 # Error Handlers
