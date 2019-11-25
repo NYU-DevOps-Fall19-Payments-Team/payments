@@ -18,13 +18,11 @@ cd payments
 
 Initialize the environment with `vagrant up`; enter it with `vagrant ssh`.
 
-## Navigation
-
-The service can be run using an initialization script from the home directory of the Vagrant environment: `./init_service.sh`. Source code for the service can be found in `/vagrant/service/`.
-
 ## Testing
 
-Run `nosetests` within the `/vagrant` directory of the Vagrant environment.
+`cd vagrant`
+* TDD: `nosetests`
+* BDD: Using a multiplexer (e.g., `screen`), run `honcho start` in one window and then `behave` in another.
 
 ## API
 
@@ -44,4 +42,5 @@ Run `nosetests` within the `/vagrant` directory of the Vagrant environment.
 * Delete a payment method: [DELETE] `/payments/<id>`
 * Query payment methods by an attribute:
     * Customer id: [GET] `/payments?customer_id=<int>`
-* Toggle a payment method's availability: [PUT] `payments/<id>/toggle`
+* Toggle a payment method's availability: [PATCH] `payments/<id>/toggle`
+
