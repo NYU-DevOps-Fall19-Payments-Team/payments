@@ -114,3 +114,10 @@ payment_schema = {
         "info"
     ]
 }
+
+payment_schema_for_doc = payment_schema.copy()
+payment_schema_for_doc['properties']['id'] = {
+    'type': 'number', 'minimum': 0
+}
+payment_schema_for_doc['required'] += ['id']
+
