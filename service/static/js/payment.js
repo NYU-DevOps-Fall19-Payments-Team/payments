@@ -301,28 +301,29 @@ $(function () {
                 $("#update_paypal").css("display", "none")
         }
     });
-});
+    // ****************************************
+    // Toggle a Payment
+    // ****************************************
 
-// ****************************************
-// Toggle a Payment
-// ****************************************
+    $("#toggle-btn").click(function () {
+      event.preventDefault();
+      var payment_id = $("#toggle_payment_id").val();
 
-$("#toggle-btn").click(function () {
-  event.preventDefault();
-    var payment_id = $("#toggle_payment_id").val();
+      var ajax = $.ajax({
+          type: "PATCH",
+          url: "/payments/" + payment_id + "/toggle",
+          contentType: "application/json",
+          data: '',
+      });
+      console.log(payment_id);
 
-    var ajax = $.ajax({
-        type: "PATCH",
-        url: "/payments/" + payment_id + "/toggle",
-        contentType: "application/json",
-        data: '',
-    })
+      ajax.done(function(res){
+          flash_message("Payment availability has been toggled!")
+      });
 
-    ajax.done(function(res){
-        flash_message("Payment availability has been toggled!")
+      ajax.fail(function (res) {
+          showError(res.responseJSON);
+      });
     });
 
-    ajax.fail(function (res) {
-        showError(res.responseJSON);
-    });
 });

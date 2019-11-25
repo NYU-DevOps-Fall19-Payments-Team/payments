@@ -91,3 +91,11 @@ Scenario: Update a payment method for PayPal
   And I set the "token" to "hereisyourtoken" in "update" form
   And I press the "Update" button
   Then I should see the message "Payment has been Updated!"
+
+Scenario: Toggle a payment method's availability
+  When I visit the "home page"
+  And I set the "payment_id" to "1" in "toggle" form
+  And I press the "Toggle" button
+  Then I should see the message "Payment availability has been toggled!"
+  When I visit the "home page"
+  Then I should not see the "availability" with "False" in the display card
