@@ -221,7 +221,7 @@ $(function () {
     });
 
     // ****************************************
-    // Update a Payments
+    // Update a Payment
     // ****************************************
 
     $("#update-btn").click(function () {
