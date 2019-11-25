@@ -22,7 +22,7 @@ Initialize the environment with `vagrant up`; enter it with `vagrant ssh`.
 
 `cd vagrant`
 * TDD: `nosetests`
-* BDD: Using a multiplexer (e.g., `screen`), run `honcho start` in one window and then `behave` in another.
+* BDD: Using a terminal multiplexer (e.g., `screen`), run `honcho start` in one window and then `behave` in another.
 
 ## API
 
