@@ -252,7 +252,7 @@ class TestPaymentsServer(unittest.TestCase):
         # toggle availability
         payment_id = resp.get_json()['id']
         payment.available = not payment.available
-        resp = self.app.put('/payments/{}/toggle'.format(payment_id),
+        resp = self.app.patch('/payments/{}/toggle'.format(payment_id),
                             # json=payment.serialize(),
                             content_type='application/json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
@@ -278,7 +278,7 @@ class TestPaymentsServer(unittest.TestCase):
     def test_toggle_payment_availability_not_found(self):
         """ Toggle the availability of a payment that does not exist """
         payment_id = 1
-        resp = self.app.put('/payments/{}/toggle'.format(payment_id))
+        resp = self.app.patch('/payments/{}/toggle'.format(payment_id))
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_wrong_type(self):

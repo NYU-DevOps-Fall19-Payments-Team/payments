@@ -112,6 +112,12 @@ Feature: A store service back-end
     Then I should see the "paypal" with "awesome@hotmail.com" in the display card
     And I should not see the "credit_card" with "123123123" in the display card
 
+  Scenario: Toggle a payment method's availability
+    When I visit the "home page"
+    And I set the "payment_id" to "1" in "toggle" form
+    And I press the "Toggle" button
+    Then I should see the message "Payment availability has been toggled!"
+
   Scenario: Read a payment
     When I visit the "home page"
     And I set the "payment_id" to "8" in "read" form

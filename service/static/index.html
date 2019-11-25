@@ -237,6 +237,23 @@
           </form>
     </div>
 
+    <!-- Toggle a payment's availability -->
+    <div class = "card">
+        <form>
+            <div class="form-group">
+              <h2><label for="toggle_title">Toggle Payment Availability</label></h2>
+            </div>
+            <div class="alert alert-danger error" role="alert">
+                Missing field.
+            </div>
+            <div class="form-group">
+              <label for="payment_id">Payment ID</label>
+              <input type="number" class="form-control" id="toggle_payment_id" placeholder="Enter payment id" required>
+            </div>
+            <button type="submit" class="btn btn-danger" id="toggle-btn">Toggle</button>
+          </form>
+    </div>
+
     <!-- query payments -->
     <div class = "card">
         <form>
