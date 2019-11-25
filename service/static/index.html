@@ -20,7 +20,7 @@
     <!-- Read payment -->
     <div class = "card" id = "show_payment_card">
         <div id='display_credit_card'>
-          <h4>Credit card</h2>
+          <h4>Credit card</h4>
           <div class='row'>
             <div class='col-1'><p>ID</p></div>
             <div class='col-2'><p>Customer ID</p></div>
@@ -34,7 +34,7 @@
         </div>
         <hr/>
         <div id='display_paypal'>
-          <h4>Paypal</h2>
+          <h4>Paypal</h4>
           <div class='row'>
               <div class='col-1'><p>ID</p></div>
               <div class='col-2'><p>Customer ID</p></div>
@@ -217,6 +217,43 @@
               <input type="number" class="form-control" id="delete_payment_id" placeholder="Enter payment id" required>
             </div>
             <button type="submit" class="btn btn-danger" id="delete-btn">Delete</button>
+          </form>
+    </div>
+
+    <!-- query payments -->
+    <div class = "card">
+        <form>
+          <div class="form-group">
+            <h2><label for="query_title">Query Payments</label></h2>
+          </div>
+            <div class="alert alert-danger error" role="alert">
+                Missing field.
+            </div>
+            <div class="form-group">
+              <label for="query_customer_id">Customer ID</label>
+              <input type="number" class="form-control" id="query_customer_id" placeholder="Enter customer id">
+            </div>
+            <div class="form-group">
+              <label for="query_order_id">Order ID</label>
+              <input type="number" class="form-control" id="query_order_id" placeholder="Enter order id" >
+            </div>
+            <div class="form-group">
+                <label for="query_available">Available</label>
+                <select class="form-control" id="query_available">
+                  <option value="" selected>Both</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+            <div class="form-group">
+              <label for="query_type">Payment Type</label>
+              <select class="form-control" id="query_type">
+                <option value="" selected>All</option>
+                <option>Credit Card</option>
+                <option>PayPal</option>
+              </select>
+            </div>
+            <button id = "query-btn" type="submit" class="btn btn-primary">Query</button>
           </form>
     </div>
 

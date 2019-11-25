@@ -96,10 +96,12 @@ $(function () {
             url: "/payments",
             contentType: "application/json"
         });
-    
+
         ajax.done(function(res){
             for(i = 0; i < res.length; i++)
                 addRow(res[i])
+            flash_message("List all successful! (" + res.length + " result" +
+                    (res.length === 1 ? "" : "s") + ")");
         });
     })
 
@@ -120,7 +122,7 @@ $(function () {
                 let credit_card_number = `<div class ='col-2'>${payment.info.credit_card_number}</div>`;
                 let card_holder_name = `<div class ='col-2'>${payment.info.card_holder_name}</div>`;
                 let expiration = `<div class ='col-2'>${payment.info.expiration_month + "/" + payment.info.expiration_year}</div>`;
-                let credit_new_row = id + customer_id + order_id + available + credit_card_icon + card_holder_name + credit_card_number + expiration; 
+                let credit_new_row = id + customer_id + order_id + available + credit_card_icon + card_holder_name + credit_card_number + expiration;
                 $("#display_credit_card").append(`<div class='row display_payments'>${credit_new_row}</div>`);
                 break;
             case "paypal":
@@ -133,7 +135,7 @@ $(function () {
             default:
                 showError(`invaild payment type: ${payment.type}`);
         }
-    };
+    }
 
     // ****************************************
     // Create a the payment
@@ -194,7 +196,7 @@ $(function () {
         }
     })
 
-    
+
     // ****************************************
     // Delete a Payment
     // ****************************************
@@ -263,6 +265,53 @@ $(function () {
             default:
                 $("#update_credit_card").css("display", "none")
                 $("#update_paypal").css("display", "none")
+        }
+    });
+
+    // ****************************************
+    // Query payments
+    // ****************************************
+
+    $("#query-btn").click(function () {
+        event.preventDefault();
+        cleanDisplayCard();
+        var payment_id = $("#query_payment_id").val();
+        try {
+            let customer_id_string = $("#query_customer_id").val();
+            let order_id_string = $("#query_order_id").val();
+            let available_string = $("#query_available").val();
+            let type_string = $("#query_type").val().toLowerCase();
+
+            let query_string_list = [];
+            if (customer_id_string)
+                query_string_list.push("customer_id=" + customer_id_string);
+            if (order_id_string)
+                query_string_list.push("order_id=" + order_id_string);
+            if (available_string)
+                query_string_list.push("available=" + available_string);
+            if (type_string)
+                query_string_list.push("type=" + type_string);
+            let query_string = query_string_list.join("&");
+            let query_url = "/payments";
+            query_url += query_string ? "?" + query_string : "";
+
+            var ajax = $.ajax({
+                type: "GET",
+                url: query_url
+            });
+
+            ajax.done(function (res) {
+                for (let i = 0; i < res.length; i++)
+                    addRow(res[i]);
+                flash_message("Query successful! (" + res.length + " result" +
+                    (res.length === 1 ? "" : "s") + ")");
+            });
+
+            ajax.fail(function (res) {
+                showError(res.responseJSON);
+            });
+        } catch (err) {
+            showError(err);
         }
     });
 });
