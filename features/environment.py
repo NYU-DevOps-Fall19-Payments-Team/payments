@@ -2,6 +2,7 @@
 Environment for Behave Testing
 """
 import os
+import requests
 from behave import *
 from selenium import webdriver
 
@@ -27,9 +28,11 @@ def before_all(context):
     context.base_url = BASE_URL
     # -- SET LOG LEVEL: behave --logging-level=ERROR ...
     # on behave command-line or in "behave.ini"
-    context.config.setup_logging()
-
+    # context.config.setup_logging()
 
 def after_all(context):
     """ Executed after all tests """
+    headers = {'Content-Type': 'application/json'}
+    context.resp = requests.delete(context.base_url + '/payments/reset',
+                                   headers=headers)
     context.driver.quit()

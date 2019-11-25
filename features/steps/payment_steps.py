@@ -19,11 +19,13 @@ from selenium.webdriver.support import expected_conditions
 
 WAIT_SECONDS = int(getenv('WAIT_SECONDS', '60'))
 
+
 @given('a list of payment methods')
 def step_impl(context):
     """ Load a database of payment methods """
     headers = {'Content-Type': 'application/json'}
-    context.resp = requests.delete(context.base_url + '/payments/reset', headers=headers)
+    context.resp = requests.delete(context.base_url + '/payments/reset',
+                                   headers=headers)
     expect(context.resp.status_code).to_equal(204)
     create_url = context.base_url + '/payments'
     for row in context.table:
@@ -33,16 +35,18 @@ def step_impl(context):
             "type": row['type'],
             "available": row['available'] in ['True', 'true', '1'],
             "info": json.loads(row['info'])["info"]
-            }
+        }
         payload = json.dumps(data)
         context.resp = requests.post(create_url, data=payload, headers=headers)
         expect(context.resp.status_code).to_equal(201)
+
 
 @when('I visit the "home page"')
 def step_impl(context):
     """ Make a call to the base URL """
     context.driver.get(context.base_url)
-    #context.driver.save_screenshot('home_page.png')
+    # context.driver.save_screenshot('home_page.png')
+
 
 @when('I press the "{button}" button')
 def step_impl(context, button):
@@ -59,12 +63,14 @@ def step_impl(context, element_name, text_string, form):
     element.send_keys(text_string)
     context.driver.save_screenshot('home_page.png')
 
+
 @when('I select "{text}" in the "{element_name}" dropdown in "{form}" form')
 def step_impl(context, text, element_name, form):
     element_id = form + '_' + element_name.lower()
     element = Select(context.driver.find_element_by_id(element_id))
     element.select_by_visible_text(text)
     context.driver.save_screenshot('dropdown.png')
+
 
 @then('I should see the message "{message}"')
 def step_impl(context, message):
@@ -78,6 +84,7 @@ def step_impl(context, message):
     )
     expect(found).to_be(True)
 
+
 # Use for test the read function.
 @then('I should see the "{payment_type}" with "{info}" in the display card')
 def step_impl(context, payment_type, info):
@@ -90,8 +97,10 @@ def step_impl(context, payment_type, info):
     )
     expect(found1).to_be(True)
 
-@then('I should not see the "{payment_info}" in the display card')
-def step_impl(context, payment_info):
-    element = context.driver.find_element_by_id('show_payment_card')
-    error_msg = "I should not see '%s' in '%s'" % (payment_info, element.text)
-    ensure(payment_info in element.text, False, error_msg)
+
+@then('I should not see the "{payment_type}" with "{info}" in the display card')
+def step_impl(context, payment_type, info):
+    id = "display_" + payment_type
+    element = context.driver.find_element_by_id(id)
+    error_msg = "I should not see '%s' in '%s'" % (info, element.text)
+    ensure(info in element.text, False, error_msg)
