@@ -123,6 +123,23 @@
           </form>
     </div>
 
+    <!-- read a payment -->
+    <div class = "card">
+        <form>
+          <div class="form-group">
+            <h2><label for="read_title">Read a Payment</label></h2>
+          </div>
+            <div class="alert alert-danger error" role="alert">
+                Missing field.
+            </div>
+            <div class="form-group">
+              <label for="read_payment_id">Payment ID</label>
+              <input type="number" class="form-control" id="read_payment_id" placeholder="Enter payment id" required>
+            </div>
+            <button id = "read-btn" type="submit" class="btn btn-primary">Read</button>
+          </form>
+    </div>
+
     <!-- update a payment -->
     <div class = "card">
         <form>

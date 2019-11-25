@@ -111,3 +111,10 @@ Feature: A store service back-end
     And I press the "Query" button
     Then I should see the "paypal" with "awesome@hotmail.com" in the display card
     And I should not see the "credit_card" with "123123123" in the display card
+
+  Scenario: Read a payment
+    When I visit the "home page"
+    And I set the "payment_id" to "8" in "read" form
+    And I press the "Read" button
+    Then I should see the "paypal" with "perfect@icloud.com" in the display card
+    And I should not see the "credit_card" with "123123123" in the display card
