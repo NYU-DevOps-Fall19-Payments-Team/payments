@@ -24,23 +24,3 @@ Initialize the environment with `vagrant up`; enter it with `vagrant ssh`.
 * TDD: `nosetests`
 * BDD: Using a terminal multiplexer (e.g., `screen`), run `honcho start` in one window and then `behave` in another.
 
-## API
-
-* List payment methods: [GET] `/payments`
-* Read a payment method: [GET] `/payments/<id>`
-* Create a new payment method: [POST] `/payments`
-    * Needs a JSON body of the form:
-``{
-"order_id": <int>
-"customer_id": <int>
-"available": <bool>
-"payments_type": <str>
-}
-``
-* Update a payment method: [PUT] `/payments/<id>`
-    * Needs a JSON body with the same fields as above.
-* Delete a payment method: [DELETE] `/payments/<id>`
-* Query payment methods by an attribute:
-    * Customer id: [GET] `/payments?customer_id=<int>`
-* Toggle a payment method's availability: [PATCH] `payments/<id>/toggle`
-
