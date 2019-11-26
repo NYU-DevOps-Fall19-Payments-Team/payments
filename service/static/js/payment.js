@@ -112,24 +112,25 @@ $(function () {
         let type = payment.type;
         console.log(payment)
         let id = `<div class ='col-1'>${payment.id}</div>`;
-        let customer_id = `<div class ='col-2'>${payment.customer_id}</div>`;
-        let order_id = `<div class ='col-1'>${payment.order_id}</div>`;
-        let available = `<div class ='col-1'>${payment.available}</div>`;
+        let customer_id = `<div class ='col-2 customer_id'>${payment.customer_id}</div>`;
+        let order_id = `<div class ='col-1 order_id'>${payment.order_id}</div>`;
+        let available = `<div class ='col-1 available'>${payment.available}</div>`;
         switch (type){
             case "credit card":
                 let credit_card_icon = "<div class='col-1'><i class=\"far fa-credit-card\"></i></div>";
-                let credit_card_number = `<div class ='col-2'>${payment.info.credit_card_number}</div>`;
-                let card_holder_name = `<div class ='col-2'>${payment.info.card_holder_name}</div>`;
-                let expiration = `<div class ='col-2'>${payment.info.expiration_month + "/" + payment.info.expiration_year}</div>`;
+                let credit_card_number = `<div class ='col-2 credit_card_number'>${payment.info.credit_card_number}</div>`;
+                let card_holder_name = `<div class ='col-2 card_holder_name'>${payment.info.card_holder_name}</div>`;
+                let expiration = `<div class ='col-2 expiration'>${payment.info.expiration_month + "/" + payment.info.expiration_year}</div>`;
                 let credit_new_row = id + customer_id + order_id + available + credit_card_icon + card_holder_name + credit_card_number + expiration;
-                $("#display_credit_card").append(`<div class='row display_payments'>${credit_new_row}</div>`);
+                $("#display_credit_card").append(`<div id='${payment.id}' class='row display_payments'>${credit_new_row}</div>`);
                 break;
+
             case "paypal":
                 let paypal_icon = "<div class='col-1'><i class=\"fab fa-cc-paypal\"></i></div>";
-                let email = `<div class ='col-3'>${payment.info.email}</div>`;
-                let phone_number = `<div class ='col-2'>${payment.info.phone_number}</div>`;
+                let email = `<div class ='col-3 email'>${payment.info.email}</div>`;
+                let phone_number = `<div class ='col-2 phone_number'>${payment.info.phone_number}</div>`;
                 let paypal_new_row = id + customer_id + order_id + available + paypal_icon + email + phone_number;
-                $("#display_paypal").append(`<div class='row display_payments'>${paypal_new_row}</div>`);
+                $("#display_paypal").append(`<div id='${payment.id}' class='row display_payments'>${paypal_new_row}</div>`);
                 break;
             default:
                 showError(`invaild payment type: ${payment.type}`);

@@ -34,5 +34,5 @@ def after_all(context):
     """ Executed after all tests """
     headers = {'Content-Type': 'application/json'}
     context.resp = requests.delete(context.base_url + '/payments/reset',
-                                   headers=headers)
+                                  headers=headers)
     context.driver.quit()
