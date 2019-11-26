@@ -114,4 +114,3 @@ payment_schema = {
         "info"
     ]
 }
-
