@@ -16,6 +16,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions
+from selenium.common.exceptions import TimeoutException
 
 WAIT_SECONDS = int(getenv('WAIT_SECONDS', '60'))
 
@@ -89,13 +90,13 @@ def step_impl(context, message):
 @then('I should see the "{payment_type}" with "{info}" in the display card')
 def step_impl(context, payment_type, info):
     id = "display_" + payment_type
-    found1 = WebDriverWait(context.driver, WAIT_SECONDS).until(
+    found = WebDriverWait(context.driver, WAIT_SECONDS).until(
         expected_conditions.text_to_be_present_in_element(
             (By.ID, id),
             info
         )
     )
-    expect(found1).to_be(True)
+    expect(found).to_be(True)
 
 
 @then('I should not see the "{payment_type}" with "{info}" in the display card')
@@ -104,3 +105,31 @@ def step_impl(context, payment_type, info):
     element = context.driver.find_element_by_id(id)
     error_msg = "I should not see '%s' in '%s'" % (info, element.text)
     ensure(info in element.text, False, error_msg)
+
+@then('I should see the "{info}" in column "{column}" in the display card')
+def step_impl(context, info, column):
+    found = False
+    try:
+        found = WebDriverWait(context.driver, 1).until(
+            expected_conditions.text_to_be_present_in_element(
+                (By.CLASS_NAME, column),
+                info
+            )
+        )
+    except TimeoutException:
+        elements = context.driver.find_elements_by_class_name(column)
+        for element in elements:
+            if(element.text == info):
+                found = True
+    expect(found).to_be(True)
+
+@then('I should not see the "{info}" in column "{column}" in the display card')
+def step_impl(context, info, column):
+    elements = context.driver.find_elements_by_class_name(column)
+    found = False
+    for element in elements:
+        if(element.text == info):
+            print(element.text)
+            found = True
+    error_msg = "I should not see '%s' in '%s'" % (info, element.text)
+    ensure(found, False, error_msg)

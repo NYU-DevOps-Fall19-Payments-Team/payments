@@ -22,10 +22,15 @@ Feature: A store service back-end
     Then I should see the "credit_card" with "456456546" in the display card
     Then I should see the "credit_card" with "7896987987" in the display card
     Then I should see the "credit_card" with "4389493849" in the display card
-    Then I should see the "paypal" with "cool@gmail.com" in the display card
-    Then I should see the "paypal" with "awesome@hotmail.com" in the display card
-    Then I should see the "paypal" with "great@outlook.com" in the display card
-    Then I should see the "paypal" with "perfect@icloud.com" in the display card
+    Then I should see the "123123123" in column "credit_card_number" in the display card
+    Then I should see the "cool@gmail.com" in column "email" in the display card
+    Then I should see the "456456546" in column "credit_card_number" in the display card
+    Then I should see the "7896987987" in column "credit_card_number" in the display card
+    Then I should see the "4389493849" in column "credit_card_number" in the display card
+    Then I should see the "cool@gmail.com" in column "email" in the display card
+    Then I should see the "awesome@hotmail.com" in column "email" in the display card
+    Then I should see the "great@outlook.com" in column "email" in the display card
+    Then I should see the "perfect@icloud.com" in column "email" in the display card
 
   Scenario: Create a credit card payment method
     When I visit the "home page"
@@ -67,6 +72,7 @@ Feature: A store service back-end
     When I visit the "home page"
     And I press the "list_all" button
     Then I should not see the "credit_card" with "7896987987" in the display card
+    Then I should not see the "7896987987" in column "credit_card_number" in the display card
 
   Scenario: Update a payment method for a credit card
     When I visit the "home page"
