@@ -109,24 +109,26 @@ def step_impl(context, payment_type, info):
 @then('I should see the "{info}" in column "{column}" in the display card')
 def step_impl(context, info, column):
     found = False
-    try:
-        found = WebDriverWait(context.driver, 1).until(
-            expected_conditions.text_to_be_present_in_element(
-                (By.CLASS_NAME, column),
-                info
-            )
+    WebDriverWait(context.driver, WAIT_SECONDS).until(
+        expected_conditions.visibility_of_element_located(
+            (By.CLASS_NAME, column)
         )
-    except TimeoutException:
-        elements = context.driver.find_elements_by_class_name(column)
-        for element in elements:
-            if(element.text == info):
-                found = True
+    )
+    elements = context.driver.find_elements_by_class_name(column)
+    for element in elements:
+        if(element.text == info):
+            found = True
     expect(found).to_be(True)
 
 @then('I should not see the "{info}" in column "{column}" in the display card')
 def step_impl(context, info, column):
     elements = context.driver.find_elements_by_class_name(column)
     found = False
+    WebDriverWait(context.driver, WAIT_SECONDS).until(
+        expected_conditions.visibility_of_element_located(
+            (By.CLASS_NAME, column)
+        )
+    )
     for element in elements:
         if(element.text == info):
             print(element.text)
