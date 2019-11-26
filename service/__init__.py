@@ -33,6 +33,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = SECRET_KEY
+app.config['API_KEY'] = os.getenv('API_KEY')
 
 # Import the routes after the Flask app is created
 from service import service, models
