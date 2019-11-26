@@ -106,6 +106,7 @@ def step_impl(context, payment_type, info):
     error_msg = "I should not see '%s' in '%s'" % (info, element.text)
     ensure(info in element.text, False, error_msg)
 
+
 @then('I should see the "{info}" in column "{column}" in the display card')
 def step_impl(context, info, column):
     found = False
@@ -116,9 +117,10 @@ def step_impl(context, info, column):
     )
     elements = context.driver.find_elements_by_class_name(column)
     for element in elements:
-        if(element.text == info):
+        if element.text == info:
             found = True
     expect(found).to_be(True)
+
 
 @then('I should not see the "{info}" in column "{column}" in the display card')
 def step_impl(context, info, column):
@@ -130,7 +132,7 @@ def step_impl(context, info, column):
     )
     elements = context.driver.find_elements_by_class_name(column)
     for element in elements:
-        if(element.text == info):
+        if element.text == info:
             print(element.text)
             found = True
     error_msg = "I should not see '%s' in '%s'" % (info, column)
