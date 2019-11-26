@@ -86,27 +86,6 @@ def step_impl(context, message):
     expect(found).to_be(True)
 
 
-# Use for test the read function.
-@then('I should see the "{payment_type}" with "{info}" in the display card')
-def step_impl(context, payment_type, info):
-    id = "display_" + payment_type
-    found = WebDriverWait(context.driver, WAIT_SECONDS).until(
-        expected_conditions.text_to_be_present_in_element(
-            (By.ID, id),
-            info
-        )
-    )
-    expect(found).to_be(True)
-
-
-@then('I should not see the "{payment_type}" with "{info}" in the display card')
-def step_impl(context, payment_type, info):
-    id = "display_" + payment_type
-    element = context.driver.find_element_by_id(id)
-    error_msg = "I should not see '%s' in '%s'" % (info, element.text)
-    ensure(info in element.text, False, error_msg)
-
-
 @then('I should see the "{info}" in column "{column}" in the display card')
 def step_impl(context, info, column):
     found = False
