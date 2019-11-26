@@ -122,16 +122,16 @@ def step_impl(context, info, column):
 
 @then('I should not see the "{info}" in column "{column}" in the display card')
 def step_impl(context, info, column):
-    elements = context.driver.find_elements_by_class_name(column)
     found = False
     WebDriverWait(context.driver, WAIT_SECONDS).until(
         expected_conditions.visibility_of_element_located(
             (By.CLASS_NAME, column)
         )
     )
+    elements = context.driver.find_elements_by_class_name(column)
     for element in elements:
         if(element.text == info):
             print(element.text)
             found = True
-    error_msg = "I should not see '%s' in '%s'" % (info, element.text)
+    error_msg = "I should not see '%s' in '%s'" % (info, column)
     ensure(found, False, error_msg)
