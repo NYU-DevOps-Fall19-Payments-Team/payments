@@ -93,8 +93,7 @@ $(function () {
         cleanDisplayCard();
         var ajax = $.ajax({
             type: "GET",
-            url: "/payments",
-            contentType: "application/json"
+            url: "/payments"
         });
 
         ajax.done(function(res){
