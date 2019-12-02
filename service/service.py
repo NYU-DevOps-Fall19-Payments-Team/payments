@@ -22,6 +22,7 @@ from flask_restplus import Api, Resource, fields, reqparse, inputs
 from werkzeug.exceptions import NotFound
 from schemas.payment_schema import payment_schema
 from schemas.payment_schema_with_id import payment_schema_with_id
+from schemas.payment_schema_doc import payment_schema_doc
 
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
 # variety of backends including SQLite, MySQL, and PostgreSQL
@@ -71,6 +72,8 @@ api = Api(app,
 payment_model = api.schema_model('Payment', payment_schema_with_id)
 
 create_model = api.schema_model('Create_Payment', payment_schema)
+
+payment_model_doc = api.schema_model('Payment_doc', payment_schema_doc)
 
 # query string arguments
 payment_args = reqparse.RequestParser()
@@ -193,7 +196,7 @@ class PaymentResource(Resource):
     # ------------------------------------------------------------------
     @api.doc('get_payment')
     @api.response(404, 'Payment not found')
-    @api.response(200, 'Payment retrieved successfully', payment_model)
+    @api.response(200, 'Payment retrieved successfully', payment_model_doc)
     # @api.marshal_with(payment_model)
     def get(self, payment_id):
         """
@@ -215,8 +218,8 @@ class PaymentResource(Resource):
     @api.doc('update_payment', security='apikey')
     @api.response(404, 'Payment not found')
     @api.response(400, 'The posted Payment data was not valid')
-    @api.response(200, 'Payment updated successfully', payment_model)
-    @api.expect(create_model)
+    @api.response(200, 'Payment updated successfully', payment_model_doc)
+    @api.expect(payment_model_doc)
     # @api.marshal_with(payment_model)
     # @token_required
     def put(self, payment_id):
@@ -271,7 +274,8 @@ class PaymentCollection(Resource):
     # ------------------------------------------------------------------
     @api.doc('list_payments')
     @api.expect(payment_args, validate=True)
-    @api.response(200, 'Success', [payment_model])
+    @api.response(200, 'Success', [payment_model_doc])
+    # @api.marshal_list_with(payment_model)
     def get(self):
         """ Returns all of the Payments """
         app.logger.info('Request to list Payments...')
@@ -290,9 +294,9 @@ class PaymentCollection(Resource):
     # CREATE A NEW PAYMENT
     # ------------------------------------------------------------------
     @api.doc('create_payments', security='apikey')
-    @api.expect(create_model)
+    @api.expect(payment_model_doc)
     @api.response(400, 'The posted data was not valid')
-    @api.response(201, 'Payment created successfully', payment_model)
+    @api.response(201, 'Payment created successfully', payment_model_doc)
     # @api.marshal_with(payment_model, code=201)
     # @token_required
     def post(self):
