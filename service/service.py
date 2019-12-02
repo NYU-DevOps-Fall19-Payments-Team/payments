@@ -204,7 +204,7 @@ def healthcheck():
 
 
 ######################################################################
-#  PATH: /payments/{id}
+#  PATH: /payments/{payment_id}
 ######################################################################
 @api.route('/payments/<payment_id>')
 @api.param('payment_id', 'The Payment identifier')
@@ -455,6 +455,31 @@ class PaymentCollection(Resource):
 #         payment.delete()
 #     return make_response('', status.HTTP_204_NO_CONTENT)
 
+######################################################################
+#  PATH: /payments/{payments_id}/toggle
+######################################################################
+@api.route('/payments/<int:payments_id>/toggle')
+@api.param('payments_id', 'The Payment identifier')
+class ToggleResource(Resource):
+    """ Toggle action on a Payment """
+
+    @api.doc('toggle_payment')
+    @api.response(404, 'Payment not found')
+    def patch(self, payments_id):
+        """
+        Toggle payment availability
+        This toggles whether or not a payment is currently available
+        """
+        app.logger.info('Request to toggle payment availability with id: %s',
+                        payments_id)
+        payment = Payment.find(payments_id)
+        if not payment:
+            api.abort(status.HTTP_404_NOT_FOUND,
+                      'Payment with id [{}] was not found.'.format(payments_id))
+        payment.available = not payment.available
+        payment.save()
+        return payment.serialize(), status.HTTP_200_OK
+
 
 ######################################################################
 # DELETE ALL PAYMENTS (Using for test only)
@@ -468,24 +493,24 @@ def reset_payments():
     return make_response('', status.HTTP_204_NO_CONTENT)
 
 
-######################################################################
-# PERFORM A STATEFUL ACTION
-######################################################################
-@app.route('/payments/<int:payments_id>/toggle', methods=['PATCH'])
-def toggle_payment_availability(payments_id):
-    """
-    Toggle payment availability
-    This toggles whether or not a payment is currently available
-    """
-    app.logger.info('Request to toggle payment availability with id: %s',
-                    payments_id)
-    payment = Payment.find(payments_id)
-    if not payment:
-        raise NotFound(
-            "Payment with id '{}' was not found.".format(payments_id))
-    payment.available = not payment.available
-    payment.save()
-    return make_response(jsonify(payment.serialize()), status.HTTP_200_OK)
+# ######################################################################
+# # PERFORM A STATEFUL ACTION
+# ######################################################################
+# @app.route('/payments/<int:payments_id>/toggle', methods=['PATCH'])
+# def toggle_payment_availability(payments_id):
+#     """
+#     Toggle payment availability
+#     This toggles whether or not a payment is currently available
+#     """
+#     app.logger.info('Request to toggle payment availability with id: %s',
+#                     payments_id)
+#     payment = Payment.find(payments_id)
+#     if not payment:
+#         raise NotFound(
+#             "Payment with id '{}' was not found.".format(payments_id))
+#     payment.available = not payment.available
+#     payment.save()
+#     return make_response(jsonify(payment.serialize()), status.HTTP_200_OK)
 
 
 ######################################################################
