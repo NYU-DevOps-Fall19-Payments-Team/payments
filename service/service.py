@@ -221,7 +221,7 @@ class PaymentResource(Resource):
     @api.response(200, 'Payment updated successfully', payment_model_doc)
     @api.expect(payment_model_doc)
     # @api.marshal_with(payment_model)
-    # @token_required
+    @token_required
     def put(self, payment_id):
         """
         Update a Payment
@@ -248,7 +248,7 @@ class PaymentResource(Resource):
     # ------------------------------------------------------------------
     @api.doc('delete_payment', security='apikey')
     @api.response(204, 'Payment deleted')
-    # @token_required
+    @token_required
     def delete(self, payment_id):
         """
         Delete a Payment
@@ -298,7 +298,7 @@ class PaymentCollection(Resource):
     @api.response(400, 'The posted data was not valid')
     @api.response(201, 'Payment created successfully', payment_model_doc)
     # @api.marshal_with(payment_model, code=201)
-    # @token_required
+    @token_required
     def post(self):
         """
         Creates a Payment
