@@ -130,19 +130,19 @@ def json_validation_error(error):
 ######################################################################
 # Authorization Decorator
 ######################################################################
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
-        if 'X-Api-Key' in request.headers:
-            token = request.headers['X-Api-Key']
-
-        if app.config.get('API_KEY') and app.config['API_KEY'] == token:
-            return f(*args, **kwargs)
-        else:
-            return {'message': 'Invalid or missing token'}, 401
-
-    return decorated
+# def token_required(f):
+#     @wraps(f)
+#     def decorated(*args, **kwargs):
+#         token = None
+#         if 'X-Api-Key' in request.headers:
+#             token = request.headers['X-Api-Key']
+#
+#         if app.config.get('API_KEY') and app.config['API_KEY'] == token:
+#             return f(*args, **kwargs)
+#         else:
+#             return {'message': 'Invalid or missing token'}, 401
+#
+#     return decorated
 
 
 ######################################################################
@@ -215,13 +215,14 @@ class PaymentResource(Resource):
     # ------------------------------------------------------------------
     # UPDATE AN EXISTING PAYMENT
     # ------------------------------------------------------------------
-    @api.doc('update_payment', security='apikey')
+    # @api.doc('update_payment', security='apikey')
+    @api.doc('update_payment')
     @api.response(404, 'Payment not found')
     @api.response(400, 'The posted Payment data was not valid')
     @api.response(200, 'Payment updated successfully', payment_model_doc)
     @api.expect(payment_model_doc)
     # @api.marshal_with(payment_model)
-    @token_required
+    # @token_required
     def put(self, payment_id):
         """
         Update a Payment
@@ -246,9 +247,10 @@ class PaymentResource(Resource):
     # ------------------------------------------------------------------
     # DELETE A PAYMENT
     # ------------------------------------------------------------------
-    @api.doc('delete_payment', security='apikey')
+    # @api.doc('delete_payment', security='apikey')
+    @api.doc('delete_payment')
     @api.response(204, 'Payment deleted')
-    @token_required
+    # @token_required
     def delete(self, payment_id):
         """
         Delete a Payment
@@ -293,12 +295,13 @@ class PaymentCollection(Resource):
     # ------------------------------------------------------------------
     # CREATE A NEW PAYMENT
     # ------------------------------------------------------------------
-    @api.doc('create_payments', security='apikey')
+    # @api.doc('create_payments', security='apikey')
+    @api.doc('create_payments')
     @api.expect(payment_model_doc)
     @api.response(400, 'The posted data was not valid')
     @api.response(201, 'Payment created successfully', payment_model_doc)
     # @api.marshal_with(payment_model, code=201)
-    @token_required
+    # @token_required
     def post(self):
         """
         Creates a Payment
