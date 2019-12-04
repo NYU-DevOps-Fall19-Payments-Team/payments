@@ -118,6 +118,12 @@ Feature: A store service back-end
     And I set the "payment_id" to "1" in "toggle" form
     And I press the "Toggle" button
     Then I should see the message "Payment availability has been toggled!"
+    When I set the "order_id" to "100" in "query" form
+    And I set the "customer_id" to "1" in "query" form
+    And I select "No" in the "available" dropdown in "query" form
+    And I select "Credit Card" in the "type" dropdown in "query" form
+    And I press the "Query" button
+    Then I should see the "123123123" in column "credit_card_number" in the display card
 
   Scenario: Read a payment
     When I visit the "home page"
