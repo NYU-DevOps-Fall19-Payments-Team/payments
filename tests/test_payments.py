@@ -38,13 +38,13 @@ class TestPayments(unittest.TestCase):
         app.debug = False
         # Set up the test database
         app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
+        Payment.init_db(app)
 
     @classmethod
     def tearDownClass(cls):
         pass
 
     def setUp(self):
-        Payment.init_db(app)
         db.drop_all()  # clean up the last tests
         db.create_all()  # make our sqlalchemy tables
 
