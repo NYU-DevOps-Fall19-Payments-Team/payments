@@ -1,4 +1,4 @@
- # Runtime dependencies
+# Runtime dependencies
 Flask==1.1.1
 Flask-API==1.1
 Flask-SQLAlchemy==2.4.1
@@ -25,3 +25,4 @@ requests==2.22.0
 # Code coverage
 coverage==4.5.4
 codecov==2.0.15
+
