@@ -27,7 +27,7 @@ applications:
   disk_quota: 1024M
   buildpack: python_buildpack
   timeout: 180
-  #command: gunicorn --bind=0.0.0.0:$PORT service:app
+  command: gunicorn --log-file=- --workers=1 --bind=0.0.0.0:$PORT service:app
   services:
   env:
     FLASK_APP : service:app
