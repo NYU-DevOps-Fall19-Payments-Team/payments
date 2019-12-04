@@ -84,17 +84,16 @@ $(function () {
 
 
     // ****************************************
-    // Read all the payments
+    // List all the payments
     // ****************************************
 
     // load all the payments from the database, insert it into table.
     $("#list_all-btn").click(()=>{
         event.preventDefault();
-        cleanDisplayCard()
+        cleanDisplayCard();
         var ajax = $.ajax({
             type: "GET",
-            url: "/payments",
-            contentType: "application/json"
+            url: "/payments"
         });
 
         ajax.done(function(res){

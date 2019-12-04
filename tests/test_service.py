@@ -35,6 +35,8 @@ class TestPaymentsServer(unittest.TestCase):
         # Set up the test database
         service.app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
         service.init_db()
+        # api_key = service.generate_apikey()
+        # app.config['API_KEY'] = api_key
 
     @classmethod
     def tearDownClass(cls):
@@ -45,6 +47,9 @@ class TestPaymentsServer(unittest.TestCase):
         db.drop_all()  # clean up the last tests
         db.create_all()  # create new tables
         self.app = service.app.test_client()
+        # self.headers = {
+        #     'X-Api-Key': app.config['API_KEY']
+        # }
 
     def tearDown(self):
         db.session.remove()
@@ -69,6 +74,13 @@ class TestPaymentsServer(unittest.TestCase):
         """ Test the Home Page """
         resp = self.app.get('/')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+    def test_healthcheck(self):
+        """ Test healthcheck """
+        resp = self.app.get('/healthcheck')
+        data = resp.get_json()
+        self.assertEqual(data["status"], status.HTTP_200_OK)
+        self.assertEqual(data["message"], 'Healthy')
 
     def test_get_payment_list(self):
         """ Get a list of Payments """
@@ -253,8 +265,8 @@ class TestPaymentsServer(unittest.TestCase):
         payment_id = resp.get_json()['id']
         payment.available = not payment.available
         resp = self.app.patch('/payments/{}/toggle'.format(payment_id),
-                            # json=payment.serialize(),
-                            content_type='application/json')
+                              # json=payment.serialize(),
+                              content_type='application/json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         new_payment = resp.get_json()
         self.assertEqual(new_payment['available'], payment.available)
