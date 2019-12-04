@@ -16,7 +16,6 @@ from service.models import DataValidationError, db
 from service.service import internal_server_error
 import service.service as service
 from tests.payments_factory import PaymentsFactory
-from service import app
 
 DATABASE_URI = os.getenv(
     'DATABASE_URI', 'postgres://postgres:postgres@localhost:5432/postgres')
