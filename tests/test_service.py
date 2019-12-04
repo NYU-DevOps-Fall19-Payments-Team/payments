@@ -16,6 +16,7 @@ from service.models import DataValidationError, db
 from service.service import internal_server_error
 import service.service as service
 from tests.payments_factory import PaymentsFactory
+from service import app
 
 DATABASE_URI = os.getenv(
     'DATABASE_URI', 'postgres://postgres:postgres@localhost:5432/postgres')
@@ -34,6 +35,8 @@ class TestPaymentsServer(unittest.TestCase):
         service.initialize_logging(logging.INFO)
         # Set up the test database
         service.app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
+        api_key = service.generate_apikey()
+        app.config['API_KEY'] = api_key
 
     @classmethod
     def tearDownClass(cls):
@@ -45,6 +48,9 @@ class TestPaymentsServer(unittest.TestCase):
         db.drop_all()  # clean up the last tests
         db.create_all()  # create new tables
         self.app = service.app.test_client()
+        self.headers = {
+            'X-Api-Key': app.config['API_KEY']
+        }
 
     def tearDown(self):
         db.session.remove()
@@ -57,7 +63,8 @@ class TestPaymentsServer(unittest.TestCase):
             test_payment = PaymentsFactory()
             resp = self.app.post('/payments',
                                  json=test_payment.serialize(),
-                                 content_type='application/json')
+                                 content_type='application/json',
+                                 headers=self.headers)
             self.assertEqual(resp.status_code, status.HTTP_201_CREATED,
                              'Could not create test pet')
             new_payment = resp.get_json()
@@ -109,7 +116,8 @@ class TestPaymentsServer(unittest.TestCase):
         test_payment = PaymentsFactory()
         resp = self.app.post('/payments',
                              json=test_payment.serialize(),
-                             content_type='application/json')
+                             content_type='application/json',
+                             headers=self.headers)
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
         # Make sure location header is set
         location = resp.headers.get('Location', None)
@@ -131,7 +139,8 @@ class TestPaymentsServer(unittest.TestCase):
             payments.append(payment)
             self.app.post('/payments',
                           json=payment.serialize(),
-                          content_type='application/json')
+                          content_type='application/json',
+                          headers=self.headers)
         resp = self.app.get('/payments',
                             query_string='order_id={}'.format(test_order_id))
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
@@ -151,7 +160,8 @@ class TestPaymentsServer(unittest.TestCase):
             payments.append(payment)
             self.app.post('/payments',
                           json=payment.serialize(),
-                          content_type='application/json')
+                          content_type='application/json',
+                          headers=self.headers)
         resp = self.app.get(
             '/payments',
             query_string='customer_id={}'.format(test_customer_id))
@@ -172,7 +182,8 @@ class TestPaymentsServer(unittest.TestCase):
             payments.append(payment)
             self.app.post('/payments',
                           json=payment.serialize(),
-                          content_type='application/json')
+                          content_type='application/json',
+                          headers=self.headers)
         resp = self.app.get(
             '/payments',
             query_string='available={}'.format(test_available))
@@ -193,7 +204,8 @@ class TestPaymentsServer(unittest.TestCase):
                 payments.append(payment)
             self.app.post('/payments',
                           json=payment.serialize(),
-                          content_type='application/json')
+                          content_type='application/json',
+                          headers=self.headers)
         resp = self.app.get(
             '/payments',
             query_string='type={}'.format(test_type))
@@ -209,7 +221,8 @@ class TestPaymentsServer(unittest.TestCase):
         payment = PaymentsFactory()
         resp = self.app.post('/payments',
                              json=payment.serialize(),
-                             content_type='application/json')
+                             content_type='application/json',
+                             headers=self.headers)
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
         # update the payment
@@ -217,7 +230,8 @@ class TestPaymentsServer(unittest.TestCase):
         updated_payment = PaymentsFactory()
         resp = self.app.put('/payments/{}'.format(payment_id),
                             json=updated_payment.serialize(),
-                            content_type='application/json')
+                            content_type='application/json',
+                            headers=self.headers)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self._assert_equal_payment(resp.get_json(), updated_payment)
 
@@ -226,14 +240,16 @@ class TestPaymentsServer(unittest.TestCase):
         test_payment = PaymentsFactory()
         test_payment.id = 1
         resp = self.app.put('/payments/1', json=test_payment.serialize(),
-                            content_type='application/json')
+                            content_type='application/json',
+                            headers=self.headers)
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_payment(self):
         """ Delete a Payment """
         test_payment = self._create_payments(1)[0]
         resp = self.app.delete('/payments/{}'.format(test_payment.id),
-                               content_type='application/json')
+                               content_type='application/json',
+                               headers=self.headers)
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(len(resp.data), 0)
         # make sure they are deleted
@@ -246,15 +262,16 @@ class TestPaymentsServer(unittest.TestCase):
         payment = PaymentsFactory()
         resp = self.app.post('/payments',
                              json=payment.serialize(),
-                             content_type='application/json')
+                             content_type='application/json',
+                             headers=self.headers)
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
         # toggle availability
         payment_id = resp.get_json()['id']
         payment.available = not payment.available
         resp = self.app.patch('/payments/{}/toggle'.format(payment_id),
-                            # json=payment.serialize(),
-                            content_type='application/json')
+                              # json=payment.serialize(),
+                              content_type='application/json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         new_payment = resp.get_json()
         self.assertEqual(new_payment['available'], payment.available)
@@ -285,7 +302,8 @@ class TestPaymentsServer(unittest.TestCase):
         """
         Test post request with content_type not equal to application/json
         """
-        resp = self.app.post('/payments', content_type='Text')
+        resp = self.app.post('/payments', content_type='Text',
+                             headers=self.headers)
         self.assertEqual(resp.status_code,
                          status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
@@ -301,7 +319,8 @@ class TestPaymentsServer(unittest.TestCase):
         payment = PaymentsFactory()
         resp = self.app.post('/payments',
                              json=payment.serialize(),
-                             content_type='application/json')
+                             content_type='application/json',
+                             headers=self.headers)
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_bad_request_json_validation_error(self):
@@ -321,7 +340,8 @@ class TestPaymentsServer(unittest.TestCase):
         }
         resp = self.app.post('/payments',
                              json=data,
-                             content_type='application/json')
+                             content_type='application/json',
+                             headers=self.headers)
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
 
     @patch('service.models.Payment.find_by')
