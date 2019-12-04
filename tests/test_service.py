@@ -34,6 +34,7 @@ class TestPaymentsServer(unittest.TestCase):
         service.initialize_logging(logging.INFO)
         # Set up the test database
         service.app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
+        service.init_db()
         # api_key = service.generate_apikey()
         # app.config['API_KEY'] = api_key
 
@@ -43,7 +44,6 @@ class TestPaymentsServer(unittest.TestCase):
 
     def setUp(self):
         """ Runs before each test """
-        service.init_db()
         db.drop_all()  # clean up the last tests
         db.create_all()  # create new tables
         self.app = service.app.test_client()
