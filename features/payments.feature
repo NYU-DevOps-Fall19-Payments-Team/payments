@@ -41,7 +41,8 @@ Feature: A store service back-end
     And I press the "Create" button
     Then I should see the message "create a new payment!"
     When I press the "list_all" button
-    Then I should see the "4345792072142100" in column "credit_card_number" in the display card
+    Then I should see the message "List all successful!"
+    And I should see the "4345792072142100" in column "credit_card_number" in the display card
 
   Scenario: Create a paypal payment method
     When I visit the "home page"
@@ -55,7 +56,8 @@ Feature: A store service back-end
     And I press the "Create" button
     Then I should see the message "create a new payment!"
     When I press the "list_all" button
-    Then I should see the "udydamma-1603@yopmail.com" in column "email" in the display card
+    Then I should see the message "List all successful!"
+    And I should see the "udydamma-1603@yopmail.com" in column "email" in the display card
 
   Scenario: Delete a payment method
     When I visit the "home page"
@@ -63,7 +65,8 @@ Feature: A store service back-end
     And I press the "Delete" button
     Then I should see the message "Payment has been Deleted!"
     When I press the "list_all" button
-    Then I should not see the "7896987987" in column "credit_card_number" in the display card
+    Then I should see the message "List all successful!"
+    And I should not see the "7896987987" in column "credit_card_number" in the display card
 
   Scenario: Update a payment method for a credit card
     When I visit the "home page"
@@ -80,7 +83,8 @@ Feature: A store service back-end
     And I press the "Update" button
     Then I should see the message "Payment has been Updated!"
     When I press the "list_all" button
-    Then I should see the "1234567890" in column "credit_card_number" in the display card
+    Then I should see the message "List all successful!"
+    And I should see the "1234567890" in column "credit_card_number" in the display card
 
   Scenario: Update a payment method for PayPal
     When I visit the "home page"
@@ -95,7 +99,8 @@ Feature: A store service back-end
     And I press the "Update" button
     Then I should see the message "Payment has been Updated!"
     When I press the "list_all" button
-    Then I should see the "abc@nyu.edu" in column "email" in the display card
+    Then I should see the message "List all successful!"
+    And I should see the "abc@nyu.edu" in column "email" in the display card
 
   Scenario: Query payments by order id
     When I visit the "home Page"

@@ -27,6 +27,7 @@ $(function () {
 
     // for create and update route, construct the data.
     function constructData(type, available,route){
+        let info;
         if (type == "credit card") {
             let credit_card_number = $(`#${route}_credit_card_number`).val();
             let card_holder_name = $(`#${route}_card_holder_name`).val();
@@ -88,16 +89,16 @@ $(function () {
     // ****************************************
 
     // load all the payments from the database, insert it into table.
-    $("#list_all-btn").click(()=>{
+    $("#list_all-btn").click((event)=>{
         event.preventDefault();
         cleanDisplayCard();
-        var ajax = $.ajax({
+        let ajax = $.ajax({
             type: "GET",
             url: "/payments"
         });
 
         ajax.done(function(res){
-            for(i = 0; i < res.length; i++)
+            for(let i = 0; i < res.length; i++)
                 addRow(res[i])
             flash_message("List all successful! (" + res.length + " result" +
                     (res.length === 1 ? "" : "s") + ")");
