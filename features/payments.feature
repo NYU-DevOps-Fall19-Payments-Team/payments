@@ -112,7 +112,7 @@ Feature: A store service back-end
     And I select "PayPal" in the "type" dropdown in "query" form
     And I press the "Query" button
     Then I should see the message "Query successful!"
-    And I should see the "123123123" in column "credit_card_number" in the display card
+    And I should see the "awesome@hotmail.com" in column "email" in the display card
     And I should not see the "456456546" in column "credit_card_number" in the display card
 
   Scenario: Toggle a payment method's availability
