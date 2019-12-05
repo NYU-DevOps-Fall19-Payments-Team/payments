@@ -194,7 +194,8 @@ class PaymentResource(Resource):
     # ------------------------------------------------------------------
     # Update an existing payment.
     # ------------------------------------------------------------------
-    @api.doc('update_payment', security='apikey')
+    # @api.doc('update_payment', security='apikey')
+    @api.doc('update_payment')
     @api.response(404, 'Payment not found')
     @api.response(400, 'The posted Payment data was not valid')
     @api.response(200, 'Payment updated successfully', PAYMENT_MODEL_DOC)
@@ -223,7 +224,8 @@ class PaymentResource(Resource):
     # ------------------------------------------------------------------
     # Delete a payment.
     # ------------------------------------------------------------------
-    @api.doc('delete_payment', security='apikey')
+    # @api.doc('delete_payment', security='apikey')
+    @api.doc('delete_payment')
     @api.response(204, 'Payment deleted')
     def delete(self, payment_id):
         """Delete a Payment.
@@ -267,7 +269,7 @@ class PaymentCollection(Resource):
     # ------------------------------------------------------------------
     # CREATE A NEW PAYMENT
     # ------------------------------------------------------------------
-    @api.doc('create_payments', security='apikey')
+    @api.doc('create_payments')
     @api.expect(PAYMENT_MODEL_DOC)
     @api.response(400, 'The posted data was not valid')
     @api.response(201, 'Payment created successfully', PAYMENT_MODEL_DOC)

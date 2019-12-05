@@ -41,7 +41,8 @@ Feature: A store service back-end
     And I press the "Create" button
     Then I should see the message "create a new payment!"
     When I press the "list_all" button
-    Then I should see the "4345792072142100" in column "credit_card_number" in the display card
+    Then I should see the message "List all successful!"
+    And I should see the "4345792072142100" in column "credit_card_number" in the display card
 
   Scenario: Create a paypal payment method
     When I visit the "home page"
@@ -55,7 +56,8 @@ Feature: A store service back-end
     And I press the "Create" button
     Then I should see the message "create a new payment!"
     When I press the "list_all" button
-    Then I should see the "udydamma-1603@yopmail.com" in column "email" in the display card
+    Then I should see the message "List all successful!"
+    And I should see the "udydamma-1603@yopmail.com" in column "email" in the display card
 
   Scenario: Delete a payment method
     When I visit the "home page"
@@ -63,7 +65,8 @@ Feature: A store service back-end
     And I press the "Delete" button
     Then I should see the message "Payment has been Deleted!"
     When I press the "list_all" button
-    Then I should not see the "7896987987" in column "credit_card_number" in the display card
+    Then I should see the message "List all successful!"
+    And I should not see the "7896987987" in column "credit_card_number" in the display card
 
   Scenario: Update a payment method for a credit card
     When I visit the "home page"
@@ -80,7 +83,8 @@ Feature: A store service back-end
     And I press the "Update" button
     Then I should see the message "Payment has been Updated!"
     When I press the "list_all" button
-    Then I should see the "1234567890" in column "credit_card_number" in the display card
+    Then I should see the message "List all successful!"
+    And I should see the "1234567890" in column "credit_card_number" in the display card
 
   Scenario: Update a payment method for PayPal
     When I visit the "home page"
@@ -95,14 +99,16 @@ Feature: A store service back-end
     And I press the "Update" button
     Then I should see the message "Payment has been Updated!"
     When I press the "list_all" button
-    Then I should see the "abc@nyu.edu" in column "email" in the display card
+    Then I should see the message "List all successful!"
+    And I should see the "abc@nyu.edu" in column "email" in the display card
 
   Scenario: Query payments by order id
     When I visit the "home Page"
     And I set the "order_id" to "100" in "query" form
     And I press the "Query" button
-    Then I should see the "123123123" in column "credit_card_number" in the display card
-    Then I should not see the "456456546" in column "credit_card_number" in the display card
+    Then I should see the message "Query successful!"
+    And I should see the "123123123" in column "credit_card_number" in the display card
+    And I should not see the "456456546" in column "credit_card_number" in the display card
 
   Scenario: Query payments by customer id, available and type
     When I visit the "home Page"
@@ -110,8 +116,9 @@ Feature: A store service back-end
     And I select "Yes" in the "available" dropdown in "query" form
     And I select "PayPal" in the "type" dropdown in "query" form
     And I press the "Query" button
-    Then I should see the "awesome@hotmail.com" in column "email" in the display card
-    Then I should not see the "123123123" in column "credit_card_number" in the display card
+    Then I should see the message "Query successful!"
+    And I should see the "awesome@hotmail.com" in column "email" in the display card
+    And I should not see the "456456546" in column "credit_card_number" in the display card
 
   Scenario: Toggle a payment method's availability
     When I visit the "home page"
@@ -123,7 +130,8 @@ Feature: A store service back-end
     And I select "No" in the "available" dropdown in "query" form
     And I select "Credit Card" in the "type" dropdown in "query" form
     And I press the "Query" button
-    Then I should see the "123123123" in column "credit_card_number" in the display card
+    Then I should see the message "Query successful!"
+    And I should see the "123123123" in column "credit_card_number" in the display card
 
   Scenario: Read a payment
     When I visit the "home page"
