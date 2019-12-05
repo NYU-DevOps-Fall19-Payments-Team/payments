@@ -101,14 +101,9 @@ Feature: A store service back-end
     When I visit the "home Page"
     And I set the "order_id" to "100" in "query" form
     And I press the "Query" button
-<<<<<<< HEAD
     And I should see the message "Query successful!"
     Then I should see the "credit_card" with "123123123" in the display card
     And I should not see the "credit_card" with "456456546" in the display card
-=======
-    Then I should see the "123123123" in column "credit_card_number" in the display card
-    Then I should not see the "456456546" in column "credit_card_number" in the display card
->>>>>>> master
 
   Scenario: Query payments by customer id, available and type
     When I visit the "home Page"
@@ -116,14 +111,9 @@ Feature: A store service back-end
     And I select "Yes" in the "available" dropdown in "query" form
     And I select "PayPal" in the "type" dropdown in "query" form
     And I press the "Query" button
-<<<<<<< HEAD
     And I should see the message "Query successful!"
     Then I should see the "paypal" with "awesome@hotmail.com" in the display card
     And I should not see the "credit_card" with "123123123" in the display card
-=======
-    Then I should see the "awesome@hotmail.com" in column "email" in the display card
-    Then I should not see the "123123123" in column "credit_card_number" in the display card
->>>>>>> master
 
   Scenario: Toggle a payment method's availability
     When I visit the "home page"
@@ -135,6 +125,7 @@ Feature: A store service back-end
     And I select "No" in the "available" dropdown in "query" form
     And I select "Credit Card" in the "type" dropdown in "query" form
     And I press the "Query" button
+    And I should see the message "Query successful!"
     Then I should see the "123123123" in column "credit_card_number" in the display card
 
   Scenario: Read a payment
