@@ -203,7 +203,7 @@ class Payment(db.Model):
 
     @classmethod
     def find_by(cls, customer_id, order_id, available, payment_type):
-        """Find Payments using multiple filters."""
+        """Find payments using multiple filters."""
         cls.logger.info(
             'Processing query for customer_id %s, order_id %s,'
             ' available %s, type %s ...', customer_id, order_id, available,
