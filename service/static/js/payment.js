@@ -85,7 +85,7 @@ $(function () {
 
 
     // ****************************************
-    // List all the payments
+    // List all the payments.
     // ****************************************
 
     // load all the payments from the database, insert it into table.
@@ -139,7 +139,7 @@ $(function () {
     }
 
     // ****************************************
-    // Create a payment
+    // Create a payment.
     // ****************************************
 
     $("#create-btn").click(function () {
@@ -199,7 +199,7 @@ $(function () {
 
 
     // ****************************************
-    // Delete a Payment
+    // Delete a Payment.
     // ****************************************
 
     $("#delete-btn").click(function () {
@@ -222,7 +222,7 @@ $(function () {
     });
 
     // ****************************************
-    // Update a Payment
+    // Update a Payment.
     // ****************************************
 
     $("#update-btn").click(function () {
@@ -270,7 +270,7 @@ $(function () {
     });
 
     // ****************************************
-    // Toggle a Payment
+    // Toggle a Payment.
     // ****************************************
 
     $("#toggle-btn").click(function () {
@@ -295,7 +295,7 @@ $(function () {
     });
 
     // ****************************************
-    // Query payments
+    // Query payments.
     // ****************************************
 
     $("#query-btn").click(function () {
@@ -342,7 +342,7 @@ $(function () {
     });
 
     // ****************************************
-    // Read a payment
+    // Read a payment.
     // ****************************************
 
     $("#read-btn").click(function () {
