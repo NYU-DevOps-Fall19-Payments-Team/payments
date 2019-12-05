@@ -17,7 +17,7 @@ applications:
     FLASK_APP : service:app
     FLASK_DEBUG : false
 
-  #production
+  #production 
 - name: nyu-payment-service-f19-prod
   path: .
   instances: 1
