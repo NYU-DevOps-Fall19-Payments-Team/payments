@@ -1,6 +1,5 @@
-# pylint: disable=function-redefined, undefined-variable
-# (The apparent redefinitions of step_impl and undefinedness of @given,
-# @when, and @then are all handled by behave in BDD testing.)
+# pylint: disable=function-redefined
+# (The apparent redefinitions of step_impl are handled by behave in BDD tests.)
 """
 Payment Steps.
 
