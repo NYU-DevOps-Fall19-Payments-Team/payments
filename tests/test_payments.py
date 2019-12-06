@@ -1,14 +1,17 @@
 """
-Test cases for Payment Model
+Test cases for Payment Model.
+
 Test cases can be run with:
   nosetests
   coverage report -m
+
 """
 
 import unittest
 import os
 from service.models import Payment, DataValidationError, db
 from service import app
+from tests.dummy_data import DUMMY
 
 DATABASE_URI = os.getenv(
     'DATABASE_URI', 'postgres://postgres:postgres@localhost:5432/postgres')
@@ -19,13 +22,7 @@ DATABASE_URI = os.getenv(
 ######################################################################
 class TestPayments(unittest.TestCase):
     """ Test Cases for Payments """
-    _test_credit_card_info = {
-        "credit_card_number": "1234567890",
-        "card_holder_name": "John Doe",
-        "expiration_month": 4,
-        "expiration_year": 2022,
-        "security_code": "1234"
-    }
+    _test_credit_card_info = DUMMY
     _test_paypal_info = {
         "email": "test1@test1.com",
         "phone_number": "123456789",
@@ -54,11 +51,12 @@ class TestPayments(unittest.TestCase):
 
     def test_create_a_payment(self):
         """ Create a payment and assert that it exists """
-        payment = Payment(order_id="1",
-                          customer_id="1",
-                          available=True,
-                          type="credit card",
-                          info=self._test_credit_card_info)
+        payment = Payment(
+            order_id="1",
+            customer_id="1",
+            available=True,
+            type="credit card",
+            info=self._test_credit_card_info)
         self.assertTrue(payment is not None)
         self.assertEqual(payment.id, None)
         self.assertEqual(payment.order_id, "1")
@@ -71,11 +69,12 @@ class TestPayments(unittest.TestCase):
         """ Create a payment and add it to the database """
         payments = Payment.all()
         self.assertEqual(payments, [])
-        payment = Payment(order_id="1",
-                          customer_id="1",
-                          available=True,
-                          type="credit card",
-                          info=self._test_credit_card_info)
+        payment = Payment(
+            order_id="1",
+            customer_id="1",
+            available=True,
+            type="credit card",
+            info=self._test_credit_card_info)
         self.assertTrue(payment is not None)
         self.assertEqual(payment.id, None)
         payment.save()
@@ -86,11 +85,12 @@ class TestPayments(unittest.TestCase):
 
     def test_delete_a_payment(self):
         """ Delete a Payment """
-        payment = Payment(order_id="1",
-                          customer_id="1",
-                          available=True,
-                          type="credit card",
-                          info=self._test_credit_card_info)
+        payment = Payment(
+            order_id="1",
+            customer_id="1",
+            available=True,
+            type="credit card",
+            info=self._test_credit_card_info)
         payment.save()
         self.assertEqual(len(Payment.all()), 1)
         # delete the pet and make sure it isn't in the database
@@ -99,11 +99,12 @@ class TestPayments(unittest.TestCase):
 
     def test_serialize(self):
         """ Convert a payment to JSON """
-        payment = Payment(order_id="1",
-                          customer_id="1",
-                          available=True,
-                          type="credit card",
-                          info=self._test_credit_card_info)
+        payment = Payment(
+            order_id="1",
+            customer_id="1",
+            available=True,
+            type="credit card",
+            info=self._test_credit_card_info)
         payment_json = payment.serialize()
         self.assertEqual(payment_json['order_id'], "1")
         self.assertEqual(payment_json['customer_id'], "1")
@@ -118,13 +119,7 @@ class TestPayments(unittest.TestCase):
             "customer_id": "1",
             "available": True,
             "type": "credit card",
-            "info": {
-                "credit_card_number": "1234567890",
-                "card_holder_name": "John Doe",
-                "expiration_month": 4,
-                "expiration_year": 2022,
-                "security_code": "1234"
-            }
+            "info": DUMMY
         }
         payment = Payment()
         payment.deserialize(data)
@@ -136,9 +131,7 @@ class TestPayments(unittest.TestCase):
 
     def test_deserialize_with_key_error(self):
         """ Test deserialization with KeyError """
-        data = {
-            "order_id": "1"
-        }
+        data = {"order_id": "1"}
         payment = Payment()
         self.assertRaises(DataValidationError, payment.deserialize, data)
 
@@ -150,18 +143,20 @@ class TestPayments(unittest.TestCase):
 
     def test_find_a_payment(self):
         """ Find a payment by ID """
-        saved_payment = Payment(order_id="1",
-                                customer_id="1",
-                                available=True,
-                                type="credit card",
-                                info=self._test_credit_card_info)
+        saved_payment = Payment(
+            order_id="1",
+            customer_id="1",
+            available=True,
+            type="credit card",
+            info=self._test_credit_card_info)
         saved_payment.save()
         # adding extra row in case the find method return something randomly
-        Payment(order_id="2",
-                customer_id="2",
-                available=False,
-                type="paypal",
-                info=self._test_paypal_info).save()
+        Payment(
+            order_id="2",
+            customer_id="2",
+            available=False,
+            type="paypal",
+            info=self._test_paypal_info).save()
         payment = Payment.find(saved_payment.id)
         self.assertIsNot(payment, None)
         self.assertEqual(payment.id, saved_payment.id)
@@ -172,12 +167,18 @@ class TestPayments(unittest.TestCase):
         self.assertEqual(payment.info, saved_payment.info)
 
     def _add_two_test_payments(self):
-        Payment(order_id="1", customer_id="1", available=True,
-                type="credit card",
-                info=self._test_credit_card_info).save()
-        Payment(order_id="2", customer_id="2", available=False,
-                type="paypal",
-                info=self._test_paypal_info).save()
+        Payment(
+            order_id="1",
+            customer_id="1",
+            available=True,
+            type="credit card",
+            info=self._test_credit_card_info).save()
+        Payment(
+            order_id="2",
+            customer_id="2",
+            available=False,
+            type="paypal",
+            info=self._test_paypal_info).save()
 
     def _assert_equal_test_payment_1(self, payment):
         self.assertEqual(payment.order_id, 1)

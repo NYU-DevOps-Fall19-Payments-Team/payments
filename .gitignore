@@ -14,4 +14,6 @@
 !Procfile
 !runtime.txt
 !scrooge.gif
+!pylint_all.sh
+!codecov.yml
 
