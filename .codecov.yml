@@ -1,0 +1,15 @@
+coverage:
+  status:
+    project:
+      default:
+        # Pushes to master shouldn't decrease overall
+        # project coverage by more than 0.1%.
+        target: auto
+        threshold: 0.1%
+    patch:
+      default:
+        # Tolerate coverage diffs < 0.1% to limit
+        # noisy red coverage status on PRs.
+        target: auto
+        threshold: 0.1%
+
