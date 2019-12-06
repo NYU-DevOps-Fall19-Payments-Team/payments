@@ -33,8 +33,7 @@ import jsonschema
 from flask import jsonify, request, make_response, abort
 from flask_api import status  # HTTP Status Codes
 from flask_restplus import Api, Resource, reqparse, inputs
-from schemas.payment_schema import payment_schema
-from schemas.payment_schema_doc import payment_schema_doc
+from schemas.payment_schema import PAYMENT_SCHEMA, PAYMENT_SCHEMA_DOC
 
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
 # variety of backends including SQLite, MySQL, and PostgreSQL.
@@ -76,7 +75,7 @@ api = Api(  # pylint: disable=invalid-name
     authorizations=AUTHORIZATIONS)
 
 # Define the model so that the docs reflect what can be sent.
-PAYMENT_MODEL_DOC = api.schema_model('Payment_doc', payment_schema_doc)
+PAYMENT_MODEL_DOC = api.schema_model('Payment_doc', PAYMENT_SCHEMA_DOC)
 
 # Query string arguments.
 payment_args = reqparse.RequestParser()  # pylint: disable=invalid-name
@@ -212,7 +211,7 @@ class PaymentResource(Resource):
         app.logger.debug('Payload = %s', api.payload)  # pylint: disable=no-member
         data = api.payload
         # Still use jsonschema to validate data.
-        jsonschema.validate(data, payment_schema)
+        jsonschema.validate(data, PAYMENT_SCHEMA)
         payment.deserialize(data)
         payment.id = payment_id
         payment.save()
@@ -285,7 +284,7 @@ class PaymentCollection(Resource):
         app.logger.debug('Payload = %s', api.payload)  # pylint: disable=no-member
         data = api.payload
         # Still use jsonschema to validate data.
-        jsonschema.validate(data, payment_schema)
+        jsonschema.validate(data, PAYMENT_SCHEMA)
         payment.deserialize(data)
         payment.save()
         app.logger.info('Payment with new id [%s] saved!', payment.id)  # pylint: disable=no-member
