@@ -12,6 +12,7 @@ For information on Waiting until elements are present in the HTML see:
 from os import getenv
 import json
 import requests
+from behave import given, when, then  # pylint: disable=no-name-in-module
 from compare import expect, ensure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
