@@ -1,4 +1,4 @@
-# payments
+# Payments: a microservice.
 
 [![Build Status](https://travis-ci.org/NYU-DevOps-Fall19-Payments-Team/payments.svg?branch=master)](https://travis-ci.org/NYU-DevOps-Fall19-Payments-Team/payments)
 [![codecov](https://codecov.io/gh/NYU-DevOps-Fall19-Payments-Team/payments/branch/master/graph/badge.svg)](https://codecov.io/gh/NYU-DevOps-Fall19-Payments-Team/payments)
