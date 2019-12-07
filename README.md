@@ -18,8 +18,6 @@ https://nyu-payment-service-f19-prod.mybluemix.net/apidocs
 
 Setting up a local development environment requires that you download and install [VirtualBox](https://www.virtualbox.org/) and [Vagrant](https://www.vagrantup.com/).
 
-The contents of the Vagrantfile are adapted from part of the DevOps course CSCI-GA.2820-001/002 at NYU taught by John Rofrano.
-
 Once those requirements are installed, set up and enter the local development environment with:
 ```
 git clone https://github.com/NYU-DevOps-Fall19-Payments-Team/payments.git
