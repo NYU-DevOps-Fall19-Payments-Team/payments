@@ -1,54 +1,109 @@
-.card{
-    width:40%;
-    margin: 30px auto;
-    padding:40px 40px;
-    border-radius: 30px 30px 30px 30px;
+.card {
+    margin: 20px auto;
+    padding: 30px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-#show_payment_card{
+#result-table-card {
+    padding: 20px 10px;
+}
+
+/*result table*/
+#expand-collapse-btn-container {
+    margin-bottom: 10px;
+}
+
+#result-table-header-row {
+    background-color: rgba(0, 0, 0, .2);
+}
+
+.result-table-detail-table-row > td {
+    padding: 0;
+}
+
+.detail-table {
+    margin: 0;
+}
+
+.detail-table th {
+    width: 35%;
+}
+
+.result-table-payment-row {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, .05);
+}
+
+.result-table-detail-table-row {
+    font-size: 90%;
+}
+
+.result-table-payment-row:hover, .result-table-detail-table-row tr:hover {
+    background-color: rgba(0, 0, 0, .075);
+}
+
+#show_payment_card {
     width: 90%;
 }
 
-#list_all-btn{
-    margin-top:2em
+#list_all-btn {
+    float: right;
 }
 
-#create_paypal{
+#list-all-card {
+    padding: 20px 10px;
+}
+
+#list-all-card * {
+    margin: 0;
+}
+
+#create_paypal {
     display: none;
 }
 
-#create_credit_card{
+#create_credit_card {
     display: none;
 }
 
-#update_credit_card{
+#update_credit_card {
     display: none;
 }
 
-#update_paypal{
+#update_paypal {
     display: none;
 }
 
 hr {
     border: 0;
     height: 1px;
-    background: #333;
-    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+    background: #333 linear-gradient(to right, #ccc, #333, #ccc);
 }
 
 .error {
-    width:40%;
+    width: 40%;
     display: none;
     margin: 0 auto;
 }
 
-.success{
-    width:40%;
+.success {
+    width: 40%;
     display: none;
     margin: 0 auto;
 }
 
-#list_all-btn{
-    display:inline
+.form-title, .form-title * {
+    margin: 0;
+}
+
+.form-title {
+    cursor: pointer;
+}
+
+.form-title:hover {
+    background-color: rgba(0, 0, 0, .15);
+}
+
+form {
+    margin-top: 20px;
 }
