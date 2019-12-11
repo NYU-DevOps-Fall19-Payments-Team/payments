@@ -18,6 +18,8 @@ Feature: A store service back-end
   Scenario: List all the payments
     When I visit the "home page"
     And I press the "list_all" button
+    Then I should see the message "List all successful!"
+    When I press the "expand-all" button
     Then I should see the "123123123" in column "credit_card_number" in the display card
     Then I should see the "456456546" in column "credit_card_number" in the display card
     Then I should see the "7896987987" in column "credit_card_number" in the display card
@@ -39,10 +41,11 @@ Feature: A store service back-end
     And I set the "expiration_year" to "2023" in "create" form
     And I set the "security_code" to "219" in "create" form
     And I press the "Create" button
-    Then I should see the message "create a new payment!"
+    Then I should see the message "Create a new payment successful!"
     When I press the "list_all" button
     Then I should see the message "List all successful!"
-    And I should see the "4345792072142100" in column "credit_card_number" in the display card
+    When I press the "expand-all" button
+    Then I should see the "4345792072142100" in column "credit_card_number" in the display card
 
   Scenario: Create a paypal payment method
     When I visit the "home page"
@@ -54,19 +57,21 @@ Feature: A store service back-end
     And I set the "phone_number" to "(744) 449-7930" in "create" form
     And I set the "token" to "9" in "create" form
     And I press the "Create" button
-    Then I should see the message "create a new payment!"
+    Then I should see the message "Create a new payment successful!"
     When I press the "list_all" button
     Then I should see the message "List all successful!"
-    And I should see the "udydamma-1603@yopmail.com" in column "email" in the display card
+    When I press the "expand-all" button
+    Then I should see the "udydamma-1603@yopmail.com" in column "email" in the display card
 
   Scenario: Delete a payment method
     When I visit the "home page"
     And I set the "payment_id" to "3" in "delete" form
     And I press the "Delete" button
-    Then I should see the message "Payment has been Deleted!"
+    Then I should see the message "Payment 3 has been deleted!"
     When I press the "list_all" button
     Then I should see the message "List all successful!"
-    And I should not see the "7896987987" in column "credit_card_number" in the display card
+    When I press the "expand-all" button
+    Then I should not see the "7896987987" in column "credit_card_number" in the display card
 
   Scenario: Update a payment method for a credit card
     When I visit the "home page"
@@ -81,10 +86,11 @@ Feature: A store service back-end
     And I set the "expiration_year" to "2026" in "update" form
     And I set the "security_code" to "675" in "update" form
     And I press the "Update" button
-    Then I should see the message "Payment has been Updated!"
+    Then I should see the message "Payment 1 has been updated!"
     When I press the "list_all" button
     Then I should see the message "List all successful!"
-    And I should see the "1234567890" in column "credit_card_number" in the display card
+    When I press the "expand-all" button
+    Then I should see the "1234567890" in column "credit_card_number" in the display card
 
   Scenario: Update a payment method for PayPal
     When I visit the "home page"
@@ -97,18 +103,20 @@ Feature: A store service back-end
     And I set the "phone_number" to "9897674444" in "update" form
     And I set the "token" to "hereisyourtoken" in "update" form
     And I press the "Update" button
-    Then I should see the message "Payment has been Updated!"
+    Then I should see the message "Payment 4 has been updated!"
     When I press the "list_all" button
     Then I should see the message "List all successful!"
-    And I should see the "abc@nyu.edu" in column "email" in the display card
+    When I press the "expand-all" button
+    Then I should see the "abc@nyu.edu" in column "email" in the display card
 
   Scenario: Query payments by order id
     When I visit the "home Page"
     And I set the "order_id" to "100" in "query" form
     And I press the "Query" button
     Then I should see the message "Query successful!"
-    And I should see the "123123123" in column "credit_card_number" in the display card
-    And I should not see the "456456546" in column "credit_card_number" in the display card
+    When I press the "expand-all" button
+    Then I should see the "123123123" in column "credit_card_number" in the display card
+    Then I should not see the "456456546" in column "credit_card_number" in the display card
 
   Scenario: Query payments by customer id, available and type
     When I visit the "home Page"
@@ -117,25 +125,32 @@ Feature: A store service back-end
     And I select "PayPal" in the "type" dropdown in "query" form
     And I press the "Query" button
     Then I should see the message "Query successful!"
-    And I should see the "awesome@hotmail.com" in column "email" in the display card
-    And I should not see the "456456546" in column "credit_card_number" in the display card
+    When I press the "expand-all" button
+    Then I should see the "awesome@hotmail.com" in column "email" in the display card
+    Then I should not see the "cool@gmail.com" in column "email" in the display card
+    Then I should not see the "great@outlook.com" in column "email" in the display card
+    Then I should not see the "perfect@icloud.com" in column "email" in the display card
 
   Scenario: Toggle a payment method's availability
     When I visit the "home page"
     And I set the "payment_id" to "1" in "toggle" form
     And I press the "Toggle" button
-    Then I should see the message "Payment availability has been toggled!"
+    Then I should see the message "Payment 1 availability has been toggled!"
     When I set the "order_id" to "100" in "query" form
     And I set the "customer_id" to "1" in "query" form
     And I select "No" in the "available" dropdown in "query" form
     And I select "Credit Card" in the "type" dropdown in "query" form
     And I press the "Query" button
     Then I should see the message "Query successful!"
-    And I should see the "123123123" in column "credit_card_number" in the display card
+    When I press the "expand-all" button
+    Then I should see the "123123123" in column "credit_card_number" in the display card
 
   Scenario: Read a payment
     When I visit the "home page"
     And I set the "payment_id" to "8" in "read" form
     And I press the "Read" button
+    And I press the "expand-all" button
     Then I should see the "perfect@icloud.com" in column "email" in the display card
-    Then I should not see the "123123123" in column "credit_card_number" in the display card
+    Then I should not see the "awesome@hotmail.com" in column "email" in the display card
+    Then I should not see the "cool@gmail.com" in column "email" in the display card
+    Then I should not see the "great@outlook.com" in column "email" in the display card

@@ -286,7 +286,7 @@ $(function () {
 
             ajax.done(function (res) {
                 clearForm("update");
-                flash_message("Payment " + payment_id + " has been Updated!")
+                flash_message("Payment " + payment_id + " has been updated!")
             });
 
             ajax.fail(function (res) {
