@@ -39,7 +39,8 @@ def step_impl(context):
         }
         payload = json.dumps(data)
         context.resp = requests.post(create_url, data=payload, headers=headers)
-        expect(context.resp.status_code).to_equal(201)  # pylint: disable=no-member
+        expect(context.resp.status_code).to_equal(
+            201)  # pylint: disable=no-member
 
 
 @when('I visit the "home page"')
@@ -54,6 +55,13 @@ def step_impl(context, button):
     button_id = button.lower() + '-btn'
     context.driver.find_element_by_id(button_id).click()
     context.driver.save_screenshot('home_page.png')
+
+
+@when('I press the "{button}" title')
+def step_impl(context, button):
+    """Click a specified button."""
+    title_id = button.lower()
+    context.driver.find_element_by_id(title_id).click()
 
 
 @when('I set the "{element_name}" to "{text_string}" in "{form}" form')

@@ -31,6 +31,7 @@ Feature: A store service back-end
 
   Scenario: Create a credit card payment method
     When I visit the "home page"
+    And I press the "form-title-create" title
     And I set the "customer_id" to "5" in "create" form
     And I set the "order_id" to "303" in "create" form
     And I select "Yes" in the "available" dropdown in "create" form
@@ -49,6 +50,7 @@ Feature: A store service back-end
 
   Scenario: Create a paypal payment method
     When I visit the "home page"
+    And I press the "form-title-create" title
     And I set the "customer_id" to "5" in "create" form
     And I set the "order_id" to "303" in "create" form
     And I select "Yes" in the "available" dropdown in "create" form
@@ -65,6 +67,7 @@ Feature: A store service back-end
 
   Scenario: Delete a payment method
     When I visit the "home page"
+    And I press the "form-title-delete" title
     And I set the "payment_id" to "3" in "delete" form
     And I press the "Delete" button
     Then I should see the message "Payment 3 has been deleted!"
@@ -75,6 +78,7 @@ Feature: A store service back-end
 
   Scenario: Update a payment method for a credit card
     When I visit the "home page"
+    And I press the "form-title-update" title
     And I set the "payment_id" to "1" in "update" form
     And I set the "customer_id" to "1" in "update" form
     And I set the "order_id" to "1" in "update" form
@@ -94,6 +98,7 @@ Feature: A store service back-end
 
   Scenario: Update a payment method for PayPal
     When I visit the "home page"
+    And I press the "form-title-update" title
     And I set the "payment_id" to "4" in "update" form
     And I set the "customer_id" to "189" in "update" form
     And I set the "order_id" to "1000" in "update" form
@@ -111,6 +116,7 @@ Feature: A store service back-end
 
   Scenario: Query payments by order id
     When I visit the "home Page"
+    And I press the "form-title-query" title
     And I set the "order_id" to "100" in "query" form
     And I press the "Query" button
     Then I should see the message "Query successful!"
@@ -120,6 +126,7 @@ Feature: A store service back-end
 
   Scenario: Query payments by customer id, available and type
     When I visit the "home Page"
+    And I press the "form-title-query" title
     And I set the "customer_id" to "2" in "query" form
     And I select "Yes" in the "available" dropdown in "query" form
     And I select "PayPal" in the "type" dropdown in "query" form
@@ -133,9 +140,11 @@ Feature: A store service back-end
 
   Scenario: Toggle a payment method's availability
     When I visit the "home page"
+    And I press the "form-title-toggle" title
     And I set the "payment_id" to "1" in "toggle" form
     And I press the "Toggle" button
     Then I should see the message "Payment 1 availability has been toggled!"
+    When I press the "form-title-query" title
     When I set the "order_id" to "100" in "query" form
     And I set the "customer_id" to "1" in "query" form
     And I select "No" in the "available" dropdown in "query" form
@@ -147,6 +156,7 @@ Feature: A store service back-end
 
   Scenario: Read a payment
     When I visit the "home page"
+    And I press the "form-title-read" title
     And I set the "payment_id" to "8" in "read" form
     And I press the "Read" button
     And I press the "expand-all" button
