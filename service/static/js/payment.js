@@ -3,11 +3,6 @@ $(function () {
     // UTILITY FUNCTIONS
     // ****************************************
 
-    // $('.table').footable();
-    jQuery(function ($) {
-        $('.footable').footable();
-    });
-
     // Show the error message.
     function showError(error) {
         let errorMessage = $(".error");
