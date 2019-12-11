@@ -165,6 +165,24 @@ $(function () {
         }
     });
 
+    $("#expand-all-btn").click(function () {
+        $(".result-table-detail-table-row").each(function () {
+            $(this).show();
+        });
+        $(".fooicon").each(function () {
+            $(this).removeClass("fooicon-plus").addClass("fooicon-minus");
+        });
+    });
+
+    $("#collapse-all-btn").click(function () {
+        $(".result-table-detail-table-row").each(function () {
+            $(this).hide();
+        });
+        $(".fooicon").each(function () {
+            $(this).removeClass("fooicon-minus").addClass("fooicon-plus");
+        });
+    });
+
     // ****************************************
     // Create a payment.
     // ****************************************
