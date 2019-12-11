@@ -380,32 +380,38 @@
 
         </div>
         <div class="card col-6" id="result-table-card">
-            <div class="container">
+            <div class="container" id="expand-collapse-btn-container">
                 <button id="expand-all-btn" type="submit"
-                        class="btn btn-info">Expand all
+                        class="btn btn-info">
+                    <i class="far fa-plus-square"></i>
+                    Expand all
                 </button>
                 <button id="collapse-all-btn" type="submit"
-                        class="btn btn-info">Collapse all
+                        class="btn btn-info">
+                    <i class="far fa-minus-square"></i>
+                    Collapse all
                 </button>
             </div>
-            <table class="table table-bordered" id="result-table">
-                <thead>
-                <tr id="result-table-header-row">
-                    <th>ID</th>
-                    <th>Customer ID</th>
-                    <th>Order ID</th>
-                    <th>Type</th>
-                    <th>Available</th>
-                    <th style="display: none;">Credit Card Number</th>
-                    <th style="display: none;">Card Holder Name</th>
-                    <th style="display: none;">Expires</th>
-                    <th style="display: none;">Email</th>
-                    <th style="display: none;">Phone Number</th>
-                </tr>
-                </thead>
-                <tbody id="result-table-body">
-                </tbody>
-            </table>
+            <div class="container">
+                <table class="table table-bordered" id="result-table">
+                    <thead>
+                    <tr id="result-table-header-row">
+                        <th>ID</th>
+                        <th>Customer ID</th>
+                        <th>Order ID</th>
+                        <th>Type</th>
+                        <th>Available</th>
+                        <th style="display: none;">Credit Card Number</th>
+                        <th style="display: none;">Card Holder Name</th>
+                        <th style="display: none;">Expires</th>
+                        <th style="display: none;">Email</th>
+                        <th style="display: none;">Phone Number</th>
+                    </tr>
+                    </thead>
+                    <tbody id="result-table-body">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

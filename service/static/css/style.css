@@ -1,57 +1,16 @@
-.card{
+.card {
     /*width:40%;*/
     margin: 30px auto;
-    padding:40px 40px;
-    border-radius: 30px 30px 30px 30px;
+    padding: 30px;
+    border-radius: 20px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-#footable-card {
-    width: 90%
-}
-
-#footable-card tbody:not(.footable-detail-row) {
-    cursor: pointer;
-}
-
-tr.footable-detail-row > td {
-    padding: 0;
-}
-
-.footable-details {
-    margin: 0;
-}
-
-.footable-header {
-    background-color: rgba(0, 0, 0, .2);
-}
-
-#footable-card > .table-striped > tbody > tr:not(.footable-detail-row) {
-    background-color: rgba(0, 0, 0,.05);
-}
-
-.footable-detail-row, .footable-detail-row:hover {
-    background-color: rgba(0, 0, 0, 0) !important;
-}
-
-.table-hover tbody tr:not(.footable-detail-row):hover {
-    color: #212529;
-    background-color: rgba(0,0,0,.075) !important;
-}
-
-/*#footable-card>.table-striped>tbody>tr:nth-of-type(odd):not(.footable-detail-row) {*/
-/*    background-color: rgba(0,0,0,.05);*/
-/*}*/
-
-.footable-details tr {
-    background-color: rgba(0, 0, 0, 0) !important;
-}
-
-table.footable-details > tbody > tr > th:nth-child(1) {
-    width: 200px;
-}
-
 /*result table*/
+#expand-collapse-btn-container {
+    margin-bottom: 10px;
+}
+
 #result-table-header-row {
     background-color: rgba(0, 0, 0, .2);
 }
@@ -70,7 +29,7 @@ table.footable-details > tbody > tr > th:nth-child(1) {
 
 .result-table-payment-row {
     cursor: pointer;
-    background-color: rgba(0, 0, 0,.05);
+    background-color: rgba(0, 0, 0, .05);
 }
 
 .result-table-detail-table-row {
@@ -78,52 +37,51 @@ table.footable-details > tbody > tr > th:nth-child(1) {
 }
 
 .result-table-payment-row:hover, .result-table-detail-table-row tr:hover {
-    background-color: rgba(0, 0, 0,.075);
+    background-color: rgba(0, 0, 0, .075);
 }
 
-#show_payment_card{
+#show_payment_card {
     width: 90%;
 }
 
-#list_all-btn{
-    margin-top:2em
+#list_all-btn {
+    margin-top: 2em
 }
 
-#create_paypal{
+#create_paypal {
     display: none;
 }
 
-#create_credit_card{
+#create_credit_card {
     display: none;
 }
 
-#update_credit_card{
+#update_credit_card {
     display: none;
 }
 
-#update_paypal{
+#update_paypal {
     display: none;
 }
 
 hr {
     border: 0;
     height: 1px;
-    background: #333;
-    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+    background: #333 linear-gradient(to right, #ccc, #333, #ccc);
 }
 
 .error {
-    width:40%;
+    width: 40%;
     display: none;
     margin: 0 auto;
 }
 
-.success{
-    width:40%;
+.success {
+    width: 40%;
     display: none;
     margin: 0 auto;
 }
 
-#list_all-btn{
-    display:inline
+#list_all-btn {
+    display: inline
 }
