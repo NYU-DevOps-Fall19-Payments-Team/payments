@@ -1,309 +1,407 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Payment RESTful Service</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css"
+          href="static/css/footable.bootstrap.css">
     <link rel="stylesheet" type="text/css" href="static/css/style.css">
-    <script type="text/javascript" src = "static/js/jquery-3.1.1.min.js"></script>
+    <script src="https://kit.fontawesome.com/95bf3f84c4.js"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="static/js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="static/js/footable.js"></script>
     <script defer src="static/js/all.js"></script>
-  </head>
-  <body>
-    <div class="alert alert-success success" ID='flash_message' role="alert">
-    </div>
-    <div class="alert alert-danger error" ID='error_message' role="alert">
-        Missing field.
-    </div>
+</head>
+<body>
+<div class="alert alert-success success" ID='flash_message' role="alert">
+</div>
+<div class="alert alert-danger error" ID='error_message' role="alert">
+    Missing field.
+</div>
 
-    <!-- List all payment -->
-    <div class = "card" id = "show_payment_card">
-        <div id='display_credit_card'>
-          <h4>Credit card</h4>
-          <div class='row'>
-            <div class='col-1'><p>ID</p></div>
-            <div class='col-2 customer_id'><p>Customer ID</p></div>
-            <div class='col-1 order_id'><p>Order ID</p></div>
-            <div class='col-1 available'><p>Available</p></div>
-            <div class='col-1 type'><p>Type</p></div>
-            <div class='col-2 card_holder_name'><p>Card Holder</p></div>
-            <div class='col-2 credit_card_number'><p>Card Number</p></div>
-            <div class='col-2 expiration'><p>Expiration date</p></div>
-          </div>
-        </div>
-        <hr/>
-        <div id='display_paypal'>
-          <h4>Paypal</h4>
-          <div class='row'>
-              <div class='col-1'><p>ID</p></div>
-              <div class='col-2 customer_id'><p>Customer ID</p></div>
-              <div class='col-1 order_id'><p>Order ID</p></div>
-              <div class='col-1 available'><p>Available</p></div>
-              <div class='col-1 type'><p>Type</p></div>
-              <div class='col-3 email'><p>Email</p></div>
-              <div class='col-2 phone_number'><p>Phone Number</p></div>
-            </div>
-        </div>
-        <form>
-            <button id = "list_all-btn" class="btn btn-primary">List All Payments</button>
-        </form>
-    </div>
-
-    <!-- create a payment -->
-    <div class = "card">
-        <form>
-            <div class="form-group">
-                <h2><label for="create_title">Create Payment</label></h2>
-              </div>
-            <div class="form-group">
-              <label for="customer_id">Customer ID</label>
-              <input type="number" class="form-control" id="create_customer_id" placeholder="Enter customer id" required>
-            </div>
-            <div class="form-group">
-              <label for="order_id">Order ID</label>
-              <input type="number" class="form-control" id="create_order_id" placeholder="Enter order id" required>
-            </div>
-            <div class="form-group">
-                <label for="available">Available</label>
-                <select class="form-control" id="create_available" required>
-                  <option selected>Yes</option>
-                  <option>No</option>
-                </select>
-              </div>
-            <div class="form-group">
-              <label for="type">Payment Type</label>
-              <select class="form-control" id="create_type" required>
-                <option value="" selected disabled>Please Choose...</option>
-                <option>Credit Card</option>
-                <option>PayPal</option>
-              </select>
-            </div>
-            <div id='create_credit_card'>
-                <hr/>
-                <div class="form-group">
-                    <label for="credit_card_number">Credit Card Number</label>
-                    <input type="text" class="form-control" id = "create_credit_card_number" placeholder="Enter credit card number" maxlength="30" required>
-                </div>
-                <div class="form-group">
-                    <label for="card_holder_name">Card Holder</label>
-                    <input type="text" class="form-control" id = "create_card_holder_name" placeholder="Enter the name of card holder" maxlength="30" required>
-                </div>
-                <div class="form-row form-group">
-                    <div class="col">
-                      <label for="expiration_month">Expiration Month</label>
-                      <input type="number" min = "1" max ="12" id = "create_expiration_month" class="form-control" placeholder="Month" required>
+<div class="container">
+    <div class="row">
+        <div class="container col-6" id="action-container">
+            <div class="card">
+                <form>
+                    <div class="form-group">
+                        <h2><label for="read_title">List all Payments</label>
+                        </h2>
                     </div>
-                    <div class="col">
-                      <label for="expiration_year">Expiration Year</label>
-                      <input type="number" min ="2020" max ="2099" id = "create_expiration_year" class="form-control" placeholder="Year" required>
+                    <form>
+                        <button id="list_all-btn" class="btn btn-primary">List
+                            All Payments
+                        </button>
+                    </form>
+                </form>
+            </div>
+
+            <!-- create a payment -->
+            <div class="card">
+                <form>
+                    <div class="form-group">
+                        <h2><label for="create_title">Create a new Payment</label>
+                        </h2>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="security_code">Security Code</label>
-                    <input type="text" class="form-control" maxlength = "4" id = "create_security_code" placeholder="Security code" required>
-                </div>
-            </div>
-            <div id='create_paypal'>
-                <hr/>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id = "create_email" placeholder="Enter your email address" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone_number">Phone Number</label>
-                    <input type="text" class="form-control" id = "create_phone_number" placeholder="Enter your phone number" required>
-                </div>
-                <div class="form-group">
-                    <label for="token">Token</label>
-                    <input type="text" class="form-control" id = "create_token" placeholder="Enter the token" maxlength="30" required>
-                </div>
-            </div>
-            <button id = "create-btn" type="submit" class="btn btn-primary">Create</button>
-          </form>
-    </div>
-
-    <!-- read a payment -->
-    <div class = "card">
-        <form>
-          <div class="form-group">
-            <h2><label for="read_title">Read a Payment</label></h2>
-          </div>
-            <div class="alert alert-danger error" role="alert">
-                Missing field.
-            </div>
-            <div class="form-group">
-              <label for="read_payment_id">Payment ID</label>
-              <input type="number" class="form-control" id="read_payment_id" placeholder="Enter payment id" required>
-            </div>
-            <button id = "read-btn" type="submit" class="btn btn-primary">Read</button>
-          </form>
-    </div>
-
-    <!-- update a payment -->
-    <div class = "card">
-        <form>
-          <div class="form-group">
-            <h2><label for="update_title">Update Payment</label></h2>
-          </div>
-            <div class="alert alert-danger error" role="alert">
-                Missing field.
-            </div>
-            <div class="form-group">
-              <label for="payment_id">Payment ID</label>
-              <input type="number" class="form-control" id="update_payment_id" placeholder="Enter payment id" required>
-            </div>
-            <div class="form-group">
-              <label for="customer_id">Customer ID</label>
-              <input type="number" class="form-control" id="update_customer_id" placeholder="Enter customer id" required>
-            </div>
-            <div class="form-group">
-              <label for="order_id">Order ID</label>
-              <input type="number" class="form-control" id="update_order_id" placeholder="Enter order id" required>
-            </div>
-            <div class="form-group">
-                <label for="available">Available</label>
-                <select class="form-control" id="update_available" required>
-                  <option selected>Yes</option>
-                  <option>No</option>
-                </select>
-              </div>
-            <div class="form-group">
-              <label for="type">Payment Type</label>
-              <select class="form-control" id="update_type" required>
-                <option value="" selected disabled>Please Choose...</option>
-                <option>Credit Card</option>
-                <option>PayPal</option>
-              </select>
-            </div>
-            <div id='update_credit_card'>
-                <hr/>
-                <div class="form-group">
-                    <label for="credit_card_number">Credit Card Number</label>
-                    <input type="text" class="form-control" id = "update_credit_card_number" placeholder="Enter credit card number" maxlength="30" required>
-                </div>
-                <div class="form-group">
-                    <label for="card_holder_name">Card Holder</label>
-                    <input type="text" class="form-control" id = "update_card_holder_name" placeholder="Enter the name of card holder" maxlength="30" required>
-                </div>
-                <div class="form-row form-group">
-                    <div class="col">
-                      <label for="expiration_month">Expiration Month</label>
-                      <input type="number" min = "1" max ="12" id = "update_expiration_month" class="form-control" placeholder="Month" required>
+                    <div class="form-group">
+                        <label for="customer_id">Customer ID</label>
+                        <input type="number" class="form-control"
+                               id="create_customer_id"
+                               placeholder="Enter customer id" required>
                     </div>
-                    <div class="col">
-                      <label for="expiration_year">Expiration Year</label>
-                      <input type="number" min ="2020" max ="2099" id = "update_expiration_year" class="form-control" placeholder="Year" required>
+                    <div class="form-group">
+                        <label for="order_id">Order ID</label>
+                        <input type="number" class="form-control"
+                               id="create_order_id" placeholder="Enter order id"
+                               required>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="security_code">Security Code</label>
-                    <input type="text" class="form-control" maxlength = "4" id = "update_security_code" placeholder="Security code" required>
-                </div>
+                    <div class="form-group">
+                        <label for="available">Available</label>
+                        <select class="form-control" id="create_available"
+                                required>
+                            <option selected>Yes</option>
+                            <option>No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Payment Type</label>
+                        <select class="form-control" id="create_type" required>
+                            <option value="" selected disabled>Please
+                                Choose...
+                            </option>
+                            <option>Credit Card</option>
+                            <option>PayPal</option>
+                        </select>
+                    </div>
+                    <div id='create_credit_card'>
+                        <hr/>
+                        <div class="form-group">
+                            <label for="credit_card_number">Credit Card
+                                Number</label>
+                            <input type="text" class="form-control"
+                                   id="create_credit_card_number"
+                                   placeholder="Enter credit card number"
+                                   maxlength="30" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="card_holder_name">Card Holder</label>
+                            <input type="text" class="form-control"
+                                   id="create_card_holder_name"
+                                   placeholder="Enter the name of card holder"
+                                   maxlength="30" required>
+                        </div>
+                        <div class="form-row form-group">
+                            <div class="col">
+                                <label for="expiration_month">Expiration
+                                    Month</label>
+                                <input type="number" min="1" max="12"
+                                       id="create_expiration_month"
+                                       class="form-control" placeholder="Month"
+                                       required>
+                            </div>
+                            <div class="col">
+                                <label for="expiration_year">Expiration
+                                    Year</label>
+                                <input type="number" min="2020" max="2099"
+                                       id="create_expiration_year"
+                                       class="form-control" placeholder="Year"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="security_code">Security Code</label>
+                            <input type="text" class="form-control"
+                                   maxlength="4" id="create_security_code"
+                                   placeholder="Security code" required>
+                        </div>
+                    </div>
+                    <div id='create_paypal'>
+                        <hr/>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control"
+                                   id="create_email"
+                                   placeholder="Enter your email address"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone_number">Phone Number</label>
+                            <input type="text" class="form-control"
+                                   id="create_phone_number"
+                                   placeholder="Enter your phone number"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label for="token">Token</label>
+                            <input type="text" class="form-control"
+                                   id="create_token"
+                                   placeholder="Enter the token" maxlength="30"
+                                   required>
+                        </div>
+                    </div>
+                    <button id="create-btn" type="submit"
+                            class="btn btn-primary">Create
+                    </button>
+                </form>
             </div>
-            <div id='update_paypal'>
-                <hr/>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id = "update_email" placeholder="Enter your email address" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone_number">Phone Number</label>
-                    <input type="text" class="form-control" id = "update_phone_number" placeholder="Enter your phone number" required>
-                </div>
-                <div class="form-group">
-                    <label for="token">Token</label>
-                    <input type="text" class="form-control" id = "update_token" placeholder="Enter the token" maxlength="30" required>
-                </div>
-            </div>
-            <button id = "update-btn" type="submit" class="btn btn-primary">Update</button>
-          </form>
-    </div>
 
-    <!-- delete a payment -->
-    <div class = "card">
-        <form>
-            <div class="form-group">
-              <h2><label for="delete_title">Delete Payment</label></h2>
+            <!-- read a payment -->
+            <div class="card">
+                <form>
+                    <div class="form-group">
+                        <h2><label for="read_title">Read a Payment</label></h2>
+                    </div>
+                    <div class="alert alert-danger error" role="alert">
+                        Missing field.
+                    </div>
+                    <div class="form-group">
+                        <label for="read_payment_id">Payment ID</label>
+                        <input type="number" class="form-control"
+                               id="read_payment_id"
+                               placeholder="Enter payment id" required>
+                    </div>
+                    <button id="read-btn" type="submit" class="btn btn-primary">
+                        Read
+                    </button>
+                </form>
             </div>
-            <div class="alert alert-danger error" role="alert">
-                Missing field.
-            </div>
-            <div class="form-group">
-              <label for="delete_payment_id">Payment ID</label>
-              <input type="number" class="form-control" id="delete_payment_id" placeholder="Enter payment id" required>
-            </div>
-            <button type="submit" class="btn btn-danger" id="delete-btn">Delete</button>
-          </form>
-    </div>
 
-    <!-- Toggle a payment's availability -->
-    <div class = "card">
-        <form>
-            <div class="form-group">
-              <h2><label for="toggle_title">Toggle Payment Availability</label></h2>
+            <!-- update a payment -->
+            <div class="card">
+                <form>
+                    <div class="form-group">
+                        <h2><label for="update_title">Update a Payment</label>
+                        </h2>
+                    </div>
+                    <div class="alert alert-danger error" role="alert">
+                        Missing field.
+                    </div>
+                    <div class="form-group">
+                        <label for="payment_id">Payment ID</label>
+                        <input type="number" class="form-control"
+                               id="update_payment_id"
+                               placeholder="Enter payment id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customer_id">Customer ID</label>
+                        <input type="number" class="form-control"
+                               id="update_customer_id"
+                               placeholder="Enter customer id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="order_id">Order ID</label>
+                        <input type="number" class="form-control"
+                               id="update_order_id" placeholder="Enter order id"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label for="available">Available</label>
+                        <select class="form-control" id="update_available"
+                                required>
+                            <option selected>Yes</option>
+                            <option>No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Payment Type</label>
+                        <select class="form-control" id="update_type" required>
+                            <option value="" selected disabled>Please
+                                Choose...
+                            </option>
+                            <option>Credit Card</option>
+                            <option>PayPal</option>
+                        </select>
+                    </div>
+                    <div id='update_credit_card'>
+                        <hr/>
+                        <div class="form-group">
+                            <label for="credit_card_number">Credit Card
+                                Number</label>
+                            <input type="text" class="form-control"
+                                   id="update_credit_card_number"
+                                   placeholder="Enter credit card number"
+                                   maxlength="30" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="card_holder_name">Card Holder</label>
+                            <input type="text" class="form-control"
+                                   id="update_card_holder_name"
+                                   placeholder="Enter the name of card holder"
+                                   maxlength="30" required>
+                        </div>
+                        <div class="form-row form-group">
+                            <div class="col">
+                                <label for="expiration_month">Expiration
+                                    Month</label>
+                                <input type="number" min="1" max="12"
+                                       id="update_expiration_month"
+                                       class="form-control" placeholder="Month"
+                                       required>
+                            </div>
+                            <div class="col">
+                                <label for="expiration_year">Expiration
+                                    Year</label>
+                                <input type="number" min="2020" max="2099"
+                                       id="update_expiration_year"
+                                       class="form-control" placeholder="Year"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="security_code">Security Code</label>
+                            <input type="text" class="form-control"
+                                   maxlength="4" id="update_security_code"
+                                   placeholder="Security code" required>
+                        </div>
+                    </div>
+                    <div id='update_paypal'>
+                        <hr/>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control"
+                                   id="update_email"
+                                   placeholder="Enter your email address"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone_number">Phone Number</label>
+                            <input type="text" class="form-control"
+                                   id="update_phone_number"
+                                   placeholder="Enter your phone number"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label for="token">Token</label>
+                            <input type="text" class="form-control"
+                                   id="update_token"
+                                   placeholder="Enter the token" maxlength="30"
+                                   required>
+                        </div>
+                    </div>
+                    <button id="update-btn" type="submit"
+                            class="btn btn-primary">Update
+                    </button>
+                </form>
             </div>
-            <div class="alert alert-danger error" role="alert">
-                Missing field.
-            </div>
-            <div class="form-group">
-              <label for="payment_id">Payment ID</label>
-              <input type="number" class="form-control" id="toggle_payment_id" placeholder="Enter payment id" required>
-            </div>
-            <button type="submit" class="btn btn-danger" id="toggle-btn">Toggle</button>
-          </form>
-    </div>
 
-    <!-- query payments -->
-    <div class = "card">
-        <form>
-          <div class="form-group">
-            <h2><label for="query_title">Query Payments</label></h2>
-          </div>
-            <div class="alert alert-danger error" role="alert">
-                Missing field.
+            <!-- delete a payment -->
+            <div class="card">
+                <form>
+                    <div class="form-group">
+                        <h2><label for="delete_title">Delete a Payment</label>
+                        </h2>
+                    </div>
+                    <div class="alert alert-danger error" role="alert">
+                        Missing field.
+                    </div>
+                    <div class="form-group">
+                        <label for="delete_payment_id">Payment ID</label>
+                        <input type="number" class="form-control"
+                               id="delete_payment_id"
+                               placeholder="Enter payment id" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger"
+                            id="delete-btn">Delete
+                    </button>
+                </form>
             </div>
-            <div class="form-group">
-              <label for="query_customer_id">Customer ID</label>
-              <input type="number" class="form-control" id="query_customer_id" placeholder="Enter customer id">
-            </div>
-            <div class="form-group">
-              <label for="query_order_id">Order ID</label>
-              <input type="number" class="form-control" id="query_order_id" placeholder="Enter order id" >
-            </div>
-            <div class="form-group">
-                <label for="query_available">Available</label>
-                <select class="form-control" id="query_available">
-                  <option value="" selected>Both</option>
-                  <option value="true">Yes</option>
-                  <option value="false">No</option>
-                </select>
-              </div>
-            <div class="form-group">
-              <label for="query_type">Payment Type</label>
-              <select class="form-control" id="query_type">
-                <option value="" selected>All</option>
-                <option>Credit Card</option>
-                <option>PayPal</option>
-              </select>
-            </div>
-            <button id = "query-btn" type="submit" class="btn btn-primary">Query</button>
-          </form>
-    </div>
 
-    <div class = "card">
-        <h2>Recently added</h2>
-        <div class='row'>
-          <div class='col'><p class = 'table_name'>Type</p></div>
-          <div class='col'><p class = 'table_name'>ID</p></div>
-          <div class='col'><p class = 'table_name'>Info</p></div>
+            <!-- Toggle a payment's availability -->
+            <div class="card">
+                <form>
+                    <div class="form-group">
+                        <h2><label for="toggle_title">Toggle Payment
+                            Availability</label></h2>
+                    </div>
+                    <div class="alert alert-danger error" role="alert">
+                        Missing field.
+                    </div>
+                    <div class="form-group">
+                        <label for="payment_id">Payment ID</label>
+                        <input type="number" class="form-control"
+                               id="toggle_payment_id"
+                               placeholder="Enter payment id" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger"
+                            id="toggle-btn">Toggle
+                    </button>
+                </form>
+            </div>
+
+            <!-- query payments -->
+            <div class="card">
+                <form>
+                    <div class="form-group">
+                        <h2><label for="query_title">Query Payments</label></h2>
+                    </div>
+                    <div class="alert alert-danger error" role="alert">
+                        Missing field.
+                    </div>
+                    <div class="form-group">
+                        <label for="query_customer_id">Customer ID</label>
+                        <input type="number" class="form-control"
+                               id="query_customer_id"
+                               placeholder="Enter customer id">
+                    </div>
+                    <div class="form-group">
+                        <label for="query_order_id">Order ID</label>
+                        <input type="number" class="form-control"
+                               id="query_order_id" placeholder="Enter order id">
+                    </div>
+                    <div class="form-group">
+                        <label for="query_available">Available</label>
+                        <select class="form-control" id="query_available">
+                            <option value="" selected>Both</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="query_type">Payment Type</label>
+                        <select class="form-control" id="query_type">
+                            <option value="" selected>All</option>
+                            <option>Credit Card</option>
+                            <option>PayPal</option>
+                        </select>
+                    </div>
+                    <button id="query-btn" type="submit"
+                            class="btn btn-primary">Query
+                    </button>
+                </form>
+            </div>
+
+
         </div>
-        <div class='row'>
-          <div class='col'><p id="payment_id"></p></div>
-          <div class='col'><p id="payment_type"></p></div>
-          <div class='col'><p id="payment_available"></p></div>
+        <div class="card col-6" id="result-table-card">
+            <table class="table table-bordered" id="result-table">
+                <thead>
+                <tr id="result-table-header-row">
+                    <th>ID</th>
+                    <th>Customer ID</th>
+                    <th>Order ID</th>
+                    <th>Type</th>
+                    <th>Available</th>
+                    <th style="display: none;">Credit Card Number</th>
+                    <th style="display: none;">Card Holder Name</th>
+                    <th style="display: none;">Expires</th>
+                    <th style="display: none;">Email</th>
+                    <th style="display: none;">Phone Number</th>
+                </tr>
+                </thead>
+                <tbody id="result-table-body">
+                </tbody>
+            </table>
         </div>
     </div>
-  </body>
-  <script type="text/javascript" src="/static/js/payment.js"></script>
+</div>
+
+
+</body>
+<script type="text/javascript" src="/static/js/payment.js"></script>
 </html>
