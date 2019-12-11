@@ -26,29 +26,19 @@
 
 <div class="container">
     <div class="row">
-        <div class="container col-6" id="action-container">
-            <div class="card">
-                <form>
-                    <div class="form-group">
-                        <h2><label for="read_title">List all Payments</label>
-                        </h2>
-                    </div>
-                    <form>
-                        <button id="list_all-btn" class="btn btn-primary">List
-                            All Payments
-                        </button>
-                    </form>
-                </form>
-            </div>
+        <div class="container col-6" id="left-container">
 
             <!-- create a payment -->
             <div class="card">
+                <div class="form-group form-title">
+                    <h2><i class="fas fa-chevron-right" style="display: none"></i>
+                        <i class="fas fa-chevron-down"></i>
+                        <label for="create_title">
+                        Create a new
+                        Payment</label>
+                    </h2>
+                </div>
                 <form>
-                    <div class="form-group">
-                        <h2><label for="create_title">Create a new
-                            Payment</label>
-                        </h2>
-                    </div>
                     <div class="form-group">
                         <label for="customer_id">Customer ID</label>
                         <input type="number" class="form-control"
@@ -378,38 +368,50 @@
 
 
         </div>
-        <div class="card col-6" id="result-table-card">
-            <div class="container" id="expand-collapse-btn-container">
-                <button id="expand-all-btn" type="submit"
-                        class="btn btn-info">
-                    <i class="far fa-plus-square"></i>
-                    Expand all
-                </button>
-                <button id="collapse-all-btn" type="submit"
-                        class="btn btn-info">
-                    <i class="far fa-minus-square"></i>
-                    Collapse all
-                </button>
+        <div class="col-6" id="right-container">
+            <!-- list all payments -->
+            <div class="card" id="list-all-card">
+                <div class="container">
+                    <label for="read_title"><h2>List all Payments</h2>
+                    </label>
+                    <button id="list_all-btn" class="btn btn-primary">List
+                        All Payments
+                    </button>
+                </div>
             </div>
-            <div class="container">
-                <table class="table table-bordered" id="result-table">
-                    <thead>
-                    <tr id="result-table-header-row">
-                        <th>ID</th>
-                        <th>Customer ID</th>
-                        <th>Order ID</th>
-                        <th>Type</th>
-                        <th>Available</th>
-                        <th style="display: none;">Credit Card Number</th>
-                        <th style="display: none;">Card Holder Name</th>
-                        <th style="display: none;">Expires</th>
-                        <th style="display: none;">Email</th>
-                        <th style="display: none;">Phone Number</th>
-                    </tr>
-                    </thead>
-                    <tbody id="result-table-body">
-                    </tbody>
-                </table>
+            <div class="card" id="result-table-card">
+                <div class="container" id="expand-collapse-btn-container">
+                    <button id="expand-all-btn" type="submit"
+                            class="btn btn-info">
+                        <i class="far fa-plus-square"></i>
+                        Expand all
+                    </button>
+                    <button id="collapse-all-btn" type="submit"
+                            class="btn btn-info">
+                        <i class="far fa-minus-square"></i>
+                        Collapse all
+                    </button>
+                </div>
+                <div class="container">
+                    <table class="table table-bordered" id="result-table">
+                        <thead>
+                        <tr id="result-table-header-row">
+                            <th>ID</th>
+                            <th>Customer ID</th>
+                            <th>Order ID</th>
+                            <th>Type</th>
+                            <th>Available</th>
+                            <th style="display: none;">Credit Card Number</th>
+                            <th style="display: none;">Card Holder Name</th>
+                            <th style="display: none;">Expires</th>
+                            <th style="display: none;">Email</th>
+                            <th style="display: none;">Phone Number</th>
+                        </tr>
+                        </thead>
+                        <tbody id="result-table-body">
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

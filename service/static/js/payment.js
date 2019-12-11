@@ -183,6 +183,13 @@ $(function () {
         });
     });
 
+    $(".form-title").click(function(){
+        $(this).parent().children("form").toggle();
+        $(this).find("svg").each(function () {
+            $(this).toggle();
+        });
+    });
+
     // ****************************************
     // Create a payment.
     // ****************************************
