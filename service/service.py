@@ -174,8 +174,7 @@ class PaymentResource(Resource):
     @api.doc('get_payment')
     @api.response(404, 'Payment not found')
     @api.response(200, 'Payment retrieved successfully', PAYMENT_MODEL_DOC)
-    @staticmethod
-    def get(payment_id):
+    def get(self, payment_id):
         """Retrieve a single payment.
 
         This endpoint will return a payment based on its id.
@@ -196,8 +195,7 @@ class PaymentResource(Resource):
     @api.response(400, 'The posted Payment data was not valid')
     @api.response(200, 'Payment updated successfully', PAYMENT_MODEL_DOC)
     @api.expect(PAYMENT_MODEL_DOC)
-    @staticmethod
-    def put(payment_id):
+    def put(self, payment_id):
         """Update a payment.
 
         This endpoint will update a payment with the body that is posted.
@@ -222,8 +220,7 @@ class PaymentResource(Resource):
     # ------------------------------------------------------------------
     @api.doc('delete_payment')
     @api.response(204, 'Payment deleted')
-    @staticmethod
-    def delete(payment_id):
+    def delete(self, payment_id):
         """Delete a payment.
 
         This endpoint will delete a payment based the id specified in the path
@@ -248,8 +245,7 @@ class PaymentCollection(Resource):
     @api.doc('list_payments')
     @api.expect(payment_args, validate=True)
     @api.response(200, 'Success', [PAYMENT_MODEL_DOC])
-    @staticmethod
-    def get():
+    def get(self):
         """Returns all of the Payments."""
         app.logger.info('Request to list Payments...')  # pylint: disable=no-member
         args = payment_args.parse_args()
@@ -271,8 +267,7 @@ class PaymentCollection(Resource):
     @api.expect(PAYMENT_MODEL_DOC)
     @api.response(400, 'The posted data was not valid')
     @api.response(201, 'Payment created successfully', PAYMENT_MODEL_DOC)
-    @staticmethod
-    def post():
+    def post(self):
         """Creates a payment.
 
         This endpoint will create a payment based on the data
@@ -305,8 +300,7 @@ class ToggleResource(Resource):
 
     @api.doc('toggle_payment')
     @api.response(404, 'Payment not found')
-    @staticmethod
-    def patch(payments_id):
+    def patch(self, payments_id):
         """Toggle payment availability.
 
         This toggles whether or not a payment is currently available.
